@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<!-- START: Head-->
+<head>
+  <meta charset="UTF-8">
+  <title>ACR Portal</title>
+  <link rel="shortcut icon" href="/static/images/favicon.ico" />
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <!-- START: Template CSS-->
+
+  <link rel="stylesheet" href="/static/vendors/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/vendors/jquery-ui/jquery-ui.min.css">
+  <link rel="stylesheet" href="/static/vendors/jquery-ui/jquery-ui.theme.min.css">
+<!--  <link rel="stylesheet" href="/static/vendors/simple-line-icons/css/simple-line-icons.css">-->
+<!--  <link rel="stylesheet" href="/static/vendors/simple-line-icons/css/simple-line-icon.css">-->
+<!--  <link rel="stylesheet" href="/static/vendors/simple-line-icons/css/simple-line-icons.min.css">-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css" integrity="sha512-QKC1UZ/ZHNgFzVKSAhV5v5j73eeL9EEN289eKAEFaAjgAiobVAnVv/AGuPbXsKl1dNoel3kNr6PYnSiTzVVBCw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.css" integrity="sha512-9Tu/Gu0+bXW+oGrTGJOeNz2RG4MaF52FznXCciXFrXehFTLF6phJnJFNVOU2mmj9FWIXk9ap0H1ocygu1ZTRqg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <link rel="stylesheet" href="/static/vendors/flags-icon/css/flag-icon.min.css">
+  <!-- END Template CSS-->
+  <!-- START: Page CSS-->
+  <link rel="stylesheet" href="/static/vendors/chartjs/Chart.min.css">
+  <link rel="stylesheet" href="/static/vendors/select2/css/select2.min.css"/>
+  <link rel="stylesheet" href="/static/vendors/select2/css/select2-bootstrap.min.css"/>
+
+  <!-- END: Page CSS-->
+  <!-- START: Page CSS-->
+  <link rel="stylesheet" href="/static/vendors/morris/morris.css">
+  <link rel="stylesheet" href="/static/vendors/weather-icons/css/pe-icon-set-weather.min.css">
+  <link rel="stylesheet" href="/static/vendors/chartjs/Chart.min.css">
+  <link rel="stylesheet" href="/static/vendors/starrr/starrr.css">
+  <link rel="stylesheet" href="/static/vendors/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="/static/vendors/ionicons/css/ionicons.min.css">
+  <link rel="stylesheet" href="/static/vendors/jquery-jvectormap/jquery-jvectormap-2.0.3.css">
+  <!-- END: Page CSS-->
+  <!-- START: Custom CSS-->
+  <link rel="stylesheet" href="/static/css/main.css">
+  <!-- END: Custom CSS-->
+
+
+  <!-- START: Template CSS-->
+  <link rel="stylesheet" href="/static/vendors/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/vendors/jquery-ui/jquery-ui.min.css">
+  <link rel="stylesheet" href="/static/vendors/jquery-ui/jquery-ui.theme.min.css">
+<!--  <link rel="stylesheet" href="/static/vendors/simple-line-icons/css/simple-line-icons.css">-->
+  <link rel="stylesheet" href="/static/vendors/flags-icon/css/flag-icon.min.css">
+
+  <!-- END Template CSS-->
+  <!-- START: Jsgrid Page CSS-->
+  <link rel="stylesheet" href="/static/vendors/jsgrid/jsgrid.min.css" />
+  <link rel="stylesheet" href="/static/vendors/jsgrid/jsgrid-theme.css" />
+  <!-- END: Jsgrid Page CSS-->
+
+  <!-- START: Custom CSS-->
+  <link rel="stylesheet" href="/static/css/main.css">
+  <!-- Sweet Alert -->
+  <link rel="stylesheet" href="/static/css/sweetalert2.min.css">
+  <script src="/static/js/sweetalert2.min.js"></script>
+  <!-- END: Custom CSS-->
+
+
+</head>
+<!-- END Head-->
+<!-- START: Body-->
+<body id="main-container" class="default">
+<!-- START: Pre Loader-->
+<div class="se-pre-con">
+  <div class="loader"></div>
+</div>
+<!-- END: Pre Loader-->
+<!-- START: Header-->
+<div id="header-fix" class="header fixed-top">
+  <div class="site-width">
+    <nav class="navbar navbar-expand-lg  p-0">
+      <div class="navbar-header  h-100 h4 mb-0 align-self-center logo-bar text-left">
+        <a href="/" class="horizontal-logo text-left">
+          <img src="/static/images/favicon.ico" alt="">
+          <span class="h5 font-weight-bold align-self-center mb-0 ml-auto">ACR</span>
+        </a>
+      </div>
+      <div class="navbar-header h4 mb-0 text-center h-100 collapse-menu-bar">
+        <a href="#" class="sidebarCollapse" id="collapse">
+          <i class="icon-menu"></i>
+        </a>
+      </div>
+      <form class="float-left d-none d-lg-block search-form">
+        <div class="form-group mb-0 position-relative">
+          <marquee>Latest Notification From MPMKVVCL</marquee>
+          <a href="#" class="position-absolute close-button mobilesearch d-lg-none" data-toggle="dropdown" aria-expanded="false">
+            <i class="icon-close h5"></i>
+          </a>
+        </div>
+      </form>
+      <div class="navbar-right ml-auto h-100">
+        <ul class="ml-auto p-0 m-0 list-unstyled d-flex top-icon h-100">
+          <li class="d-inline-block align-self-center  d-block d-lg-none">
+            <a href="#" class="nav-link mobilesearch" data-toggle="dropdown" aria-expanded="false">
+              <i class="icon-magnifier h4"></i>
+            </a>
+          </li>
+          <li class="dropdown align-self-center d-inline-block">
+            <a href="#" class="nav-link pt-0" data-toggle="dropdown" aria-expanded="false">
+              <span>Name : {{request.user.fullName}}</span><br>
+              <span>Empcode : {{request.user.empCode}}</span>
+            </a>
+          </li>
+          <li class="dropdown user-profile align-self-center d-inline-block">
+            <a href="#" class="nav-link" data-toggle="dropdown" aria-expanded="false"><i class="icon-user h4"></i></a>
+            <div class="dropdown-menu border dropdown-menu-right p-0">
+              <a href="#" class="dropdown-item px-2 align-self-center d-flex">
+                <span class="icon-pencil mr-2 h6 mb-0"></span> Edit Profile </a>
+              <a href="#" class="dropdown-item px-2 align-self-center d-flex">
+                <span class="icon-user mr-2 h6 mb-0"></span> View Profile </a>
+              <div class="dropdown-divider"></div>
+              <a href="#" class="dropdown-item px-2 align-self-center d-flex">
+                <span class="icon-support mr-2 h6  mb-0"></span> Help Center </a>
+              <a href="#" class="dropdown-item px-2 align-self-center d-flex">
+                <span class="icon-globe mr-2 h6 mb-0"></span> Forum </a>
+              <a href="#" class="dropdown-item px-2 align-self-center d-flex">
+                <span class="icon-settings mr-2 h6 mb-0"></span> Account Settings </a>
+              <div class="dropdown-divider"></div>
+            </div>
+          </li>
+          <li class="dropdown align-self-center">
+            <a href="/logout/" class="nav-link" aria-expanded="false" title="Logout">
+              <i class="icon-logout h4"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+<!-- END: Header-->
+<!-- START: Main Menu-->
+<div class="sidebar">
+  <div class="site-width">
+    <!-- START: Menu-->
+    <ul id="side-menu" class="sidebar-menu">
+      <li class="dropdown active">
+        <a href="/">
+          <i class="icon-home mr-1"></i> Dashboard </a>
+        <ul>
+          <li class="{% if '/' == request.path %} active {% endif %}">
+            <a href="/">
+              <i class="icon-home"></i> Dashboard</a>
+          </li>
+          <li class="{% if 'tagging' in request.path %} active {% endif %}">
+            <a href="/tagging/">
+              <i class="icon-tag"></i> Employee Tagging </a>
+          </li>
+          {% comment %} <li class="{% if 'appraisee' in request.path %} active {% endif %}">
+            <a href="{% url 'appraise_view' %}">
+              <i class="icon-pencil"></i> Appraisee </a>
+          </li>
+          <li class="{% if 'acr/pdf/' in request.path %} active {% endif %}">
+            <a href="{% url 'acr_pdf_view' %}">
+              <i class="icon-envelope"></i> Acr Pdf's </a>
+          </li>
+          <li class="{% if 'reporting/' in request.path %} active {% endif %}">
+            <a href="{% url 'reporting_view' %}">
+              <i class="icon-folder"></i> Reporting Officer </a>
+          </li>
+          <li class="{% if 'reviewing/' in request.path %} active {% endif %}">
+            <a href="{% url 'reviewing_view' %}">
+              <i class="icon-speech"></i> Reviewing Officer </a>
+          </li>
+          <li class="{% if 'accepting/' in request.path %} active {% endif %}">
+            <a href="{% url 'accepting_view' %}">
+              <i class="icon-film"></i> Accepting Officer </a>
+          </li>
+          <li class="{% if 'reportingclass3/' in request.path %} active {% endif %}">
+            <a href="{% url 'reporting_class_3' %}">
+              <i class="icon-chart"></i> Reporting (Class-3) </a>
+          </li>
+          <li class="{% if 'reviewingclass3/' in request.path %} active {% endif %}">
+            <a href="{% url 'reviewing_class_3' %}">
+              <i class="icon-book-open"></i> Reviewing (Class-3) </a>
+          </li>
+          <li class="{% if 'acceptingclass3/' in request.path %} active {% endif %}">
+            <a href="{% url 'accepting_class_3' %}">
+              <i class="icon-badge"></i> Accepting (Class-3) </a>
+          </li> {% endcomment %}
+          {% for grp in user.groups.all %} {% if grp.name == "Hr" and user.isManagerHr %}
+          <li class="{% if 'mis' in request.path %} active {% endif %}">
+            <a href="/mis/">
+              <i class="icon-chart"></i> MIS/Dashboard </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="icon-book-open"></i> Old ACR Pdf </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="icon-badge"></i> ACR Representation </a>
+          </li>
+          {% endif %} {% endfor %}
+        </ul>
+      </li>
+    </ul>
+    <!-- END: Menu-->
+  </div>
+</div>
+<!-- END: Main Menu-->

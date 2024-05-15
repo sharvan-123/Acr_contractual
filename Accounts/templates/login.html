@@ -1,0 +1,141 @@
+ {% include 'header.html'%}
+
+        <!-- START: Main Content-->
+        <div class="container">
+            <div class="row vh-100 justify-content-between align-items-center">
+                <div class="col-12">
+                    <form action="" class="row row-eq-height lockscreen mt-5 mb-5" method="post">
+                        <div class="lock-image col-12 col-sm-5"></div>
+                        <div class="login-form col-12 col-sm-7">
+                            <div class="form-group mb-3">
+                                {% csrf_token %}
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="empCode">Employee Code</label>
+                                <input class="form-control" type="text" id="empCode" name="empCode" required="" placeholder="Enter your Employee Code">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="password">Password</label>
+                                <input class="form-control" type="password" required="" id="password" name="password" placeholder="Enter your password">
+                            </div>
+                            <div class="form-group mb-3" id="otp_div" style="display:none;">
+                                <label for="password">OTP</label>
+                                <input class="form-control" type="text" required="" id="otp" name="otp" placeholder="Enter your OTP">
+                            </div>
+                            <div class="form-group mb-3">
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="checkbox-signin" checked="">
+                                    <label class="custom-control-label" for="checkbox-signin">Remember me</label>
+                                    <label class="ml-5" for="checkbox-signin"><a href="{% url 'forget_password' %}"><u>Forget Password</u></a></label>
+                                </div>
+                            </div>
+                            {% if messages %}
+                                {% for message in messages %}
+                                        <div class="alert {% if message.tags %}alert-{% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}danger{% else %}{{ message.tags }}{% endif %}{% endif %}" role="alert">{{ message }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <label class="form-check-label text-center" id="msg" style="color:red;">{{message}}</label>
+                            <br><label class="form-check-label text-center js-timeout" id="ss" style="color:red; font-size: 12px;"></label>
+                            <div class="form-group mb-0 ">
+                                <button class="btn btn-primary" type="submit" id="otp_btn" onclick="check_number();"> Send OTP </button>
+                                <button class="btn btn-primary" type="submit" style="display:none;" id="login_btn"> Login </button>
+                                <button class="btn btn-primary" type="button" style="display:none;" id="otp_resend"> Resend OTP </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+        <!-- END: Content-->
+
+ {% include 'footer.html'%}
+
+
+ <script>
+
+
+   $('#otp').on('keyup',function(){
+     var charLength = $(this).val().length;
+     if(charLength == 6){
+       $('#login_btn').removeAttr('disabled');
+     }else{
+       $('#login_btn').attr('disabled',true);
+     }
+   });
+
+    $("#otp_resend").click(function(){
+        check_number();
+    });
+   function check_number(){
+      var empCode = $('#empCode').val();
+      var password = $('#password').val();
+      if(empCode==''){
+        alert('Please enter Employee Code');
+      } else if(password==''){
+        alert('Please enter Password');
+      } else{
+          $('#empCode').attr('readonly', true);
+          $('#password').attr('readonly', true);
+          $('#otp_btn').attr('disabled', true);
+          var form = new FormData();
+          form.append("empCode", empCode);
+          form.append("password", password);
+          form.append("type", "login");
+          var settings = {
+            "url": "/sendotp/",
+            "method": "POST",
+            "timeout": 0,
+            "processData": false,
+            "mimeType": "multipart/form-data",
+            "contentType": false,
+            "data": form
+            };
+
+            $.ajax(settings).done(function (response) {
+              var r = JSON.parse(response);
+              if (r.status==true) {
+                $('#otp_div').show();
+                $('#otp_resend').show();
+                $('#otp_resend').attr('disabled', true);
+                $('#otp_btn').hide();
+                $('#login_btn').show();
+                $('#login_btn').attr('disabled', true);
+                $('#msg').html(r.message);
+                countdown();
+                $('.js-timeout').html('1:59');
+              }else{
+                $('#msg').html(r.message);
+                $('#otp_btn').removeAttr('disabled');
+                $('#empCode').removeAttr('readonly');
+                $('#password').removeAttr('readonly');
+              }
+            });
+      }
+    }
+
+    var interval;
+    function countdown() {
+      clearInterval(interval);
+      interval = setInterval( function() {
+          var timer = $('.js-timeout').html();
+          timer = timer.split(':');
+          var minutes = timer[0];
+          var seconds = timer[1];
+          seconds -= 1;
+          if (minutes < 0) return;
+          else if (seconds < 0 && minutes != 0) {
+              minutes -= 1;
+              seconds = 59;
+          }
+          else if (seconds < 10 && length.seconds != 2) seconds = '0' + seconds;
+
+          $('.js-timeout').html(minutes + ':' + seconds);
+
+          if (minutes == 0 && seconds == 0){
+           $('#otp_resend').removeAttr('disabled');
+           clearInterval(interval);
+          }
+      }, 1000);
+    }
+ </script>
