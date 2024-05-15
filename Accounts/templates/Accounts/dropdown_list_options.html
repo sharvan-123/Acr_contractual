@@ -1,0 +1,19 @@
+<option value="" selected>Select {{dropdown_data.dropdown_type}}...</option>
+{% if dropdown_data.dropdown_type == 'Designation.' %}
+{% for data in dropdown_data.list %}
+    <option value="{{ data.name }}">{{ data.name }}</option>
+{% endfor %}
+{% else %}
+{% for data in dropdown_data.list %}
+    <option value="{% if data.regionId %} {{data.regionId}} {% elif data.circleId %} {{data.circleId}} {% elif data.divisionId %} {{data.divisionId}} {% elif data.subdivisionId %} {{data.subdivisionId}} {% elif data.dcId %} {{data.dcId}} {% elif data.id %} {{data.id}}{% elif data.functionId %}{{data.name}}{% endif %}">{{ data.name }}</option>
+{% endfor %}
+{% endif %}
+{% if dropdown_data.dropdown_type == 'Circle' %}
+<option value="{{dropdown_data.hrName.empName}}" class="RegionEmpName" style="display:none;"></option>
+<option value="{{dropdown_data.hrName.empCode}}" class="RegionEmpCode" style="display:none;"></option>
+<option value="{{dropdown_data.hrName.empId}}" class="RegionEmpId" style="display:none;"></option>
+{% elif dropdown_data.dropdown_type == 'Division' %}
+<option value="{{dropdown_data.hrName.empName}}" class="CircleEmpName" style="display:none;"></option>
+<option value="{{dropdown_data.hrName.empCode}}" class="CircleEmpCode" style="display:none;"></option>
+<option value="{{dropdown_data.hrName.empId}}" class="CircleEmpId" style="display:none;"></option>
+{% endif %}

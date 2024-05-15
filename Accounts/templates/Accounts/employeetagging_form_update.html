@@ -1,0 +1,383 @@
+ {% include 'full_header.html'%}
+        <!-- START: Main Content-->
+        <main>
+            <div class="container-fluid site-width">
+                <!-- START: Breadcrumbs-->
+                <div class="row">
+                    <div class="col-12  align-self-center">
+                        <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+                            <div class="w-sm-100 mr-auto"><h4 class="mb-0">ACR Portal</h4> <p>Welcome to Annual Confidential Record Portal </p></div>
+                            <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                <li class="breadcrumb-item active">Employee-Tagging</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Breadcrumbs-->
+                <!-- START: Card Data-->
+
+                <div class="col-12 col-sm-12 p-0 m-0">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">Annual Confidential Record {{session}}</h4>
+                            </div>
+                            <form method="post" id="taggingForm" data-branches-url="{% url 'ajax_load_posting_data' %}" enctype="multipart/form-data">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table m-0" id="taggingPart1">
+                                            {% csrf_token %}
+                                            <thead><tr><th scope="row" colspan="3" class="text-primary text-center">Employee Tagging Part 1</th></tr></thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row" width="150" class="text-primary">From / To-Date</th>
+                                                    <td scope="row">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6 m-0">{{ form.fromDate }}</div>
+                                                            <div class="form-group col-md-6 m-0">{{ form.toDate }}</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="text-primary">Posting Location</th>
+                                                    <td scope="row">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-2 m-0">{{ form.region }}</div>
+                                                            <div class="form-group col-md-3 m-0">{{ form.circle }}</div>
+                                                            <div class="form-group col-md-2 m-0">{{ form.division }}</div>
+                                                            <div class="form-group col-md-3 m-0">{{ form.subdivision }}</div>
+                                                            <div class="form-group col-md-2 m-0">{{ form.dc }}</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="text-primary">Reporting Officer</th>
+                                                    <td scope="row">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6 m-0">{{ form.reportingDesignation }}</div>
+                                                            <div class="form-group col-md-6 m-0">{{ form.reportingOfficerCode }}</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="text-primary">Reviewing Officer</th>
+                                                    <td scope="row">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6 m-0">{{ form.reviewingDesignation }}</div>
+                                                            <div class="form-group col-md-6 m-0">{{ form.reviewingOfficerCode }}</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="text-primary">Accepting Officer</th>
+                                                    <td scope="row">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6 m-0">{{ form.acceptingDesignation }}</div>
+                                                            <div class="form-group col-md-6 m-0">{{ form.acceptingOfficerCode }}</div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        <table class="table m-0">
+                                            <thead>
+                                                <tr>
+                                                    <td scope="row" colspan="2">
+                                                        <div class="form-row">
+                                                            <div class="form-group col-md-6" style="display:none;">{{ form.isAnotherTagging }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;">{{ form.reportingOfficer }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;">{{ form.region_code }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;">{{ form.reviewingOfficer }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;">{{ form.acceptingOfficer }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;">{{ form.hrManager }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;">{{ form.hrManagerCode }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;">{{ form.financialYear }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;" id="region_ccode">{{ employeetagging.region_code }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;" id="circle_ccode">{{ employeetagging.circle_code }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;" id="division_ccode">{{ employeetagging.division_code }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;" id="subdivision_ccode">{{ employeetagging.subdivision_code }}</div>
+                                                            <div class="form-group col-md-6" style="display:none;" id="dc_ccode">{{ employeetagging.dc_code }}</div>
+                                                            <div class="form-group col-md-6"><button type="button" class="btn btn-primary rounded-btn btn-block" onclick="location.href='/mis/'">Cancel</button></div>
+                                                            <div class="form-group col-md-6"><button type="submit" class="btn btn-primary rounded-btn btn-block">Save</button></div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                {% if form.errors %}<tr><td scope="row" colspan="2"><div class="alert alert-danger">{{ form.errors }}</div></td></tr>{% endif %}
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                <!-- END: Card DATA-->
+            </div>
+        </main>
+        <!-- END: Content-->
+
+
+ {% include 'full_footer.html'%}
+
+
+
+
+  <script>
+
+
+    $("#inputFormDate" ).removeAttr('disabled');
+    $("#inputToDate" ).removeAttr('disabled');
+    $("#inputRegionVal" ).attr('readonly', 'true');
+    $("#inputRegionVal" ).attr('type', 'text');
+    $("#inputCircleVal" ).attr('readonly', 'true');
+    $("#inputCircleVal" ).attr('type', 'text');
+    $("#inputDivisionVal" ).attr('readonly', 'true');
+    $("#inputDivisionVal" ).attr('type', 'text');
+    $("#inputSubDivisionVal" ).attr('readonly', 'true');
+    $("#inputSubDivisionVal" ).attr('type', 'text');
+    $("#inputDCVal").attr('readonly', 'true');
+    $("#inputDCVal").attr('type', 'text');
+
+    $("#inputRegion").html('<option selected>'+$("#region_ccode").text()+'</option>');
+    $("#inputCircle").html('<option selected>'+$("#circle_ccode").text()+'</option>');
+    $("#inpuDivision").html('<option selected>'+$("#division_ccode").text()+'</option>');
+    $("#inpuSubDivision").html('<option selected>'+$("#subdivision_ccode").text()+'</option>');
+    $("#inputDC").html('<option selected>'+$("#dc_ccode").text()+'</option>');
+
+<!--    $("#inputReportingDesignation").html('<option selected>'+$("#inputReportingOfficerVal").val()+'</option>');-->
+<!--    $("#inputReportingOfficer").html('<option selected>'+$("#inputReportingOfficerVal").val()+'</option>');-->
+<!--    $("#inputReviewingDesignation").html('<option selected>'+$("#inputReviewingVal").val()+'</option>');-->
+<!--    $("#inputReviewing").html('<option selected>'+$("#inputReviewingVal").val()+'</option>');-->
+<!--    $("#inputAcceptingDesignation").html('<option selected>'+$("#inputAcceptingOfficerVal").val()+'</option>');-->
+<!--    $("#inputAcceptingOfficer").html('<option selected>'+$("#inputAcceptingOfficerVal").val()+'</option>');-->
+
+    $("#inputFromDate" ).attr('min','{{session.fromDate|date:'Y-m-d'}}');
+    $("#inputFromDate" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
+
+    $("#inputFromDate").change(function () {
+        const date = new Date($("#inputFromDate" ).val());
+        var result = date.setDate(date.getDate() + 120);
+        $("#inputToDate" ).removeAttr('disabled');
+        $("#inputToDate" ).attr('min',new Date(result).toISOString().split('T')[0]);
+        $("#inputToDate" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
+    });
+
+
+<!--    $("#inputFormDate" ).removeAttr('disabled');-->
+<!--    $("#inputRegion" ).attr('readonly', 'true');-->
+<!--    $("#inputRegion").html('<option selected>'+$("#inputRegionVal").val()+'</option>');-->
+<!--    $("#inputCircle" ).attr('readonly', 'true');-->
+<!--    $("#inputCircle").html('<option selected>'+$("#inputCircleVal").val()+'</option>');-->
+<!--    $("#inputDivision" ).attr('readonly', 'true');-->
+<!--    $("#inputDivision").html('<option selected>'+$("#inputDivisionVal").val()+'</option>');-->
+<!--    $("#inputSubDivision" ).attr('readonly', 'true');-->
+<!--    $("#inputSubDivision").html('<option selected>'+$("#inputSubDivisionVal").val()+'</option>');-->
+<!--    $("#inputDC" ).attr('readonly', 'true');-->
+<!--    $("#inputDC").html('<option selected>'+$("#inputDCVal").val()+'</option>');-->
+
+
+
+    $( document ).ready(function() {
+        var url = $("#taggingForm").attr("data-branches-url");
+        $.ajax({
+            url: url,
+            data: {'reportingDesignation': 'reportingDesignation'},
+            success: function (data) {
+                $("#inputReportingDesignation").html(data);
+                $('#inputReportingDesignation').prop('selectedIndex', $('#inputReportingDesignation option[value=" ' +{{object.reportingDesignation}}+ '"]').index());
+                $("#inputReportingDesignation").removeAttr('disabled', 'disabled');
+                $("#inputReportingDesignation").attr('required', true);
+                if ({% if object.reportingDesignation %}true{% else %}false{% endif %}){
+                  $.ajax({
+                    url: url,
+                    data: {'reportingOfficer': {{object.reportingDesignation}} },
+                    success: function (data) {
+                        $("#inputReportingOfficer").html(data);
+                        $("#inputReportingOfficer").removeAttr('disabled', 'disabled');
+                        $('#inputReportingOfficer').prop('selectedIndex', $('#inputReportingOfficer option[value=" ' +{{object.reportingOfficerCode}}+ '"]').index());
+                        $("#inputReportingOfficer").attr('required', true);
+                        $("#inputReportingOfficerVal").attr('required', true);
+                    }
+                  });
+                }
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {'reportingDesignation': 'reportingDesignation'},
+            success: function (data) {
+                $("#inputReviewingDesignation").html(data);
+                $('#inputReviewingDesignation').prop('selectedIndex', $('#inputReviewingDesignation option[value=" ' +{{object.reviewingDesignation}}+ '"]').index());
+                $("#inputReviewingDesignation").removeAttr('disabled', 'disabled');
+                $("#inputReviewingDesignation").attr('required', true);
+                if ({% if object.reviewingDesignation %}true{% else %}false{% endif %}){
+                  $.ajax({
+                    url: url,
+                    data: {'reportingOfficer': {{object.reviewingDesignation}} },
+                    success: function (data) {
+                        $("#inputReviewing").html(data);
+                        $("#inputReviewing").removeAttr('disabled', 'disabled');
+                        $('#inputReviewing').prop('selectedIndex', $('#inputReviewing option[value=" ' +{{object.reviewingOfficerCode}}+ '"]').index());
+                        $("#inputReviewing").attr('required', true);
+                        $("#inputReviewingVal").attr('required', true);
+                    }
+                  });
+                }
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {'reportingDesignation': 'reportingDesignation'},
+            success: function (data) {
+                $("#inputAcceptingDesignation").html(data);
+                $('#inputAcceptingDesignation').prop('selectedIndex', $('#inputAcceptingDesignation option[value=" ' +{{object.acceptingDesignation}}+ '"]').index());
+                $("#inputAcceptingDesignation").removeAttr('disabled', 'disabled');
+                $("#inputAcceptingDesignation").attr('required', true);
+                if ({% if object.acceptingDesignation %}true{% else %}false{% endif %}){
+                  $.ajax({
+                    url: url,
+                    data: {'reportingOfficer': {{object.acceptingDesignation}} },
+                    success: function (data) {
+                        $("#inputAcceptingOfficer").html(data);
+                        $("#inputAcceptingOfficer").removeAttr('disabled', 'disabled');
+                        $('#inputAcceptingOfficer').prop('selectedIndex', $('#inputAcceptingOfficer option[value=" ' +{{object.acceptingOfficerCode}}+ '"]').index());
+                        $("#inputAcceptingOfficer").attr('required', true);
+                        $("#inputAcceptingOfficerVal").attr('required', true);
+                    }
+                  });
+                }
+            }
+        });
+    });
+
+
+<!--    $("#inputReportingDesignation").click(function () {-->
+<!--      var url = $("#taggingForm").attr("data-branches-url");-->
+<!--      $.ajax({-->
+<!--        url: url,-->
+<!--        data: {'reportingDesignation': 'reportingDesignation'},-->
+<!--        success: function (data) {-->
+<!--            $("#inputReportingDesignation").html(data);-->
+<!--            if($('#inputReportingDesignation').children('option').length > 1){-->
+<!--                $("#inputReportingDesignation").removeAttr('disabled', 'disabled');-->
+<!--                $("#inputReportingDesignation").attr('required', true);-->
+<!--            }-->
+<!--            else{-->
+<!--                $("#inputReportingDesignation").attr('disabled', 'disabled');-->
+<!--                $("#inputReportingDesignation").removeAttr('required', 'required');-->
+<!--            }-->
+<!--        }-->
+<!--      });-->
+<!--    });-->
+
+    $("#inputReportingDesignation").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var reportingOfficerId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'reportingOfficer': reportingOfficerId},
+        success: function (data) {
+            $("#inputReportingOfficer").html(data);
+            if($('#inputReportingOfficer').children('option').length > 1){
+                $("#inputReportingOfficer").removeAttr('disabled', 'disabled');
+                $("#inputReportingOfficer").attr('required', true);
+            }
+            else{
+                $("#inputReportingOfficer").attr('disabled', 'disabled');
+                $("#inputReportingOfficer").removeAttr('required', 'required');
+            }
+        }
+      });
+    });
+
+    $("#inputReportingOfficer").change(function () {
+        $("#inputReportingOfficerVal").val($("#inputReportingOfficer option:selected" ).text());
+    });
+
+
+<!--    $("#inputReviewingDesignation").click(function () {-->
+<!--      var url = $("#taggingForm").attr("data-branches-url");-->
+<!--      $.ajax({-->
+<!--        url: url,-->
+<!--        data: {'reportingDesignation': 'reportingDesignation'},-->
+<!--        success: function (data) {-->
+<!--            $("#inputReviewingDesignation").html(data);-->
+<!--            if($('#inputReviewingDesignation').children('option').length > 1){-->
+<!--                $("#inputReviewingDesignation").removeAttr('disabled', 'disabled');-->
+<!--                $("#inputReviewingDesignation").attr('required', true);-->
+<!--            }-->
+<!--            else{-->
+<!--                $("#inputReviewingDesignation").attr('disabled', 'disabled');-->
+<!--                $("#inputReviewingDesignation").removeAttr('required', 'required');-->
+<!--            }-->
+<!--        }-->
+<!--      });-->
+<!--    });-->
+
+    $("#inputReviewingDesignation").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var reviewingOfficerId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'reportingOfficer': reviewingOfficerId},
+        success: function (data) {
+            $("#inputReviewing").html(data);
+            if($('#inputReviewing').children('option').length > 1){
+                $("#inputReviewing").removeAttr('disabled', 'disabled');
+                $("#inputReviewing").attr('required', true);
+            }
+            else{
+                $("#inputReviewing").attr('disabled', 'disabled');
+                $("#inputReviewing").attr('required', false);
+            }
+        }
+      });
+    });
+
+    $("#inputReviewing").change(function () {
+        $("#inputReviewingVal").val($("#inputReviewing option:selected" ).text());
+    });
+
+<!--    $("#inputAcceptingDesignation").click(function () {-->
+<!--      var url = $("#taggingForm").attr("data-branches-url");-->
+<!--      $.ajax({-->
+<!--        url: url,-->
+<!--        data: {'reportingDesignation': 'reportingDesignation'},-->
+<!--        success: function (data) {-->
+<!--            $("#inputAcceptingDesignation").html(data);-->
+<!--            if($('#inputAcceptingDesignation').children('option').length > 1){-->
+<!--                $("#inputAcceptingDesignation").removeAttr('disabled', 'disabled');-->
+<!--                $("#inputAcceptingDesignation").attr('required', true);-->
+<!--            }-->
+<!--            else{-->
+<!--                $("#inputAcceptingDesignation").attr('disabled', 'disabled');-->
+<!--                $("#inputAcceptingDesignation").removeAttr('required', 'required');-->
+<!--            }-->
+<!--        }-->
+<!--      });-->
+<!--    });-->
+
+    $("#inputAcceptingDesignation").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var acceptingOfficerId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'reportingOfficer': acceptingOfficerId},
+        success: function (data) {
+            $("#inputAcceptingOfficer").html(data);
+            if($('#inputAcceptingOfficer').children('option').length > 1){
+                $("#inputAcceptingOfficer").removeAttr('disabled', 'disabled');
+                $("#inputAcceptingOfficer").attr('required', true);
+            }
+            else{
+                $("#inputAcceptingOfficer").attr('disabled', 'disabled');
+                $("#inputAcceptingOfficer").attr('required', false);
+            }
+        }
+      });
+    });
+
+    $("#inputAcceptingOfficer").change(function () {
+        $("#inputAcceptingOfficerVal").val($("#inputAcceptingOfficer option:selected" ).text());
+    });
+
+</script>

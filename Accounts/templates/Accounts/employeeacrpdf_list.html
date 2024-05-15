@@ -1,0 +1,179 @@
+{% include 'full_header.html'%}
+
+<!-- START: Main Content-->
+    {% csrf_token %}
+
+<main>
+    <div class="container-fluid site-width">
+        <!-- START: Breadcrumbs-->
+        <div class="row ">
+            <div class="col-12  align-self-center">
+                <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+                    <div class="w-sm-100 mr-auto"><h4 class="mb-0">Employee ACR Pdf List</h4></div>
+
+                    <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item">ACR Pdf</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <!-- END: Breadcrumbs-->
+
+        <!-- START: Card Data-->
+        <div class="row row-eq-height">
+            <div class="col-12 col-lg-12 todo-menu-bar flip-menu pl-lg-3 pr-lg-3">
+                <a href="#" class="d-inline-block d-lg-none mt-1 flip-menu-close"><i class="icon-close"></i></a>
+                <div class="card border h-100 contact-list-section">
+                    <div class="card-header border-bottom p-1 d-flex">
+                        <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
+                        <a href="#" class="list-style search-bar-menu border-0 active"><i class="icon-list"></i></a>
+                        <a href="#" class="grid-style search-bar-menu"><i class="icon-grid"></i></a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="contacts list">
+                            {% for obj in object_list %}
+                            <div class="contact all {% if obj.isFinal %} completed {% else %} pending {% endif %}">
+                                <div class="contact-content">
+                                    <div class="contact-location">
+                                        <div class="contact-info">
+                                            <p class="mb-0 small">Financial Year: </p>
+                                            <p class="contact-name mb-0">{{obj.financialYear}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="contact-profile">
+                                        <div class="contact-info">
+                                            <p class="mb-0 small">Name of Employee: </p>
+                                            <p class="contact-name mb-0">{{obj.empCode.fullName}} - {{obj.empCode}}</p>
+                                            <p class="contact-position mb-0 small font-weight-bold text-muted">{{obj.fromDate|date:'d-m-Y'}} / {{obj.toDate|date:'d-m-Y'}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="contact-email">
+                                        <p class="mb-0 small">Location: </p>
+                                        <p class="mb-0 pr-3" >{{obj.region}}, {{obj.circle}}, {{obj.division}}, {{obj.subdivision}}, {{obj.dc}}</p>
+                                    </div>
+                                    <div class="contact-location">
+                                        <p class="mb-0 small">Appraisee:</p>
+                                        <p class="user-location"><a href="#" onclick="downloadPdf('self_appraisal', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                    </div>
+                                    <div class="contact-location">
+                                        <p class="mb-0 small">Reporting:</p>
+                                        {% if obj.empCode.designation.designationClass in "1 2 3" %}
+                                            {% if obj.empCode.designation.designationClass in "1 2" %}
+                                            <p class="user-location"><a href="#" onclick="downloadPdf('reporting', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                            {% elif obj.empCode.designation.designationClass == "3" %}
+                                                {% if obj.empCode.designation.designationId == 23 or obj.empCode.designation.designationId == 99 or obj.empCode.designation.designationId == 102 %}
+                                                <p class="user-location"><a href="#" onclick="downloadPdf('reporting', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                                {% else %}
+                                                <p class="user-location"><a href="#" onclick="downloadPdf('reportingClass3', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="contact-location">
+                                        <p class="mb-0 small">Reviewing:</p>
+                                        {% if obj.empCode.designation.designationClass in "1 2 3" %}
+                                            {% if obj.empCode.designation.designationClass in "1 2" %}
+                                            <p class="user-location"><a href="#" onclick="downloadPdf('reviewing', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                            {% elif obj.empCode.designation.designationClass == "3" %}
+                                                {% if obj.empCode.designation.designationId == 23 or obj.empCode.designation.designationId == 99 or obj.empCode.designation.designationId == 102 %}
+                                                <p class="user-location"><a href="#" onclick="downloadPdf('reviewing', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                                {% else %}
+                                                <p class="user-location"><a href="#" onclick="downloadPdf('reviewingClass3', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="contact-location">
+                                        <p class="mb-0 small">Accepting:</p>
+                                        {% if obj.empCode.designation.designationClass in "1 2 3" %}
+                                            {% if obj.empCode.designation.designationClass in "1 2" %}
+                                            <p class="user-location"><a href="#" onclick="downloadPdf('accepting', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                            {% elif obj.empCode.designation.designationClass == "3" %}
+                                                {% if obj.empCode.designation.designationId == 23 or obj.empCode.designation.designationId == 99 or obj.empCode.designation.designationId == 102 %}
+                                                <p class="user-location"><a href="#" onclick="downloadPdf('accepting', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                                {% else %}
+                                                <p class="user-location"><a href="#" onclick="downloadPdf('acceptingClass3', {{obj.pk}})">PDF <i class="icon-paper-clip align-middle"></i></a></p>
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="contact-phone">
+                                        <p class="mb-0 small"></p>
+                                        <p class="user-phone"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END: Card DATA-->
+    </div>
+</main>
+<!-- END: Content-->
+<script>
+
+        {% if messages %}
+            {% for message in messages %}
+               Swal.fire({
+                    title: "Error",
+                    icon: "error",
+                    text: "{{ message }}",
+                    html: "",
+                    confirmButtonText: "OK",
+                    didOpen: () => {
+                        $('.select2 select2-container select2-container--bootstrap4').removeClass('select2 select2-container select2-container--bootstrap4');
+                        $('.select2 select2-container select2-container--bootstrap4 select2-container--focus').removeClass('select2 select2-container select2-container--bootstrap4 select2-container--focus');
+                    }
+                });
+            {% endfor %}
+        {% endif %}
+
+        function downloadPdf(type, taggingId){
+            var csrfToken = $("input[name=csrfmiddlewaretoken]").val();
+            $.ajax({
+                type: 'POST',
+                url: '{% url "acr_pdf_view" %}',
+                data: {
+                    type: type,
+                    id: taggingId
+                },
+                headers: {
+                    "X-CSRFToken": csrfToken
+                },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function(data) {
+                    var a = document.createElement('a');
+                    var url = window.URL.createObjectURL(data);
+                    a.href = url;
+                    a.download = type+'.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                   {% if messages %}
+                   {% for message in messages %}
+                   Swal.fire({
+                        title: "Error",
+                        icon: "error",
+                        text: "{{ message }}",
+                        html: "",
+                        confirmButtonText: "OK",
+                        didOpen: () => {
+                            $('.select2 select2-container select2-container--bootstrap4').removeClass('select2 select2-container select2-container--bootstrap4');
+                            $('.select2 select2-container select2-container--bootstrap4 select2-container--focus').removeClass('select2 select2-container select2-container--bootstrap4 select2-container--focus');
+                        }
+                    });
+                   {% endfor %}
+                   {% endif %}
+                }
+            });
+        }
+    </script>
+{% include 'full_footer.html'%}

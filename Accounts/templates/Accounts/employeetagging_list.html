@@ -1,0 +1,177 @@
+{% include 'full_header.html'%}
+
+    <!-- START: Main Content-->
+        <main>
+            <div class="container-fluid site-width">
+                <!-- START: Breadcrumbs-->
+                <div class="row ">
+                    <div class="col-12  align-self-center">
+                        <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+                            <div class="w-sm-100 mr-auto"><h4 class="mb-0">Employee Tagging List</h4></div>
+
+                            <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                <li class="breadcrumb-item">MIS-Dashboard</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Breadcrumbs-->
+
+                <!-- START: Card Data-->
+                <div class="row row-eq-height">
+                    <div class="col-12 col-lg-12 todo-menu-bar flip-menu pl-lg-3 pr-lg-3">
+                        <a href="#" class="d-inline-block d-lg-none mt-1 flip-menu-close"><i class="icon-close"></i></a>
+                        <div class="card border h-100 contact-list-section">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- Add Contact -->
+                                <div class="modal fade" id="newcontact">
+                                    <div class="modal-dialog modal-dialog-centered">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">
+                                                    <i class="icon-pencil"></i> Create New Tagging
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <i class="icon-close"></i>
+                                                </button>
+                                            </div>
+                                            <form class="add-contact-form">
+                                                <div class="modal-body">
+
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="col-md-6">-->
+<!--                                                            <div class="contact-name">-->
+<!--                                                                <label for="contact-name" class="col-form-label">Name</label>-->
+<!--                                                                <input type="text" id="contact-name" class="form-control" required="" >-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="col-md-6">-->
+<!--                                                            <div class="contact-email">-->
+<!--                                                                <label for="contact-email" class="col-form-label">Email</label>-->
+<!--                                                                <input type="text" id="contact-email" class="form-control" required="">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="col-md-6">-->
+<!--                                                            <div class="contact-occupation">-->
+<!--                                                                <label for="contact-occupation" class="col-form-label">Occupation</label>-->
+<!--                                                                <input type="text" id="contact-occupation" class="form-control">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+
+<!--                                                        <div class="col-md-6">-->
+<!--                                                            <div class="contact-phone">-->
+<!--                                                                <label for="contact-phone" class="col-form-label">Phone</label>-->
+<!--                                                                <input type="text" id="contact-phone" class="form-control">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+
+<!--                                                    <div class="row">-->
+<!--                                                        <div class="col-md-12">-->
+<!--                                                            <div class="contact-location">-->
+<!--                                                                <label for="employeeCode" class="col-form-label">Employee Code</label>-->
+<!--                                                                <input type="number" id="employeeCode" class="form-control" placeholder="Enter Employee Code">-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary add-todo">Add Contact</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card-header border-bottom p-1 d-flex">
+                                <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
+                                <ul class="nav contact-menu p-0 m-0 mr-3">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#" data-contacttype="all">
+                                        <i class="icon-list"></i> All
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-contacttype="pending">
+                                        <i class="icon-people"></i> Pending
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#" data-contacttype="completed">
+                                        <i class="icon-people"></i> Completed
+                                    </a>
+                                </li>
+
+                            </ul>
+                                <input type="text" class="form-control border-0 p-2 w-50 h-100 contact-search" placeholder="Search ...">
+                                <a href="#" class="list-style search-bar-menu border-0 active"><i class="icon-list"></i></a>
+                                <a href="#" class="grid-style search-bar-menu"><i class="icon-grid"></i></a>
+                                <a href="{% url 'tagging_add' %}" class="search-bar-menu rounded" ><i class="icon-plus align-middle"></i></a>
+                                <a href="{% url 'download_excel' type='tagging' %}" class="search-bar-menu rounded" title="Download Excel"><i class="icon-paper-clip align-middle"></i></a>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="contacts list">
+                                {% for obj in object_list %}
+                                    <div class="contact all {% if obj.isFinal %} completed {% else %} pending {% endif %}">
+                                        <div class="contact-content">
+                                            <div class="contact-profile">
+                                                <div class="contact-info">
+                                                    <p class="mb-0 small">Employee: </p>
+                                                    <p class="contact-name mb-0">{{obj.empCode.fullName}} - {{obj.empCode}}</p>
+                                                    <p class="contact-position mb-0 small font-weight-bold text-muted">{{obj.fromDate|date:'d-m-Y'}} / {{obj.toDate|date:'d-m-Y'}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="contact-location">
+                                                <p class="mb-0 small">Location: </p>
+                                                <p class="mb-0 pr-3" >{{obj.region}}, {{obj.circle}}, {{obj.division}}, {{obj.subdivision}}, {{obj.dc}}</p>
+                                            </div>
+                                            <div class="contact-email">
+                                                <p class="mb-0 small">Report Officer: </p>
+                                                <p class="user-email">{{ obj.reportingOfficer }}</p>
+                                            </div>
+                                            <div class="contact-email">
+                                                <p class="mb-0 small">Reviewing Officer: </p>
+                                                <p class="user-location">{{obj.reviewingOfficer}}</p>
+                                            </div>
+                                            <div class="contact-phone">
+                                                <p class="mb-0 small">Accepting Officer</p>
+                                                <p class="user-phone">{{obj.acceptingOfficer}} </p>
+                                            </div>
+                                            <div class="line-h-1 h6">
+                                                {% if not obj.isFinal %}
+                                                <a class="text-danger edit-contact" href="{{obj.id}}/update/"><i class="icon-pencil"></i></a>
+                                                <form action="/mis/" method="post" id="verify_tegging_{{obj.id}}">
+                                                  {% csrf_token %}
+                                                  <input type="hidden" name="userid" value="{{obj.id}}" required>
+                                                  <a class="text-success" href="#" onclick="$('#verify_tegging_{{obj.id}}').submit();"><i class="icon-check"></i></a>
+                                                </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                    <div class="contact all completed pending ">
+                                        <div class="contact-content">
+                                            <div >
+                                                No Data Found
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- END: Card DATA-->
+            </div>
+        </main>
+    <!-- END: Content-->
+
+{% include 'full_footer.html'%}
