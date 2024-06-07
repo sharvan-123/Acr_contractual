@@ -56,18 +56,18 @@
                                   <th>Action</th>
                                 </tr>
                               </thead>
-                               {% for data,flag in final_data %}
-                                    {% if data %}
+                               {% for reviewing_officer,flag in final_data %}
+                                    {% if reviewing_officer  %}
                               <tr>
                                <td>{{forloop.counter}}</td>
-                                 <td>{{data.empCode}}</td>
-                                 <td>{{data.empCode.fullName}}</td>
-                                 <td>{{data.region}}{{data.circle}}</td>
-                                 {% if flag == 1 %}
-                                 
-                                    <td ><a class="btn btn-primary" href="{% url 'reporting_form_hindi'  %}?tagging_id={{data.id}}">Fill ACR </a></td>
+                                 <td>{{reviewing_officer.tagging.empCode}}</td>
+                                 <td>{{reviewing_officer.tagging.empCode.fullName}}</td>
+                                 <td>{{reviewing_officer.tagging.region}}{{reviewing_officer.tagging.circle}}</td>
+                                 {% if flag == 0 %}
+                                 {% comment %}  {% endcomment %}
+                                    <td ><a class="btn btn-primary" href="{% url 'acceptingOfficer_form'  reviewing_officer.tagging.id %}">Fill ACR </a></td>
                                  {% else %}
-                                    <td ><button class="btn btn-success" disabled data-text="ACR Filled">ACR Filled</button>
+                                    <td ><button class="btn btn-success" disabled data-text="ACR Filled">ACR Submited </button>
 </td>
 
                                  {% endif %}
@@ -91,14 +91,3 @@
 
 
 {% include 'full_footer.html'%}
-
-{% comment %} 
-             <script>
-    $(document).ready(function () {
-      alert();
-      $('#view_offer').DataTable({
-          pagingType: 'full_numbers',
-      });
-      alert();
-  });
-  </script> {% endcomment %}

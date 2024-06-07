@@ -1,0 +1,476 @@
+{% include 'full_header.html' %}
+
+
+<meta charset="UTF-8"> 
+<!-- START: Main Content -->
+<main>
+    <div class="container-fluid site-width">
+        <div class="pagetitle">
+            <div class="row">
+                <div class="col-12 align-self-center">
+                    <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+                    <div class="w-sm-100 mr-auto">
+                        <h4 class="mb-0">ACR Portal</h4> <p>Welcome to Annual Confidential Record Portal</p>
+                    </div>
+                    <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+                        <li class="breadcrumb-item">
+                        <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Employee-Tagging</li>
+                    </ol>
+                    </div>
+                </div>
+            </div> 
+        </div>  
+        <div class="card"> 
+            <div class="card-body"> 
+                {% comment %} <style>
+                    * {
+                        line-height: 24px;
+                        font-size: 16px;
+
+                    }
+
+                    table {
+                        border-collapse: collapse;
+                        vertical-align: top;
+
+                    }
+
+                    td,
+                    th {
+                        padding: 4px 4px;
+                        vertical-align: top;
+                    }
+
+                    p {
+                        margin: 0 0 4px;
+                    }
+
+                    @media print {
+                        @page {
+                            size: 8in 10.5in;
+                            margin: 10px;
+                        }
+                    }
+                </style> {% endcomment %}
+                {% comment %} <div class="row"> {% endcomment %}
+                    {% comment %} <div class="col-sm-2"> </div>
+                        <div class="col-sm-8"> {% endcomment %}
+                            <table style="width:100%;">
+                                <tr>
+                                    <td>
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td style="vertical-align: middle;width:25%;">
+                                                    <div style="width:100%; text-align:center">
+                                                        <img src="/static/images/acr_hindi/headerimg.jpg" style="width: 80px;" />
+                                                    </div>
+                                                </td>
+                                                
+                                                <td style="vertical-align: middle;width:50%;">
+                                                    <div style="width:100%; text-align:center">
+                                                        <h4 style="font-weight: 800; line-height:24px; font-size:16px;">
+                                                            मध्य प्रदेश मध्य क्षेत्र 
+                                                            <br>
+                                                            विद्युत वितरण कंपनी लिमिटेड 
+                                                            <br>
+                                                            (म.प्र. शासन उपक्रम) 
+                                                            <br>
+                                                            निष्ठा परिसर गोविंदपुरा भोपाल मप्र (462023) 
+                                                            <br>
+                                                            फ़ोन: 2602033, 2602034, 2588377, फैक्स - 2589821 
+                                                            <br>
+                                                            वेब - www.mpcz.co.in 
+                                                            <br>
+                                                            सीआईएन: U40109MP2002SGC015119 
+                                                            <br>
+                                                            (मानव संसाधन विभाग (आईएसओ 9001:2008 प्रमाणित) 
+                                                        </h4>
+                                                    </div>
+                                                </td>
+                                                
+                                      <td style="vertical-align: middle;width:25%;">
+                                                    <div style="width:100%; text-align:center">
+                                                        <img src="/static/images/acr_hindi/headerimg1.jpg" style="width: 80px;" />
+                                                    </div>
+                                                </td> 
+                                            </tr>
+                                        </table>
+
+                                        
+                                            
+                                        
+                                            
+                                            
+                                        <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
+                                            <u>
+                                                Part I (PERSONAL DATA)
+                                            </u>
+                                        </h4>
+
+
+                                        <table style="width:60%; margin-bottom:10px;">
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        1.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        पूरा नाम 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                        {{tagging_data.empCode.fullName}}
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        2.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        कर्मचारी संख्या 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 0%;">
+                                                    <div style="text-align: left;">
+                                                        {{tagging_data.empCode.empCode}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        3.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        प्रथम नियुक्ति की तिथि 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                        {{tagging_data.empCode.dateOfJoining}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        4.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        जन्म की तारीख 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                    {{tagging_data.empCode.dateOfBirth}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        5.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        कर्मचारी पदनाम 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                    {{emp_des}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        6.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        नियुक्ति का तरीका 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                        {{emptype}}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                
+                                        <br>
+
+                                        <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
+                                            <u>
+                                                (रिपोर्टिंग अधिकारी भाग-I द्वारा 
+                                                (कर्मचारियों के लिए लागू))
+                                            </u>
+                                        </h4>
+                                        
+                                                    <div style="text-align: left;">
+                                                         <h6>
+                                                            रिपोर्टिंग अधिकारी  द्वारा  di hui grade
+                                                        </h6>
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                        {% comment %} {{reported_data.grade_one}} {% endcomment %}
+                                                       
+                                                         {% if reporting_grade >= 9.1 and reporting_grade <= 10 %}
+                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
+                                                        {% elif reporting_grade >= 7.1 and reporting_grade <= 9.0 %}
+                                                       बहुत अच्छा (क)
+                                                        {% elif reporting_grade >= 6.1 and reporting_grade <= 7.0 %}
+                                                         अच्छा (ख)
+                                                        {% elif reporting_grade >= 3.1 and reporting_grade <= 6.0 %}
+                                                            औसत (ग)
+                                                        {% elif reporting_grade <= 3.0  %}
+                                                            सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% endif %} 
+                                                       
+                                                    </div>
+
+
+                                                    <br>
+                                                    <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
+                                            <u>
+                                                (reviewing अधिकारी  द्वारा di hui grade
+                                                )
+                                            </u>
+                                        </h4>
+                                        
+
+                                                    <br>
+                                                    <br>
+                                               
+
+                                        <table style="width:100%; margin-bottom:10px;">
+                                            <tr>
+                                            
+                                <form  method="post" action="/update_reviewing_form_hindi/{{tagging_data.id}}"  enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <div class="col-12 col-sm-12 p-0 m-0">
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-center">
+                                        <h4 class="card-title m-auto text-primary"> कार्य मूल्यांकन</h4>
+                                        </div>
+                                        
+                                        
+                                            <input name="tagging_id" value='{{tagging_id}}'hidden/>
+                                            <h6>
+                                                (क) कार्यपालिक  और सुपरवाइजरी कार्यों के निष्पादन हेतु अनुबंधित संविदा कर्मियों के हेतु
+                                            </h6>
+                                            <div class="table-responsive">
+                                            <table class="table border m-0" id="po_officer_invoice_list">  
+                                                <thead>
+                                                <tr>
+                                                    <th class="text-primary text-left border" style="width: 10%;">
+                                                    (क)
+                                                    </th>
+                                                    <th  class="text-primary text-left border" style="width: 75%;">
+                                                    विशेषताएँ
+                                                    </th>
+                                                    <th class="text-primary text-left border" style="width: 15%;">
+                                                    ग्रेड
+                                                    </th>
+                                                </tr>
+                                                </thead>            
+                                                <tbody>    
+                                                <tr>
+                                                    <td class="border">
+                                                    I
+                                                    </td>
+                                                    <td class="border"> 
+                                                    कार्य के प्रति दृष्टिकोण
+                                                    </td> 
+                                                    <td> 
+                                                    <select class="cform-control" name="final_grade" onchange="calculateAverage()" required>
+                                                        <option disable> ग्रेड चुनें </option>
+                                                     {% if reviewing_grade == '10' %}
+                                                        <option value={{reviewing_grade}}  selected> क+ </option>
+                                                    {% elif reviewing_grade == '9' %}
+                                                        <option value={{reviewing_grade}} selected> क </option>
+                                                    {% elif reviewing_grade == '7' %}
+                                                        <option value={{reviewing_grade}}  selected> ख </option>
+                                                    {% elif reviewing_grade == '6' %}
+                                                        <option value={{reviewing_grade}}  selected> ग </option>                     
+                                                    {% else %}
+                                                        <option value={{reviewing_grade}}  selected>  घ </option>
+                                                    {% endif %}
+                                                        <option value="10"> क+ </option>
+                                                        <option value="9"> क </option>
+                                                        <option value="7"> ख  </option>
+                                                        <option value="6"> ग</option>
+                                                        <option value="3"> घ</option>
+                                                    </select>
+                                                    </td> 
+                                                </tr>
+                                                
+
+
+                                           
+                                            </table>
+
+
+    
+
+                                        <br>
+
+
+                                    </td>
+                                </tr>
+                            </table>
+                             <div style="text-align:center">
+                      <input type="submit" value="save"  class="btn btn-info">
+                    </div>
+                    
+                    </form>
+
+                        {% comment %} </div>
+                        <div class="col-sm-2"></div>
+                    </div> {% endcomment %}
+              
+              
+                </div>
+            </div>
+        </div> 
+    </div>
+</main>
+</body>
+<style>
+
+.otps_modal_block {
+    position: relative;
+    max-width: 560px;
+    border-radius: 0px;
+}
+
+.otps_modal_block .modal-header {
+    position: relative;
+}
+
+.otps_modal_block .modal-header .modal-title {
+    text-align: center;
+    font-size: 20px;
+    width: 100%;
+}
+
+.otps_modal_block .modal-header .close {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #28a745;
+    border-radius: 100%;
+    line-height: normal;
+    color: #fff;
+    width: 24px;
+    height: 24px;
+}
+
+.otps_modal_block .modal-content {
+    max-width: 550px;
+    width: auto;
+}
+
+.otps_modal_block .form-control {
+    height: 40px;
+    border-radius: 3px;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.otps_modal_block .modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.otps_modal_block .modal-footer .btn {
+    font-size: 14px;
+    text-transform: capitalize;
+}
+
+.otps_modal_block h4 {
+    font-size: 16px;
+}
+
+</style>
+
+{% include 'full_footer.html' %}
+<script>
+
+function windowprint(){
+    $('.sidebar').hide();
+    $('.header-fix').hide();
+    $('.sub-header').hide();
+    $('.site-footer').hide();
+    $('.footeravtion').hide();
+    $('.pagetitle').hide();
+    $('main').css('margin','0'); 
+    window.print();
+    $('.sidebar').show();
+    $('.header-fix').show();
+    $('.sub-header').show();
+    $('.site-footer').show();
+    $('.footeravtion').show();
+    $('.pagetitle').show();
+    $('main').removeAttr('style'); 
+} 
+</script>
+
+
+
+
+  

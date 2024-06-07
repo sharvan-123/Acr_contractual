@@ -1,217 +1,251 @@
- {% include 'full_header.html'%}
-        <!-- START: Main Content-->
-        <main>
-            <div class="container-fluid site-width">
-                <!-- START: Breadcrumbs-->
-                <div class="row">
-                    <div class="col-12  align-self-center">
-                        <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
-                            <div class="w-sm-100 mr-auto"><h4 class="mb-0">ACR Portal</h4> <p>Welcome to Annual Confidential Record Portal</p></div>
-                            <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
-                                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                <li class="breadcrumb-item active">Employee-Tagging</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <!-- END: Breadcrumbs-->
-                <!-- START: Card Data-->
+{% include 'full_header.html' %}
+<!-- START: Main Content -->
+<main>
+  <div class="container-fluid site-width">
+    <!-- START: Breadcrumbs -->
+    <div class="row">
+      <div class="col-12 align-self-center">
+        <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+          <div class="w-sm-100 mr-auto">
+            <h4 class="mb-0">ACR Portal</h4> <p>Welcome to Annual Confidential Record Portal</p>
+          </div>
+          <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+            <li class="breadcrumb-item">
+              <a href="/">Home</a>
+            </li>
+            <li class="breadcrumb-item active">Employee-Tagging</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <!-- END: Breadcrumbs -->
+    <!-- START: Card Data -->
 
-                <div class="col-12 col-sm-12 p-0 m-0">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-center">
-                                <h4 class="card-title m-auto text-primary">Annual Confidential Record {{session}}</h4>
+    <div class="col-12 col-sm-12 p-0 m-0">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-center">
+          <h4 class="card-title m-auto text-primary">वार्षिक गोपनीय रिकॉर्ड {{ session }}</h4>
+        </div>
+        <form method="post" id="taggingForm" data-branches-url="{% url 'ajax_load_posting_data' %}" enctype="multipart/form-data">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table m-0" id="taggingPart1">
+                {% csrf_token %}
+                <thead>
+                  <tr>
+                    <th scope="row" colspan="3" class="text-primary text-center">कर्मचारी टैगिंग भाग 1</th>
+                  </tr>
+                </thead> 
+                <tbody>   
+                      
+                    <tr>
+                        <th scope="row" width="150" class="text-primary">कर्मचारी नाम (कोड)                         </th>
+                        <td scope="row">
+                            <div class="form-row">
+                              <div class="form-group col-md-6 mr-2 form-control "> {{request.user.empCode}}</div>
+                              <div class="form-group col-md-5 form-control "> {{request.user.fullName}}</div>
                             </div>
-                            <form method="post" id="taggingForm" data-branches-url="{% url 'ajax_load_posting_data' %}" enctype="multipart/form-data">
-                                <div class="card-body">
-                                    <div class="table-responsive">
-                                        <table class="table m-0" id="taggingPart1">
-                                            {% csrf_token %}
-                                            <thead><tr><th scope="row" colspan="3" class="text-primary text-center">Employee Tagging Part 1</th></tr></thead>
-                                            <tbody>
-                                                {% for grp in user.groups.all %} {% if grp.name == "Hr" and user.isManagerHr and 'mis' in request.META.HTTP_REFERER %}
-                                                <tr>
-                                                    <th scope="row" width="150" class="text-primary">Employee Code</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-12 m-0">{{ form.empCode }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                {% endif %}{% endfor %}
-                                                <tr>
-                                                    <th scope="row" width="150" class="text-primary">From / To-Date</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 m-0">{{ form.fromDate }}</div>
-                                                            <div class="form-group col-md-6 m-0">{{ form.toDate }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-primary">Posting Location</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-3 m-0">{{ form.region_code }}</div>
-                                                            <div class="form-group col-md-3 m-0">{{ form.circle_code }}</div>
-                                                            <div class="form-group col-md-2 m-0">{{ form.division_code }}</div>
-                                                            <div class="form-group col-md-2 m-0">{{ form.subdivision_code }}</div>
-                                                            <div class="form-group col-md-2 m-0">{{ form.dc_code }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-primary">Reporting Officer</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 m-0">{{ form.reportingDesignation }}</div>
-                                                            <div class="form-group col-md-6 m-0">{{ form.reportingOfficerCode }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-primary">Reviewing Officer</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 m-0">{{ form.reviewingDesignation }}</div>
-                                                            <div class="form-group col-md-6 m-0">{{ form.reviewingOfficerCode }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-primary">Accepting Officer</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 m-0">{{ form.acceptingDesignation }}</div>
-                                                            <div class="form-group col-md-6 m-0">{{ form.acceptingOfficerCode }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <table class="table m-0" id="taggingPart2" style="display:none;">
-                                            <thead><tr><th scope="row" colspan="3" class="text-primary text-center">Employee Tagging Part 2</th></tr></thead>
-                                            <tbody>
-                                                <tr>
-                                                    <th scope="row" width="150" class="text-primary">From / To-Date</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 m-0">{{ form.fromDate2 }}</div>
-                                                            <div class="form-group col-md-6 m-0">{{ form.toDate2 }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-primary">Posting Location</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-3 m-0">{{ form.region_code2 }}</div>
-                                                            <div class="form-group col-md-3 m-0">{{ form.circle_code2 }}</div>
-                                                            <div class="form-group col-md-2 m-0">{{ form.division_code2 }}</div>
-                                                            <div class="form-group col-md-2 m-0">{{ form.subdivision_code2 }}</div>
-                                                            <div class="form-group col-md-2 m-0">{{ form.dc_code2 }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-primary">Reporting Officer</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 m-0">{{ form.reportingDesignation2 }}</div>
-                                                            <div class="form-group col-md-6 m-0">{{ form.reportingOfficerCode2 }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-primary">Reviewing Officer</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 m-0">{{ form.reviewingDesignation2 }}</div>
-                                                            <div class="form-group col-md-6 m-0">{{ form.reviewingOfficerCode2 }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row" class="text-primary">Accepting Officer</th>
-                                                    <td scope="row">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6 m-0">{{ form.acceptingDesignation2 }}</div>
-                                                            <div class="form-group col-md-6 m-0">{{ form.acceptingOfficerCode2 }}</div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
+                        </td> 
+                      </tr>
+                       
 
-                                        </table>
-                                        <table class="table m-0">
-                                            <thead>
-                                                <tr>
-                                                    <td scope="row" colspan="2">
-                                                        <div class="form-row">
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.isAnotherTagging }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.region }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.circle }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.division }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.subdivision }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.dc }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.reportingOfficer }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.reviewingOfficer }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.acceptingOfficer }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.hrManager }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.hrManagerCode }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.financialYear }}</div>
+                  {% for grp in user.groups.all %}
+                    {% if grp.name == 'Hr' and user.isManagerHr and 'mis' in request.META.HTTP_REFERER %}
+                      <tr>
+                        <th scope="row" width="150" class="text-primary">कर्मचारी कोड</th>
+                        <td scope="row">
+                          <div class="form-row">
+                            <div class="form-group col-md-12 m-0">{{ form.empCode }}</div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+                  <tr>
+                    <th scope="row" width="150" class="text-primary">से / तक तिथि</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-6 m-0">{{ form.fromDate }}</div>
+                        <div class="form-group col-md-6 m-0">{{ form.toDate }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-primary">पोस्टिंग स्थान</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-3 m-0">{{ form.region_code }}</div>
+                        <div class="form-group col-md-3 m-0">{{ form.circle_code }}</div>
+                        <div class="form-group col-md-2 m-0">{{ form.division_code }}</div>
+                        <div class="form-group col-md-2 m-0">{{ form.subdivision_code }}</div>
+                        <div class="form-group col-md-2 m-0">{{ form.dc_code }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-primary">रिपोर्टिंग अधिकारी</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-6 m-0">{{ form.reportingDesignation }}</div>
+                        <div class="form-group col-md-6 m-0">{{ form.reportingOfficerCode }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-primary">समीक्षा अधिकारी</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-6 m-0">{{ form.reviewingDesignation }}</div>
+                        <div class="form-group col-md-6 m-0">{{ form.reviewingOfficerCode }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-primary">स्वीकृत अधिकारी</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-6 m-0">{{ form.acceptingDesignation }}</div>
+                        <div class="form-group col-md-6 m-0">{{ form.acceptingOfficerCode }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="table m-0" id="taggingPart2" style="display:none;">
+                <thead>
+                  <tr>
+                    <th scope="row" colspan="3" class="text-primary text-center">Employee Tagging Part 2</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" width="150" class="text-primary">From / To-Date</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-6 m-0">{{ form.fromDate2 }}</div>
+                        <div class="form-group col-md-6 m-0">{{ form.toDate2 }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-primary">Posting Location</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-3 m-0">{{ form.region_code2 }}</div>
+                        <div class="form-group col-md-3 m-0">{{ form.circle_code2 }}</div>
+                        <div class="form-group col-md-2 m-0">{{ form.division_code2 }}</div>
+                        <div class="form-group col-md-2 m-0">{{ form.subdivision_code2 }}</div>
+                        <div class="form-group col-md-2 m-0">{{ form.dc_code2 }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-primary">Reporting Officer</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-6 m-0">{{ form.reportingDesignation2 }}</div>
+                        <div class="form-group col-md-6 m-0">{{ form.reportingOfficerCode2 }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-primary">Reviewing Officer</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-6 m-0">{{ form.reviewingDesignation2 }}</div>
+                        <div class="form-group col-md-6 m-0">{{ form.reviewingOfficerCode2 }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-primary">Accepting Officer</th>
+                    <td scope="row">
+                      <div class="form-row">
+                        <div class="form-group col-md-6 m-0">{{ form.acceptingDesignation2 }}</div>
+                        <div class="form-group col-md-6 m-0">{{ form.acceptingOfficerCode2 }}</div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="table m-0">
+                <thead>
+                  <tr>
+                    <td scope="row" colspan="2">
+                      <div class="form-row">
+                        <div class="form-group col-md-6" style="display:none;">{{ form.isAnotherTagging }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.region }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.circle }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.division }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.subdivision }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.dc }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.reportingOfficer }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.reviewingOfficer }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.acceptingOfficer }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.hrManager }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.hrManagerCode }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.financialYear }}</div>
 
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.region2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.circle2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.division2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.subdivision2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.dc2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.reportingOfficer2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.reviewingOfficer2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.acceptingOfficer2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.hrManager2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.hrManagerCode2 }}</div>
-                                                            <div class="form-group col-md-6" style="display:none;">{{ form.financialYear2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.region2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.circle2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.division2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.subdivision2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.dc2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.reportingOfficer2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.reviewingOfficer2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.acceptingOfficer2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.hrManager2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.hrManagerCode2 }}</div>
+                        <div class="form-group col-md-6" style="display:none;">{{ form.financialYear2 }}</div>
 
-                                                            <div class="form-group col-md-6" id="addAnotherTaggingDiv"><button type="button" id="addAnotherTagging" class="btn btn-primary rounded-btn btn-block">Add Another Tagging</button></div>
-                                                            <div class="form-group col-md-6" style="display:none;" id="delAnotherTaggingDiv" ><button type="button" id="delAnotherTagging" class="btn btn-primary rounded-btn btn-block">Delete Tagging</button></div>
-                                                            <div class="form-group col-md-6"><button type="submit" class="btn btn-primary rounded-btn btn-block" id="submitBtn">Submit</button></div>
-<!--                                                            <div class="form-group col-md-6"><button type="button" onclick="validateOtp()" class="btn btn-primary rounded-btn btn-block" id="submitBtn">Send OTP</button></div>-->
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                {% block messages %}
-                                                  {% if messages %}
-                                                    <div class="messages">
-                                                      {% for message in messages %}
-                                                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                                                          {{ message }}
-                                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                          </button>
-                                                        </div>
-                                                      {% endfor %}
-                                                    </div>
-                                                  {% endif %}
-                                                {% endblock %}
-                                                {% if form.errors %}<tr><td scope="row" colspan="2"><div class="alert alert-danger">{{ form.errors }}</div></td></tr>{% endif %}
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </form>
+                        <div class="form-group col-md-6" id="addAnotherTaggingDiv">
+                          <button type="button" id="addAnotherTagging" class="btn btn-primary rounded-btn btn-block">
+                            एक और टैगिंग जोड़ें</button>
                         </div>
-                    </div>
-                <!-- END: Card DATA-->
+                        <div class="form-group col-md-6" style="display:none;" id="delAnotherTaggingDiv">
+                          <button type="button" id="delAnotherTagging" class="btn btn-primary rounded-btn btn-block">Delete Tagging</button>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <button type="submit" class="btn btn-primary rounded-btn btn-block" id="submitBtn">Submit</button>
+                        </div>
+                        <!-- <div class="form-group col-md-6"><button type="button" onclick="validateOtp()" class="btn btn-primary rounded-btn btn-block" id="submitBtn">Send OTP</button></div> -->
+                      </div>
+                    </td>
+                  </tr>
+                  {% block messages %}
+                    {% if messages %}
+                      <div class="messages">
+                        {% for message in messages %}
+                          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  {% endblock %}
+                  {% if form.errors %}
+                    <tr>
+                      <td scope="row" colspan="2">
+                        <div class="alert alert-danger">{{ form.errors }}</div>
+                      </td>
+                    </tr>
+                  {% endif %}
+                </thead>
+              </table>
             </div>
-        </main>
-        <!-- END: Content-->
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- END: Card DATA -->
+  </div>
+</main>
+<!-- END: Content -->
 
+{% include 'full_footer.html' %}
 
- {% include 'full_footer.html'%}
-
-
-  <script>
+<script>
 
 
     $("#financialYear" ).val('{{session}}');

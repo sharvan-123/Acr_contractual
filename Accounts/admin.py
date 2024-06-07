@@ -180,7 +180,9 @@ admin.site.register(HrManagers, HrManagersAdmin)
 admin.site.register(ACR_Session)
 admin.site.register(ACR_Dates)
 admin.site.register(ReportingOfficer)
-
+admin.site.register(LoginOtp)
+admin.site.register(ReviewingOfficer)
+admin.site.register(AcceptingOfficer)
 def download_excel(request, type):
     try:
         Session = ACR_Session.objects.filter(isActive=True)[0]
