@@ -1,0 +1,381 @@
+<h1>hello</h1>
+<html >
+<!-- START: Main Content -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF</title>
+    <!-- Link to Google Fonts -->
+    {% comment %} <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet"> {% endcomment %}
+   <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+        }
+    </style>
+</head>
+<main>
+    <div class="container-fluid site-width">
+        <div class="pagetitle">
+            <div class="row">
+                <div class="col-12 align-self-center">
+                    <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+                    </div>
+                </div>
+            </div> 
+        </div>  
+        <div class="card"> 
+            <div class="card-body"> 
+                            <table style="width:100%;">
+                                <tr>
+                                    <td>
+                                        <table style="width:100%;">
+                                            <tr>
+                                           <td style="text-align: center; border:0;vertical-align:middle;" width="15%">
+                                                    <img alt="logo1.jpeg" src="data:image/png;base64,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" style="width: 60px;"/>
+                                            </td>
+                                                
+                                                <td style="vertical-align: middle;width:50%;">
+                                                    <div style="width:100%; text-align:center">
+                                                        <h4 style="font-weight: 800; line-height:24px; font-size:16px;">
+                                                            मध्य प्रदेश मध्य क्षेत्र 
+                                                            <br>
+                                                            विद्युत वितरण कंपनी लिमिटेड 
+                                                            <br>
+                                                            (म.प्र. शासन उपक्रम) 
+                                                            <br>
+                                                            निष्ठा परिसर गोविंदपुरा भोपाल मप्र (462023) 
+                                                            <br>
+                                                            फ़ोन: 2602033, 2602034, 2588377, फैक्स - 2589821 
+                                                            <br>
+                                                            वेब - www.mpcz.co.in 
+                                                            <br>
+                                                            सीआईएन: U40109MP2002SGC015119 
+                                                            <br>
+                                                            (मानव संसाधन विभाग (आईएसओ 9001:2008 प्रमाणित) 
+                                                        </h4>
+                                                    </div>
+                                                </td>
+                                                
+                                                {% comment %} <td style="vertical-align: middle;width:25%;">
+                                                    <div style="width:100%; text-align:center">
+                                                        <img src="/static/images/acr_hindi/headerimg1.jpg" style="width: 80px;" />
+                                                    </div>
+                                                </td> {% endcomment %}
+                                                </tr>
+                                        </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        {% include 'full_header.html' %}
+<meta charset="UTF-8"> 
+<!-- START: Main Content -->
+<main>
+    <div class="container-fluid site-width">
+        <div class="pagetitle">
+            <div class="row">
+                <div class="col-12 align-self-center">
+                    <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+                    <div class="w-sm-100 mr-auto">
+                        <h4 class="mb-0">ACR Portal</h4> <p>Welcome to Annual Confidential Record Portal</p>
+                    </div>
+                    <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+                        <li class="breadcrumb-item">
+                        <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active">Employee-Tagging</li>
+                    </ol>
+                    </div>
+                </div>
+            </div> 
+        </div>  
+        <div class="card"> 
+            <div class="card-body"> 
+                            <table style="width:100%;">
+                                <tr>
+                                    <td>
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td style="vertical-align: middle;width:25%;">
+                                                    <div style="width:100%; text-align:center">
+                                                        <img src="/static/images/acr_hindi/headerimg.jpg" style="width: 80px;" />
+                                                    </div>
+                                                </td>
+                                                
+                                                <td style="vertical-align: middle;width:50%;">
+                                                    <div style="width:100%; text-align:center">
+                                                        <h4 style="font-weight: 800; line-height:24px; font-size:16px;">
+                                                            मध्य प्रदेश मध्य क्षेत्र 
+                                                            <br>
+                                                            विद्युत वितरण कंपनी लिमिटेड 
+                                                            <br>
+                                                            (म.प्र. शासन उपक्रम) 
+                                                            <br>
+                                                            निष्ठा परिसर गोविंदपुरा भोपाल मप्र (462023) 
+                                                            <br>
+                                                            फ़ोन: 2602033, 2602034, 2588377, फैक्स - 2589821 
+                                                            <br>
+                                                            वेब - www.mpcz.co.in 
+                                                            <br>
+                                                            सीआईएन: U40109MP2002SGC015119 
+                                                            <br>
+                                                            (मानव संसाधन विभाग (आईएसओ 9001:2008 प्रमाणित) 
+                                                        </h4>
+                                                    </div>
+                                                </td>
+                                                
+                                      <td style="vertical-align: middle;width:25%;">
+                                                    <div style="width:100%; text-align:center">
+                                                        <img src="/static/images/acr_hindi/headerimg1.jpg" style="width: 80px;" />
+                                                    </div>
+                                                </td> 
+                                            </tr>
+                                        </table>   
+                                        <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
+                                            <u>
+                                                Part I (PERSONAL DATA)
+                                            </u>
+                                        </h4>
+                                        <table style="width:60%; margin-bottom:10px;">
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        1.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        पूरा नाम 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                        {% comment %} {{tagging_data.empCode.fullName}} {% endcomment %}
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        2.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        कर्मचारी संख्या 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 0%;">
+                                                    <div style="text-align: left;">
+                                                        {% comment %} {{tagging_data.empCode.empCode}} {% endcomment %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        3.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        प्रथम नियुक्ति की तिथि 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                        {% comment %} {{tagging_data.empCode.dateOfJoining}} {% endcomment %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        4.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        जन्म की तारीख 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                    {% comment %} {{tagging_data.empCode.dateOfBirth}} {% endcomment %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        5.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        कर्मचारी पदनाम 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                    {% comment %} {{emp_des}} {% endcomment %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 5%;">
+                                                    <div style="text-align: left;">
+                                                        6.
+                                                    </div>
+                                                </td>
+                                                <td style="width: 30%;">
+                                                    <div style="text-align: left;">
+                                                        नियुक्ति का तरीका 
+                                                    </div>
+                                                </td>
+                                                <td style="width: 15%;">
+                                                    <div style="text-align: left;">
+                                                        :
+                                                    </div>
+                                                </td>
+                                                <td style="width: 50%;">
+                                                    <div style="text-align: left;">
+                                                        {% comment %} {{emptype}} {% endcomment %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                
+                                        <br>
+
+                                        <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
+                                            <u>
+                                                (रिपोर्टिंग अधिकारी भाग-I द्वारा भरा जाना है
+                                                (सभी श्रेणी-3 कर्मचारियों के लिए लागू))
+                                            </u>
+                                        </h4>
+                                        <br>
+
+                                        <table style="width:100%; margin-bottom:10px;">
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <div style="text-align: left;">
+                                                        1.  कार्य के प्रति दृष्टिकोण
+
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                        {% comment %} {{reported_data.grade_one}} {% endcomment %}
+                                                       
+                                                        {% comment %} {% if g_one >= 9.1 and g_one <= 10 %}
+                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
+                                                        {% elif g_one >= 7.1 and g_one <= 9.0 %}
+                                                       बहुत अच्छा (क)
+                                                        {% elif g_one >= 6.1 and g_one <= 7.0 %}
+                                                         अच्छा (ख)
+                                                        {% elif g_one >= 3.1 and g_one <= 6.0 %}
+                                                            औसत (ग)
+                                                        {% elif g_one <= 3.0  %}
+                                                            सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% endif %} {% endcomment %}
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <br>
+            
+                            
+                            </table>
+                </div>
+            </div>
+        </div> 
+    </div>
+</main>
+</body>
+
+
+
+
+  
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog otps_modal_block">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">ओ टी पी दर्ज करे</h4>
+            </div>
+            <div class="modal-body">
+                <h4>
+                    आपके दर्ज मोबाइल नंबर पर भेजा गया है |
+                </h4> 
+                <input type="text" name ="otp" placeholder="******" class="form-control" />
+            </div>
+            <div class="modal-footer">
+                {% comment %} <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Submit
+                </button> {% endcomment %}
+                <a  href=" {% url 'generate_pdf_reporting_officer' %}?id={{i.id}}&tagging_id={{tagging_data.id}}" style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;">
+                                                        Sign & Submit 
+                                                    </a>
+
+                <button type="button" style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+{% include 'full_footer.html' %}
+
+  
