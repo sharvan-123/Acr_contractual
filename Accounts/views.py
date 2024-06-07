@@ -1013,4 +1013,5 @@ def generate_pdf_accepting_officer(request):
                 
                 url = reverse('accepting_preview',args=[tagging_id])
                 return redirect(url)
+            
     return render(request,"Accounts/acr_hindi/otp_accepting_officer.html",{'tagging_id':tagging_id})
