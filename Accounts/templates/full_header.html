@@ -141,15 +141,15 @@
     <ul id="side-menu" class="sidebar-menu">
       <li class="dropdown active">
         <a href="/">
-          <i class="icon-home mr-1"></i> Dashboard </a>
+          <i class="icon-home mr-1"></i> डैशबोर्ड </a>
         <ul>
           <li class="{% if '/' == request.path %} active {% endif %}">
             <a href="/">
-              <i class="icon-home"></i> Dashboard</a>
+              <i class="icon-home"></i>डैशबोर्ड</a>
           </li>
           <li class="{% if 'tagging' in request.path %} active {% endif %}">
             <a href="/tagging/">
-              <i class="icon-tag"></i> Employee Tagging </a>
+              <i class="icon-tag"></i> कर्मचारी टैगिंग </a>
           </li>
           {% comment %} <li class="{% if 'appraisee' in request.path %} active {% endif %}">
             <a href="{% url 'appraise_view' %}">
@@ -188,13 +188,13 @@
             <a href="/mis/">
               <i class="icon-chart"></i> MIS/Dashboard </a>
           </li>
-          <li>
+          {% comment %} <li>
             <a href="#">
               <i class="icon-book-open"></i> Old ACR Pdf </a>
-          </li>
+          </li> {% endcomment %}
           <li>
             <a href="#">
-              <i class="icon-badge"></i> ACR Representation </a>
+              <i class="icon-badge"></i> ए सी आर प्रतिनिधित्व </a>
           </li>
           {% endif %} {% endfor %}
         </ul>
