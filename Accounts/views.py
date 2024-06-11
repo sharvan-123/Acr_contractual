@@ -663,6 +663,7 @@ def reportingOtp(request):
     return redirect(generate_pdf_reporting_officer)
 
 
+
 @login_required(login_url='/login/')
 def ReviewingListView(request):
     data1=EmployeeTagging.objects.filter(reviewingOfficer__icontains=request.user.empCode).filter(isFinal=True)
@@ -672,18 +673,24 @@ def ReviewingListView(request):
         print(i.id,"tagging id ..........")
         data = ReportingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
         if data:
-            for i in data:
-                print(i.tagging_id,"true wali id ")
-            flag.append(1)
+            for j in data:
+                reviewing_officer=ReviewingOfficer.objects.filter(tagging__id=j.tagging.id,is_Status=True)
+                if reviewing_officer:
+                    flag.append(0)
+                else:
+                    flag.append(1)
+
+                print(reviewing_officer,"+++++++++++++++++++++reviewing_officer+++++++++++")
+                print(j.tagging_id,"true wali id ")
             data1=zip(data,flag)
     return render(request, "Accounts/acr_hindi/reporting_complete_list.html",{'final_data':data1})
 
 
 def reviewingOfficer_form(request,tagging_id):
+    reporting_officer_data = ReportingOfficer.objects.get(tagging_id=tagging_id,is_Status=True)
     tagging_data=EmployeeTagging.objects.get(id=tagging_id)
     emptype= tagging_data.empCode.employmentType['name']
     emp_des=tagging_data.empCode.designation['name']
-    reporting_officer_data = ReportingOfficer.objects.get(tagging__id=tagging_id,is_Status=True)
     reportingGrade=float(reporting_officer_data.final_grade)
     if request.method == "POST":
         print(tagging_id)
@@ -703,8 +710,8 @@ def reviewingOfficer_form(request,tagging_id):
 
 
 def reviewing_preview(request,tagging_id):
-    tagging_data=EmployeeTagging.objects.get(id=tagging_id)
     reporting_data=ReportingOfficer.objects.get(tagging__id=tagging_id)
+    tagging_data=EmployeeTagging.objects.get(id=tagging_id)
     reviewing_data=ReviewingOfficer.objects.get(tagging__id=tagging_id)
     emptype= tagging_data.empCode.employmentType['name']
     emp_des=tagging_data.empCode.designation['name']
@@ -715,6 +722,7 @@ def reviewing_preview(request,tagging_id):
             'reviewing_data':reviewing_data,
             'reviewing_grade':reviewing_grade,
             })
+
 
 
 def update_reviewing_form_hindi(request,tagging_id):
