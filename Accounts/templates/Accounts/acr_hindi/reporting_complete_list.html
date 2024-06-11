@@ -65,7 +65,7 @@
                                  <td>{{data.tagging.region}}{{data.tagging.circle}}</td>
                                  {% if flag == 1 %}
                                  
-                                    <td ><a class="btn btn-primary" href="{% url 'reviewingOfficer_form'  data.id %}">Fill ACR </a></td>
+                                    <td ><a class="btn btn-primary" href="{% url 'reviewingOfficer_form'  data.tagging.id %}">Fill ACR </a></td>
                                  {% else %}
                                     <td ><button class="btn btn-success" disabled data-text="ACR Filled">ACR Filled</button>
 </td>
