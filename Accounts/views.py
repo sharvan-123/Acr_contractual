@@ -6,7 +6,7 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.template.loader import render_to_string
-from django_ratelimit.decorators import ratelimit
+#from django_ratelimit.decorators import ratelimit
 from dateutil.relativedelta import relativedelta
 from django.core.files.base import ContentFile
 from django.shortcuts import render
@@ -122,7 +122,7 @@ class TaggingUpdateView(UpdateView):
         return context
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@ratelimit(key='post:empCode',rate='10/m',block=True)
+#@ratelimit(key='post:empCode',rate='10/m',block=True)
 def Login(request):
     if request.user.is_authenticated and request.session['totp_verified']:return redirect('Dashboard')
     if request.method == 'POST':
@@ -194,7 +194,7 @@ def load_posting_data(request):
 
 @csrf_exempt
 @check_valid_referer
-@ratelimit(key='post:empCode', rate='5/m', block=True)
+#@ratelimit(key='post:empCode', rate='5/m', block=True)
 def generate_totp(request):
     if request.method == 'POST' and request.POST['type'] == 'login':
         url = f"{apiUrl}/user-login/authenticate"
@@ -615,7 +615,7 @@ def generate_pdf_reporting_officer(request):
                 }
             )
             # path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Update this path
-            path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            path_to_wkhtmltopdf = r'/usr/local/bin/wkhtmltopdf' # Update this path
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
