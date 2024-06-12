@@ -614,8 +614,8 @@ def generate_pdf_reporting_officer(request):
                     'i': model,
                 }
             )
-            # path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Update this path
-            path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Update this path
+            # path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
@@ -665,14 +665,16 @@ def reportingOtp(request):
 
 @login_required(login_url='/login/')
 def ReviewingListView(request):
-    data1=EmployeeTagging.objects.filter(reviewingOfficer__icontains=request.user.empCode).filter(isFinal=True)
+    data2=EmployeeTagging.objects.filter(reviewingOfficer__icontains=request.user.empCode).filter(isFinal=True)
     print(request.user.mobileNo,"mobile no.....")
     flag=[]
-    for i in data1:
+    for i in data2:
         print(i.id,"tagging id ..........")
         data = ReportingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
         if data:
+            print(data,"dataaaaaaaaaaaaaa")
             for j in data:
+                print(j,"jjjjjjjjjjjjjjjj")
                 reviewing_officer=ReviewingOfficer.objects.filter(tagging__id=j.tagging.id,is_Status=True)
                 if reviewing_officer:
                     flag.append(0)
@@ -681,7 +683,7 @@ def ReviewingListView(request):
 
                 print(reviewing_officer,"+++++++++++++++++++++reviewing_officer+++++++++++")
                 print(j.tagging_id,"true wali id ")
-            data1=zip(data,flag)
+        data1=zip(data,flag)
     return render(request, "Accounts/acr_hindi/reporting_complete_list.html",{'final_data':data1})
 
 
