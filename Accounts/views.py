@@ -614,8 +614,8 @@ def generate_pdf_reporting_officer(request):
                     'i': model,
                 }
             )
-            path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Update this path
-            # path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            # path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Update this path
+            path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
