@@ -328,7 +328,7 @@
                                         <table style="width:100%; margin-bottom:10px;">
                                             <tr>
                                             
-                                <form  method="post" action="/acceptingOfficer_form/{{tagging_id}}"  enctype="multipart/form-data">
+                                <form  method="post" action="/acceptingOfficer_form/{{tagging_id}}"  enctype="multipart/form-data" id="myForm" onsubmit="return validateForm()">
                                     {% csrf_token %}
                                     <div class="col-12 col-sm-12 p-0 m-0">
                                     <div class="card">
@@ -366,7 +366,7 @@
                                                     </td> 
                                                     <td> 
                                                     <select class="cform-control" name="final_grade" onchange="calculateAverage()" required>
-                                                        <option disable> ग्रेड चुनें </option>
+                                                        <option value=""> ग्रेड चुनें </option>
                                                         <option value="10"> क+ </option>
                                                         <option value="9"> क </option>
                                                         <option value="7"> ख  </option>
@@ -523,6 +523,32 @@ function windowprint(){
     $('main').removeAttr('style'); 
 } 
 </script>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function validateForm() {
+                var selects = document.querySelectorAll("select");
+                var allSelected = true;
+
+                selects.forEach(function(select) {
+                    console.log("Select value:", select.value);  // Debugging log
+                    if (select.value === "") {
+                        allSelected = false;
+                    }
+                });
+
+                if (allSelected) {
+                    console.log("All options selected.");  // Debugging log
+                    document.getElementById("submitButton").setAttribute("type", "submit");
+                    document.getElementById("myForm").submit();
+                } else {
+                    console.log("Not all options selected.");  // Debugging log
+                    alert("Please select a value for all options.");
+                }
+            }
+
+            document.getElementById("submitButton").addEventListener("click", validateForm);
+        });
+    </script>
 
 
 
