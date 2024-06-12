@@ -10,6 +10,7 @@ from django_ratelimit.decorators import ratelimit
 from dateutil.relativedelta import relativedelta
 from django.core.files.base import ContentFile
 from django.shortcuts import render
+# from django.conf import settings
 from django.contrib.auth.models import Group
 from excel_response import ExcelResponse
 from django.urls import reverse_lazy
@@ -615,7 +616,8 @@ def generate_pdf_reporting_officer(request):
                 }
             )
             # path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Update this path
-            path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            # path_to_wkhtmltopdf = settings.PDF_PATH
+            path_to_wkhtmltopdf=settings.PDF_PATH
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
@@ -809,7 +811,8 @@ def generate_pdf_reviewing_officer(request):
                     'tagging_data':tagging_data,
                 }
             )
-            path_to_wkhtmltopdf =r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            # path_to_wkhtmltopdf =r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            path_to_wkhtmltopdf=settings.PDF_PATH
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             reviewing_model.reviewing_officer_pdf.save('ReviewingOfficerPdf.pdf', ContentFile(pdf_content))
@@ -1001,7 +1004,8 @@ def generate_pdf_accepting_officer(request):
                     'tagging_data':tagging_data,
                 }
             )
-            path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            # path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            path_to_wkhtmltopdf=settings.PDF_PATH
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             accepting_model.accepting_officer_pdf.save('AcceptingOfficerPdf.pdf', ContentFile(pdf_content))
