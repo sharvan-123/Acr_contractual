@@ -672,9 +672,15 @@ def ReviewingListView(request):
         print(i.id,"tagging id ..........")
         data = ReportingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
         if data:
-            for i in data:
-                print(i.tagging_id,"true wali id ")
-            flag.append(1)
+            for j in data:
+                reviewing_officer=ReviewingOfficer.objects.filter(tagging__id=j.tagging.id,is_Status=True)
+                if reviewing_officer:
+                    flag.append(0)
+                else:
+                    flag.append(1)
+
+                print(reviewing_officer,"+++++++++++++++++++++reviewing_officer+++++++++++")
+                print(j.tagging_id,"true wali id ")
             data1=zip(data,flag)
     return render(request, "Accounts/acr_hindi/reporting_complete_list.html",{'final_data':data1})
 
