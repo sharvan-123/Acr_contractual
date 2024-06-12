@@ -20,7 +20,9 @@
     </div>
     <!-- END: Breadcrumbs -->
     <!-- START: Card Data -->
-<form  method="post" action="{% url 'reporting_form_hindi' %}"  enctype="multipart/form-data">
+<form  method="post" action="{% url 'reporting_form_hindi' %}"  enctype="multipart/form-data" id="myForm" onsubmit="return validateForm()"> 
+    {% comment %} <form id="myForm" action="/submit-form" method="post"> {% endcomment %}
+
     {% csrf_token %}
     <div class="col-12 col-sm-12 p-0 m-0">
       <div class="card">
@@ -64,8 +66,8 @@
                       कार्य के प्रति दृष्टिकोण
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade1" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade1" id="select1" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -83,8 +85,8 @@
                       निर्णय लेने की क्षमता 
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade2" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade2" id="select2" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -101,8 +103,8 @@
                       पहल करना एवं रचनात्मकता 
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade3" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade3" id="select3" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -119,8 +121,8 @@
                       व्यक्तीगत संबंध एवं सामूह  कार्य
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade4" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade4" id="select4" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -139,8 +141,8 @@
 
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade5" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade5" id="select5" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -158,8 +160,8 @@
                       समन्वय की योगिता
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade6" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade6" id="select6" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -176,8 +178,8 @@
                       कार्य का ज्ञान  
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade7" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade7" id="select7" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -194,8 +196,8 @@
                       कार्य की गुणवत्ता 
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade8" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade8" id="select8" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -212,8 +214,8 @@
                       प्रबंधन उत्कृष्टता
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade9" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade9" id="select9" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -230,8 +232,8 @@
                       वर्ष की कार्य उत्पादकता
                     </td> 
                     <td> 
-                      <select class="cform-control" name="Grade10" onchange="calculateAverage()" required>
-                        <option disable> ग्रेड चुनें </option>
+                      <select class="cform-control" name="Grade10" id="select10" onchange="calculateAverage()" required>
+                        <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -250,7 +252,7 @@
                 </tbody>
               </table>
               <div style="text-align:center">
-                      <input type="submit" value="save"  class="btn btn-info">
+                      <input type="button" value="save" id="submitButton" class="btn btn-info">
                     </div>
             </div>
 </form>
@@ -291,78 +293,8 @@
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 </style>
-
-
 {% include 'full_footer.html' %}
- 
 
-{% comment %} 
-<script>
-
-function calculateTotal() {
-        var total = 0;
-        var count = 0;
-        var selects = document.querySelectorAll("select");
-        selects.forEach(function(select) {
-            if (select.value !== "" && !isNaN(select.value)) {
-                total += parseInt(select.value);
-                count++;
-            }
-        });
-        var average = count > 0 ? total / count : 0;
-        document.getElementById("average").textContent = average.toFixed(2);
-    } 
-
-    function calculateAverage() {
-        var total = 0;
-        var count = 0;
-        var selects = document.querySelectorAll("select");
-        selects.forEach(function(select) {
-            if (select.value !== "" && !isNaN(select.value)) {
-                total += parseInt(select.value);
-                count++;
-            }
-        });
-        var average = count > 0 ? total / count : 0;
-        var gradeCell = document.getElementById("grade");
-
-        if (average >= 9.1 && average <= 10) {
-            gradeCell.textContent = "क+";
-        } else if (average >= 7.1 && average <= 9.0) {
-            gradeCell.textContent = "ख";
-        } else if (average >= 6.1 && average <= 7.0) {
-            gradeCell.textContent = "ग";
-        } else {
-            gradeCell.textContent = "घ+";
-        }
-    }
-</script>  {% endcomment %}
-{% comment %} 
-<script>
-    function calculateAverage() {
-        var total = 0;
-        var count = 0;
-        var selects = document.querySelectorAll("select");
-        selects.forEach(function(select) {
-            if (select.value !== "" && !isNaN(select.value)) {
-                total += parseInt(select.value);
-                count++;
-            }
-        });
-        var average = count > 0 ? total / count : 0;
-        var gradeCell = document.getElementById("grade");
-
-        if (average >= 9.1 && average <= 10) {
-            gradeCell.textContent = "क+";
-        } else if (average >= 7.1 && average <= 9.0) {
-            gradeCell.textContent = "ख";
-        } else if (average >= 6.1 && average <= 7.0) {
-            gradeCell.textContent = "ग";
-        } else {
-            gradeCell.textContent = "घ+";
-        }
-    }
-</script> {% endcomment %}
 
 
 <script>
@@ -400,4 +332,36 @@ function calculateTotal() {
        var gradingInfo1 = document.getElementById("final_grade");
         gradingInfo1.textContent = grade;
     }
+
 </script>
+
+
+
+ <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            function validateForm() {
+                var selects = document.querySelectorAll("select");
+                var allSelected = true;
+
+                selects.forEach(function(select) {
+                    console.log("Select value:", select.value);  // Debugging log
+                    if (select.value === "") {
+                        allSelected = false;
+                    }
+                });
+
+                if (allSelected) {
+                    console.log("All options selected.");  // Debugging log
+                    document.getElementById("submitButton").setAttribute("type", "submit");
+                    document.getElementById("myForm").submit();
+                } else {
+                    console.log("Not all options selected.");  // Debugging log
+                    alert("Please select a value for all options.");
+                }
+            }
+
+            document.getElementById("submitButton").addEventListener("click", validateForm);
+        });
+    </script>
+
+
