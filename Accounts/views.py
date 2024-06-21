@@ -10,6 +10,7 @@ from django.template.loader import render_to_string
 from dateutil.relativedelta import relativedelta
 from django.core.files.base import ContentFile
 from django.shortcuts import render
+# from django.conf import settings
 from django.contrib.auth.models import Group
 from excel_response import ExcelResponse
 from django.urls import reverse_lazy
@@ -40,6 +41,9 @@ class TaggingCreateView(CreateView):
     context_object_name = 'tagging_add'
     success_url = reverse_lazy('tagging_add')
     def form_valid(self, form):
+        print("form ke aNDR HAI")
+        print(form.cleaned_data['fromDate'])
+        print(form.cleaned_data['toDate'])
         if self.model.objects.filter(
                 empCode=form.cleaned_data['empCode'] if form.cleaned_data['empCode'] else self.request.user).filter(
                 financialYear=form.cleaned_data['financialYear']).exists():
@@ -615,7 +619,12 @@ def generate_pdf_reporting_officer(request):
                 }
             )
             # path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Update this path
+
+            # path_to_wkhtmltopdf = settings.PDF_PATH
+            #path_to_wkhtmltopdf=settings.PDF_PATH
+
             path_to_wkhtmltopdf = r'/usr/local/bin/wkhtmltopdf' # Update this path
+
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
@@ -811,7 +820,8 @@ def generate_pdf_reviewing_officer(request):
                     'tagging_data':tagging_data,
                 }
             )
-            path_to_wkhtmltopdf =r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            # path_to_wkhtmltopdf =r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            path_to_wkhtmltopdf=settings.PDF_PATH
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             reviewing_model.reviewing_officer_pdf.save('ReviewingOfficerPdf.pdf', ContentFile(pdf_content))
@@ -1003,7 +1013,8 @@ def generate_pdf_accepting_officer(request):
                     'tagging_data':tagging_data,
                 }
             )
-            path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            # path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
+            path_to_wkhtmltopdf=settings.PDF_PATH
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             accepting_model.accepting_officer_pdf.save('AcceptingOfficerPdf.pdf', ContentFile(pdf_content))
