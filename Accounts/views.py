@@ -6,7 +6,7 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.template.loader import render_to_string
-from django_ratelimit.decorators import ratelimit
+#from django_ratelimit.decorators import ratelimit
 from dateutil.relativedelta import relativedelta
 from django.core.files.base import ContentFile
 from django.shortcuts import render
@@ -126,7 +126,7 @@ class TaggingUpdateView(UpdateView):
         return context
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
-@ratelimit(key='post:empCode',rate='10/m',block=True)
+#@ratelimit(key='post:empCode',rate='10/m',block=True)
 def Login(request):
     if request.user.is_authenticated and request.session['totp_verified']:return redirect('Dashboard')
     if request.method == 'POST':
@@ -198,7 +198,7 @@ def load_posting_data(request):
 
 @csrf_exempt
 @check_valid_referer
-@ratelimit(key='post:empCode', rate='5/m', block=True)
+#@ratelimit(key='post:empCode', rate='5/m', block=True)
 def generate_totp(request):
     if request.method == 'POST' and request.POST['type'] == 'login':
         url = f"{apiUrl}/user-login/authenticate"
@@ -619,8 +619,12 @@ def generate_pdf_reporting_officer(request):
                 }
             )
             # path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Update this path
+
             # path_to_wkhtmltopdf = settings.PDF_PATH
-            path_to_wkhtmltopdf=settings.PDF_PATH
+            #path_to_wkhtmltopdf=settings.PDF_PATH
+
+            path_to_wkhtmltopdf = r'/usr/local/bin/wkhtmltopdf' # Update this path
+
             config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
             pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
@@ -668,6 +672,7 @@ def reportingOtp(request):
     return redirect(generate_pdf_reporting_officer)
 
 
+
 @login_required(login_url='/login/')
 def ReviewingListView(request):
     data2=EmployeeTagging.objects.filter(reviewingOfficer__icontains=request.user.empCode).filter(isFinal=True)
@@ -693,10 +698,10 @@ def ReviewingListView(request):
 
 
 def reviewingOfficer_form(request,tagging_id):
+    reporting_officer_data = ReportingOfficer.objects.get(tagging_id=tagging_id,is_Status=True)
     tagging_data=EmployeeTagging.objects.get(id=tagging_id)
     emptype= tagging_data.empCode.employmentType['name']
     emp_des=tagging_data.empCode.designation['name']
-    reporting_officer_data = ReportingOfficer.objects.get(tagging__id=tagging_id,is_Status=True)
     reportingGrade=float(reporting_officer_data.final_grade)
     if request.method == "POST":
         print(tagging_id)
@@ -716,8 +721,8 @@ def reviewingOfficer_form(request,tagging_id):
 
 
 def reviewing_preview(request,tagging_id):
-    tagging_data=EmployeeTagging.objects.get(id=tagging_id)
     reporting_data=ReportingOfficer.objects.get(tagging__id=tagging_id)
+    tagging_data=EmployeeTagging.objects.get(id=tagging_id)
     reviewing_data=ReviewingOfficer.objects.get(tagging__id=tagging_id)
     emptype= tagging_data.empCode.employmentType['name']
     emp_des=tagging_data.empCode.designation['name']
@@ -728,6 +733,7 @@ def reviewing_preview(request,tagging_id):
             'reviewing_data':reviewing_data,
             'reviewing_grade':reviewing_grade,
             })
+
 
 
 def update_reviewing_form_hindi(request,tagging_id):
