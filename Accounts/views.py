@@ -41,6 +41,9 @@ class TaggingCreateView(CreateView):
     context_object_name = 'tagging_add'
     success_url = reverse_lazy('tagging_add')
     def form_valid(self, form):
+        print("form ke aNDR HAI")
+        print(form.cleaned_data['fromDate'])
+        print(form.cleaned_data['toDate'])
         if self.model.objects.filter(
                 empCode=form.cleaned_data['empCode'] if form.cleaned_data['empCode'] else self.request.user).filter(
                 financialYear=form.cleaned_data['financialYear']).exists():
