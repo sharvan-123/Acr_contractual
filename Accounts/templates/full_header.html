@@ -186,17 +186,26 @@
           {% for grp in user.groups.all %} {% if grp.name == "Hr" and user.isManagerHr %}
           <li class="{% if 'mis' in request.path %} active {% endif %}">
             <a href="/mis/">
-              <i class="icon-chart"></i> MIS/Dashboard </a>
+              <i class="icon-chart"></i> MIS/डैशबोर्ड </a>
           </li>
           {% comment %} <li>
             <a href="#">
               <i class="icon-book-open"></i> Old ACR Pdf </a>
           </li> {% endcomment %}
-          <li>
-            <a href="#">
-              <i class="icon-badge"></i> ए सी आर प्रतिनिधित्व </a>
-          </li>
+          
           {% endif %} {% endfor %}
+          <li>
+            <a href="/reporting/">
+              <i class="icon-badge"></i> रिपोर्ट अधिकारी </a>
+          </li>
+          <li>
+            <a href="/reviewingList">
+              <i class="icon-badge"></i> पुनरीक्षण कर्ता अधिकारी </a>
+          </li>
+          <li>
+            <a href="/acceptingListView">
+              <i class="icon-badge"></i> स्वीकृतकर्ता अधिकारी</a>
+          </li>
         </ul>
       </li>
     </ul>
