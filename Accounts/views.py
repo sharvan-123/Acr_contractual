@@ -645,7 +645,8 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.core.files.base import ContentFile
 import pdfkit
-@login_required(login_url='/login/')
+
+
 def generate_pdf_reporting_officer(request):
     print("its call a this function")
     secrets = pyotp.random_base32()
