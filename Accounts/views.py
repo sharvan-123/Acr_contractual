@@ -29,7 +29,13 @@ apiUrl = settings.APIURL
 
 @login_required(login_url='/login/')
 def dashboard(request):
-    return render(request, 'index.html')
+    print(request.user.employmentType['empTypeId'],request.user.designation['designationId'],"type id............")
+    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']== 37 or 98 or 84 or 99) :
+        is_tagging=True
+    else:
+        is_tagging=False
+    print(is_tagging)
+    return render(request, 'index.html',{'is_tagging':is_tagging})
 
 
 @method_decorator(check_valid_referer, name='dispatch')
@@ -353,7 +359,7 @@ def addData(data, typee):
             elif typee == "reporting":i['grade'] = "N/A"
     return data
 
-
+@login_required(login_url='/login/')
 def reporting_je_form_hindi(request):
     if request.method == "GET":
         tagging_id=request.GET.get("tagging_id")
@@ -405,6 +411,7 @@ def reporting_je_form_hindi(request):
 @login_required(login_url='/login/')
 def ReportingListView(request):
     data=EmployeeTagging.objects.filter(reportingOfficer__icontains=request.user.empCode).filter(isFinal=True)
+    data2=EmployeeTagging.objects.filter(reportingOfficer__icontains=request.user.empCode).filter(isFinal=True).first()
     print(request.user.mobileNo,"mobile no.....")
     flag=[]
     for i in data:
@@ -414,13 +421,21 @@ def ReportingListView(request):
         else:
             flag.append(1)
     data1=zip(data,flag)
-    return render(request, "Accounts/acr_hindi/emp_tagging_complete_list.html",{'final_data':data1})
+    Je_Ae=False
+    Ta_La=False
+    if data2.empCode.designation['designationId'] == 99 or data2.empCode.designation['designationId']== 98:
+        Je_Ae=True
+    elif data2.empCode.designation['designationId'] == 84 or data2.empCode.designation['designationId']== 37:
+        Ta_La=True
+    print("Je_AeJe_AeJe_AeJe_Ae",Je_Ae,Ta_La)
+    return render(request, "Accounts/acr_hindi/emp_tagging_complete_list.html",{'final_data':data1,'Je_Ae':Je_Ae,'Ta_La':Ta_La})
 
+@login_required(login_url='/login/')
 def reporting_ta_form_hindi(request):
     if request.method == "GET":
         tagging_id=request.GET.get("tagging_id")
         print("+++++++++",tagging_id)
-        return render(request,'Accounts/acr_hindi/reporting_ta_form_hindi.html',{'tagging_id':tagging_id})
+        return render(request,'Accounts/acr_hindi/reporting_ta_form.html',{'tagging_id':tagging_id})
     else:
         i=ReportingOfficer()
         tagging_id=request.POST.get("tagging_id")
@@ -430,7 +445,7 @@ def reporting_ta_form_hindi(request):
         i.reportingofficer_code=ReportingOfficer_data.reportingOfficerCode
         i.descriptions= request.POST.get("remark")
         print("+++++++++//////////==========",tagging_id)
-        i.tagging__id=tagging_id
+        i.tagging_id=tagging_id
         # grade= request.POST.get("grade")
         i.grade_one=request.POST.get('Grade1')
         i.grade_two=request.POST.get('Grade2')
@@ -450,16 +465,19 @@ def reporting_ta_form_hindi(request):
         i.final_grade=f_grade
         i.is_Status=False
         i.save()
+        officer_id=i.id
         # print(i.f_grade,'+++++++++++++========+++++++++')
         emptype= tagging_data.empCode.employmentType['name']
         emp_des=tagging_data.empCode.designation['name']
         # print(datas,"===============+===============")
-        return redirect(reporting_preview)
+        from django.urls import reverse
+        url = reverse('reporting_ta_preview',args=[officer_id,tagging_id])
+        return redirect(url)
         return render(request,'Accounts/acr_hindi/preview_officer.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des})
         # print(remark,Grade1,Grade2)
     return render(request,'Accounts/acr_hindi/reporting_ta_form.html',{'tagging_id':tagging_id})
 
-
+@login_required(login_url='/login/')
 def update_reporting_je_form_hindi(request):
     if request.method == "GET":
         repoting_officer_id=request.GET.get("id")
@@ -512,6 +530,54 @@ def update_reporting_je_form_hindi(request):
     return render(request,'Accounts/acr_hindi/update_reporting_je_form.html')
     pass
 
+
+@login_required(login_url='/login/')
+def update_reporting_ta_form_hindi(request):
+    if request.method == "GET":
+        repoting_officer_id=request.GET.get("id")
+        print("+++++++++repoting_officer_id",repoting_officer_id)
+        data=ReportingOfficer.objects.get(id=repoting_officer_id)
+
+
+        return render(request,'Accounts/acr_hindi/update_reporting_ta_form.html',{'data':data})
+    else:
+        reporting_id=request.POST.get("reporting_id")
+        print(reporting_id,"12345678987654321234567")
+        i=ReportingOfficer.objects.filter(id=reporting_id).first()
+        tagging_id=i.tagging_id
+
+        print(i,tagging_id,"sumit parmar")        
+        ReportingOfficer_data=EmployeeTagging.objects.get(id=i.tagging.id)
+        i.reportingofficer_name=ReportingOfficer_data.reportingOfficer
+        i.reportingofficer_code=ReportingOfficer_data.reportingOfficerCode
+
+        i.descriptions= request.POST.get("remark")
+        # grade= request.POST.get("grade")
+        i.grade_one=request.POST.get('Grade1')
+        i.grade_two=request.POST.get('Grade2')
+        i.grade_three=request.POST.get('Grade3')
+        i.grade_four=request.POST.get('Grade4')
+        i.grade_five=request.POST.get('Grade5')
+        i.grade_six=request.POST.get('Grade6')
+        i.grade_seven=request.POST.get('Grade7')
+        f_grade=(int (i.grade_one)+
+                 int(i.grade_two)+
+                 int(i.grade_three)+
+                 int(i.grade_four)+
+                 int(i.grade_five)+
+                 int(i.grade_six))/7
+        i.final_grade=f_grade
+        i.is_Status=False
+        i.save()
+        officer_id=i.id
+        print(officer_id,"+=========++=="
+            )
+        from django.urls import reverse
+        url = reverse('reporting_ta_preview',args=[officer_id,tagging_id])
+        return redirect(url)
+
+
+@login_required(login_url='/login/')
 def reporting_preview(request,officer_id,tagging_id):
     i=ReportingOfficer.objects.get(id=officer_id)
     tagging_data=EmployeeTagging.objects.get(id=tagging_id)
@@ -544,12 +610,42 @@ def reporting_preview(request,officer_id,tagging_id):
             'i':i
             })
 
+
+@login_required(login_url='/login/')
+def reporting_ta_preview(request,officer_id,tagging_id):
+    i=ReportingOfficer.objects.get(id=officer_id)
+    tagging_data=EmployeeTagging.objects.get(id=tagging_id)
+    emptype= tagging_data.empCode.employmentType['name']
+    emp_des=tagging_data.empCode.designation['name']
+    g_one=int(i.grade_one)
+    g_two=int(i.grade_two)
+    g_three=int(i.grade_three)
+    g_four=int(i.grade_four)
+    g_five=int(i.grade_five)
+    g_six=int(i.grade_six)
+    g_seven=int(i.grade_seven)
+    description=i.descriptions,
+    
+
+    return render(request,'Accounts/acr_hindi/preview_ta_officer.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reported_data':i,'g_one':g_one,
+            'g_two':g_two,
+            'g_three':g_three,
+            'g_four':g_four,
+            'g_five':g_five,
+            'g_six':g_six,
+            'g_seven':g_seven,
+            'description':description,
+            'i':i
+            })
+
+
+
 # def generate_pdf_reporting_officer(request):
 from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.core.files.base import ContentFile
 import pdfkit
-
+@login_required(login_url='/login/')
 def generate_pdf_reporting_officer(request):
     print("its call a this function")
     secrets = pyotp.random_base32()
@@ -648,6 +744,7 @@ def generate_pdf_reporting_officer(request):
     return render(request,"Accounts/acr_hindi/otp_reportingofficer.html",{'repoting_officer_id':repoting_officer_id,'tagging_id':tagging_id})
 
 
+@login_required(login_url='/login/')
 def reportingOtp(request):
     secrets = pyotp.random_base32()
     hotp = pyotp.HOTP(secrets)
@@ -696,7 +793,7 @@ def ReviewingListView(request):
         data1=zip(data,flag)
     return render(request, "Accounts/acr_hindi/reporting_complete_list.html",{'final_data':data1})
 
-
+@login_required(login_url='/login/')
 def reviewingOfficer_form(request,tagging_id):
     reporting_officer_data = ReportingOfficer.objects.get(tagging_id=tagging_id,is_Status=True)
     tagging_data=EmployeeTagging.objects.get(id=tagging_id)
@@ -719,7 +816,7 @@ def reviewingOfficer_form(request,tagging_id):
 
 
 
-
+@login_required(login_url='/login/')
 def reviewing_preview(request,tagging_id):
     reporting_data=ReportingOfficer.objects.get(tagging__id=tagging_id)
     tagging_data=EmployeeTagging.objects.get(id=tagging_id)
@@ -735,7 +832,7 @@ def reviewing_preview(request,tagging_id):
             })
 
 
-
+@login_required(login_url='/login/')
 def update_reviewing_form_hindi(request,tagging_id):
     if request.method == "GET":
         reporting_data=ReviewingOfficer.objects.get(tagging_id=tagging_id)
@@ -771,7 +868,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.core.files.base import ContentFile
 import pdfkit
-
+@login_required(login_url='/login/')
 def generate_pdf_reviewing_officer(request):
     print("its call a this function")
     secrets = pyotp.random_base32()
@@ -867,7 +964,7 @@ def AcceptingListView(request):
         #     print(j,k)
     return render(request, "Accounts/acr_hindi/reviewing_complete_list.html",{'final_data':data1})
 
-
+@login_required(login_url='/login/')
 def acceptingOfficer_form(request,tagging_id):
     # tagging_id=request.GET.get('tagging_id')
     # print("tagging_id...............",tagging_id)
@@ -896,7 +993,7 @@ def acceptingOfficer_form(request,tagging_id):
         return HttpResponse("data saved")
     return render(request,'Accounts/acr_hindi/accepting_form.html',{'tagging_id':tagging_id,'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reportingGrade':reportingGrade,'reviewingGrade':reviewingGrade})
 
-
+@login_required(login_url='/login/')
 def accepting_preview(request,tagging_id):
     # i=ReportingOfficer.objects.get(id=officer_id)
     tagging_data=EmployeeTagging.objects.get(id=tagging_id)
@@ -918,6 +1015,7 @@ def accepting_preview(request,tagging_id):
 
             })
 
+@login_required(login_url='/login/')
 def update_accepting_form_hindi(request,tagging_id):
     if request.method == "GET":
         # tagging_data=EmployeeTagging.objects.get(id=tagging_id)
@@ -961,7 +1059,7 @@ def update_accepting_form_hindi(request,tagging_id):
         return redirect(url)
 
 
-
+@login_required(login_url='/login/')
 def generate_pdf_accepting_officer(request):
     print("its call a this function")
     secrets = pyotp.random_base32()

@@ -15,7 +15,7 @@
                 </div>
                 <!-- END: Breadcrumbs-->
                 <!-- START: Card Data-->
-
+                {% if is_tagging == True %}
                 <div class="row">
                     <div class="col-12 col-md-4 col-lg-4 mt-0">
                         <a href="/tagging/"><div class="card border-bottom-0">
@@ -24,14 +24,32 @@
                                     <div class="d-flex">                                        
                                         <img src="/static/images/aauthor1.png" alt="author" width="55" class="rounded-circle  ml-auto">
                                         <div class="media-body align-self-center pl-3">
-                                            <span class="mb-0 font-w-600">Employee Tagging</span><br>
-                                            <p class="mb-0 font-w-500 tx-s-12">Employee Tagging</p>
+                                            <span class="mb-0 font-w-600">कर्मचारी टैगिंग</span><br>
+                                            <p class="mb-0 font-w-500 tx-s-12">कर्मचारी टैगिंग</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div></a>
                     </div>
+                    {% else %}
+                    <div class="row">
+                    <div class="col-12 col-md-4 col-lg-4 mt-0">
+                        <a href="#"><div class="card border-bottom-0">
+                            <div class="card-content border-bottom border-primary border-w-5">
+                                <div class="card-body p-4">                                   
+                                    <div class="d-flex">                                        
+                                        <img src="/static/images/aauthor1.png" alt="author" width="55" class="rounded-circle  ml-auto">
+                                        <div class="media-body align-self-center pl-3">
+                                            <span class="mb-0 font-w-600">कर्मचारी टैगिंग</span><br>
+                                            <p class="mb-0 font-w-500 tx-s-12">कर्मचारी टैगिंग</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div></a>
+                    </div>
+                    {% endif %}
                     {% comment %} <div class="col-12 col-md-4 col-lg-4 mt-0">
                         <a href="{% url 'appraise_view' %}"><div class="card border-bottom-0">
                             <div class="card-content border-bottom border-primary border-w-5">
@@ -155,22 +173,22 @@
                     </div> {% endcomment %}
 
                     {% for grp in user.groups.all %} {% if grp.name == "Hr" and user.isManagerHr %}
-                    <div class="col-12 col-md-4 col-lg-4 mt-3">
+                    <div class="col-12 col-md-4 col-lg-4 mt-0">
                         <a href="/mis/"><div class="card border-bottom-0">
                             <div class="card-content border-bottom border-primary border-w-5">
                                 <div class="card-body p-4">
                                     <div class="d-flex">
                                         <img src="/static/images/aauthor1.png" alt="author" width="55" class="rounded-circle  ml-auto">
                                         <div class="media-body align-self-center pl-3">
-                                            <span class="mb-0 font-w-600">MIS/Dashboard</span><br>
-                                            <p class="mb-0 font-w-500 tx-s-12">MIS/Dashboard</p>
+                                            <span class="mb-0 font-w-600">MIS/डैशबोर्ड</span><br>
+                                            <p class="mb-0 font-w-500 tx-s-12">MIS/डैशबोर्ड</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div></a>
                     </div>
-                    <div class="col-12 col-md-4 col-lg-4 mt-3">
+                    {% comment %} <div class="col-12 col-md-4 col-lg-4 mt-3">
                         <a href="#"><div class="card border-bottom-0">
                             <div class="card-content border-bottom border-primary border-w-5">
                                 <div class="card-body p-4">
@@ -184,8 +202,8 @@
                                 </div>
                             </div>
                         </div></a>
-                    </div>
-                    <div class="col-12 col-md-4 col-lg-4 mt-3">
+                    </div> {% endcomment %}
+                    {% comment %} <div class="col-12 col-md-4 col-lg-4 mt-3">
                         <a href="#"><div class="card border-bottom-0">
                             <div class="card-content border-bottom border-primary border-w-5">
                                 <div class="card-body p-4">
@@ -199,7 +217,7 @@
                                 </div>
                             </div>
                         </div></a>
-                    </div>
+                    </div> {% endcomment %}
                     {% endif %} {% endfor %}
                 </div>
 

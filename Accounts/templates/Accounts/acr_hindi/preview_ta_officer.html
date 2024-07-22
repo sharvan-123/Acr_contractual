@@ -57,7 +57,7 @@
                 {% comment %} <div class="row"> {% endcomment %}
                     {% comment %} <div class="col-sm-2"> </div>
                         <div class="col-sm-8"> {% endcomment %}
-                            <table style="width:100%;" id="content-to-print">
+                            <table style="width:100%;"  id="content-to-print">
                                 <tr>
                                     <td>
                                         <table style="width:100%;">
@@ -245,106 +245,188 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                        </table> 
-                                        <br>
-                                        <br>
-                                        
-                                        <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
-                                            <u>
-                                                (रिपोर्टिंग अधिकारी  द्वारा दी हुई ग्रेड)
-                                               
-                                            </u>
-                                        </h4>
-                                                    <div style="text-align: left;">
-
-                                                    </div>
-                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
-                                                    {% if g_ten >= 9.1 and g_ten <= 10 %}
-                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
-                                                        {% elif g_ten >= 7.1 and g_ten <= 9.0 %}
-                                                       बहुत अच्छा (क)
-                                                        {% elif g_ten >= 6.1 and g_ten <= 7.0 %}
-                                                        अच्छा (ख)
-                                                        {% elif g_ten >= 3.1 and g_ten <= 6.0 %}
-                                                            औसत (ग)
-                                                        {% elif g_ten <= 3.0  %}
-                                                            सेवा में जारी रखने योग्य नहीं (घ)
-                                                        {% endif %}
-                                                      
-                                                    </div> 
+                                        </table>
                                 
                                         <br>
 
+                                        <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
+                                            <u>
+                                                (रिपोर्टिंग अधिकारी भाग-I द्वारा भरा जाना है
+                                               
+                                            </u>
+                                        </h4>
                                         <br>
 
                                         <table style="width:100%; margin-bottom:10px;">
-
                                             <tr>
-                                                
-                                            </tr>
-                                             <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
-                                            <u>
-                                                (पुनरीक्षण कर्ता अधिकारी  द्वारा दी हुई ग्रेड)
-                                            </u>
-                                        </h4>
-                                        <br>
-                                        <tr>
                                                 <td style="width: 10%;">
                                                     <div style="text-align: left;">
-                                                      
+                                                        1.  कार्य के प्रति दृष्टिकोण
+
                                                     </div>
                                                     <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
-                                                    {% if reviewing_grade >= 9.1 and reviewing_grade <= 10 %}
+                                                        {% comment %} {{reported_data.grade_one}} {% endcomment %}
+                                                       
+                                                        {% if g_one >= 9.1 and g_one <= 10 %}
                                                            उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
-                                                        {% elif reviewing_grade >= 7.1 and reviewing_grade <= 9.0 %}
+                                                        {% elif g_one >= 7.1 and g_one <= 9.0 %}
                                                        बहुत अच्छा (क)
-                                                        {% elif reviewing_grade >= 6.1 and reviewing_grade <= 7.0 %}
-                                                        अच्छा (ख)
-                                                        {% elif reviewing_grade >= 3.1 and reviewing_grade <= 6.0 %}
+                                                        {% elif g_one >= 6.1 and g_one <= 7.0 %}
+                                                         अच्छा (ख)
+                                                        {% elif g_one >= 3.1 and g_one <= 6.0 %}
                                                             औसत (ग)
-                                                        {% elif reviewing_grade <= 3.0  %}
+                                                        {% elif g_one <= 3.0  %}
                                                             सेवा में जारी रखने योग्य नहीं (घ)
                                                         {% endif %}
-                                                      
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <div style="text-align: left;">
+                                                        2.  निर्णय लेने की क्षमता 
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                    {% if g_two >= 9.1 and g_two <= 10 %}
+                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)  
+                                                        {% elif g_two >= 7.1 and g_two <= 9.0 %}
+                                                       बहुत अच्छा (क) 
+                                                        {% elif g_two >= 6.1 and g_two <= 7.0 %}
+                                                        अच्छा (ख)
+                                                        {% elif g_two >= 3.1 and g_two <= 6.0 %}
+                                                            औसत (ग) 
+                                                        {% elif g_two <= 3.0  %}
+                                                            सेवा में जारी रखने योग्य नहीं (घ) (घ)
+                                                        {% endif %}
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <div style="text-align: left;">
+                                                        3.   निर्णय लेने की क्षमता 
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                    {% if g_three >= 9.1 and g_three <= 10 %}
+                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
+                                                        {% elif g_three >= 7.1 and g_three <= 9.0 %}
+                                                       बहुत अच्छा (क)
+                                                        {% elif g_three >= 6.1 and g_three <= 7.0 %}
+                                                        अच्छा (ख)
+                                                        {% elif g_three >= 3.1 and g_three <= 6.0 %}
+                                                            औसत (ग)
+                                                        {% elif g_three <= 3.0  %}
+                                                            सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <div style="text-align: left;">
+                                                        4.  व्यक्तीगत संबंध एवं समूह कार्य
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                    {% if g_four >= 9.1 and g_four <= 10 %}
+                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
+                                                        {% elif g_four >= 7.1 and g_four <= 9.0 %}
+                                                       बहुत अच्छा (क)
+                                                        {% elif g_four >= 6.1 and g_four <= 7.0 %}
+                                                       अच्छा (ख)
+                                                        {% elif g_four >= 3.1 and g_four <= 6.0 %}
+                                                            औसत (ग)
+                                                        {% elif g_four <= 3.0  %}
+                                                            सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <div style="text-align: left;">
+                                                        5. कार्य का ज्ञान
+
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                        {% if g_five >= 9.1 and g_five <= 10 %}
+                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
+                                                        {% elif g_five >= 7.1 and g_five <= 9.0 %}
+                                                       बहुत अच्छा (क)
+                                                        {% elif g_five >= 6.1 and g_five <= 7.0 %}
+                                                         अच्छा (ख)
+                                                        {% elif g_five >= 3.1 and g_five <= 6.0 %}
+                                                            औसत (ग)
+                                                        {% elif g_five <= 3.0  %}
+                                                            सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <div style="text-align: left;">
+                                                        6. कार्य की गुणवत्ता
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                      {% if g_six >= 9.1 and g_six <= 10 %}
+                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
+                                                        {% elif g_six >= 7.1 and g_six <= 9.0 %}
+                                                       बहुत अच्छा (क)
+                                                        {% elif g_six >= 6.1 and g_six <= 7.0 %}
+                                                         अच्छा (ख)
+                                                        {% elif g_six >= 3.1 and g_six <= 6.0 %}
+                                                            औसत (ग)
+                                                        {% elif g_six <= 3.0  %}
+                                                            सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <div style="text-align: left;">
+                                                        7.  वर्ष की कार्य उत्पादकता
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                       {% if g_seven >= 9.1 and g_seven <= 10 %}
+                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
+                                                        {% elif g_seven >= 7.1 and g_seven <= 9.0 %}
+                                                       बहुत अच्छा (क)
+                                                        {% elif g_seven >= 6.1 and g_seven <= 7.0 %}
+                                                       अच्छा (ख)
+                                                        {% elif g_seven >= 3.1 and g_seven <= 6.0 %}
+                                                            औसत (ग)
+                                                        {% elif g_seven <= 3.0  %}
+                                                            सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% endif %}
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                                <td style="width: 10%;">
+                                                    <div style="text-align: left;">
+                                                        10.  विवरण :
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:120px;padding:6px;">
+                                                   
+                                                      {{i.descriptions}}
                                                     </div>
                                                 </td>
                                             </tr>
                                         </table>
-                                         <table style="width:100%; margin-bottom:10px;">
-
-                                            <tr>
-                                                
-                                            </tr>
-                                             <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
-                                            <u>
-                                                (स्वीकृतकर्ता अधिकारी  द्वारा दी हुई ग्रेड)
-                                            </u>
-                                        </h4>
-                                        <br>
-                                        <tr>
-                                                <td style="width: 10%;">
-                                                    <div style="text-align: left;">
-                                                      
-                                                    </div>
-                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
-                                                    {% if accepting_data >= 9.1 and accepting_data <= 10 %}
-                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
-                                                        {% elif accepting_data >= 7.1 and accepting_data <= 9.0 %}
-                                                       बहुत अच्छा (क)
-                                                        {% elif accepting_data >= 6.1 and accepting_data <= 7.0 %}
-                                                        अच्छा (ख)
-                                                        {% elif accepting_data >= 3.1 and accepting_data <= 6.0 %}
-                                                            औसत (ग)
-                                                        {% elif accepting_data <= 3.0  %}
-                                                            सेवा में जारी रखने योग्य नहीं (घ)
-                                                        {% endif %}
-                                                      
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        
 
 
+                                    </td>
+                                </tr>
+                            </table>
 
 
 
@@ -356,17 +438,17 @@
                                         <table style="width:100%;" class="footeravtion">
                                             <tr>
                                                 <td style="vertical-align: middle;width:30%; text-align:center">
-                                                    <a href=" {% url 'update_accepting_form_hindi' tagging_data.id %}"  style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;">
+                                                    <a href=" {% url 'update_reporting_ta_form_hindi' %}?id={{i.id}}"  style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;">
                                                         Previous 
                                                     </a>
                                                 </td>
                                                 <td style="vertical-align: middle;width:30%; text-align:center">
-                                                    <button style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;" onclick="windoprintDiv('content-to-print')">
+                                                    <button style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;"  onclick="windoprintDiv('content-to-print')">
                                                         Print 
                                                     </button>
                                                 </td>
                                                 <td style="vertical-align: middle;width:30%; text-align:center">
-                                                   <a  href=" {% url 'generate_pdf_accepting_officer' %}?tagging_id={{tagging_data.id}}" style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;" >
+                                                   <a  href=" {% url 'generate_pdf_reporting_officer' %}?id={{i.id}}&tagging_id={{tagging_data.id}}" style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;" >
                                                         Sign & Submit 
                                                     </a>
                                                     {% comment %} data-toggle="modal" data-target="#myModal" {% endcomment %}
@@ -379,9 +461,6 @@
 
 
 
-                                    </td>
-                                </tr>
-                            </table>
                         {% comment %} </div>
                         <div class="col-sm-2"></div>
                     </div> {% endcomment %}
@@ -394,6 +473,24 @@
 </main>
 </body>
 
+    <script>
+        function windoprintDiv(divId) {
+            var content = document.getElementById(divId).innerHTML;
+            var mywindow = window.open('', 'Print', 'height=600,width=800');
+            mywindow.document.write('<html><head><title>Print</title>');
+            mywindow.document.write('</head><body>');
+            mywindow.document.write(content);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10
+
+            mywindow.print();
+            mywindow.close();
+
+            return true;
+        }
+    </script>
 
 
 
@@ -490,24 +587,6 @@
 
 {% include 'full_footer.html' %}
 <script>
-
-
-        function windoprintDiv(divId) {
-            var content = document.getElementById(divId).innerHTML;
-            var mywindow = window.open('', 'Print', 'height=600,width=800');
-            mywindow.document.write('<html><head><title>Print</title>');
-            mywindow.document.write('</head><body>');
-            mywindow.document.write(content);
-            mywindow.document.write('</body></html>');
-
-            mywindow.document.close(); // necessary for IE >= 10
-            mywindow.focus(); // necessary for IE >= 10
-
-            mywindow.print();
-            mywindow.close();
-
-            return true;
-        }
 
 function windowprint(){
     $('.sidebar').hide();

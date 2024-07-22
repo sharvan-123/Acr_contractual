@@ -57,7 +57,7 @@
                 {% comment %} <div class="row"> {% endcomment %}
                     {% comment %} <div class="col-sm-2"> </div>
                         <div class="col-sm-8"> {% endcomment %}
-                            <table style="width:100%;">
+                            <table style="width:100%;"  id="content-to-print">
                                 <tr>
                                     <td>
                                         <table style="width:100%;">
@@ -487,8 +487,12 @@
                                                 </td>
                                             </tr>
                                         </table>
+                                        
 
 
+                                    </td>
+                                </tr>
+                            </table>
 
 
 
@@ -505,7 +509,7 @@
                                                     </a>
                                                 </td>
                                                 <td style="vertical-align: middle;width:30%; text-align:center">
-                                                    <button style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;" onclick="windowprint();">
+                                                    <button style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;"  onclick="windoprintDiv('content-to-print')">
                                                         Print 
                                                     </button>
                                                 </td>
@@ -523,9 +527,6 @@
 
 
 
-                                    </td>
-                                </tr>
-                            </table>
                         {% comment %} </div>
                         <div class="col-sm-2"></div>
                     </div> {% endcomment %}
@@ -538,6 +539,24 @@
 </main>
 </body>
 
+    <script>
+        function windoprintDiv(divId) {
+            var content = document.getElementById(divId).innerHTML;
+            var mywindow = window.open('', 'Print', 'height=600,width=800');
+            mywindow.document.write('<html><head><title>Print</title>');
+            mywindow.document.write('</head><body>');
+            mywindow.document.write(content);
+            mywindow.document.write('</body></html>');
+
+            mywindow.document.close(); // necessary for IE >= 10
+            mywindow.focus(); // necessary for IE >= 10
+
+            mywindow.print();
+            mywindow.close();
+
+            return true;
+        }
+    </script>
 
 
 
