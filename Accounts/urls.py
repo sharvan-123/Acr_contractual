@@ -20,11 +20,13 @@ urlpatterns = [
         path('download-excel/<str:type>/', admin.download_excel, name='download_excel'),
         path('generate_pdf/<str:taggingId>/', views.generate_pdf, name='download_excel'),
         # Extras
-        path('reporting_form_hindi/',views.reporting_je_form_hindi,name='reporting_form_hindi'),
-        # path('reporting_form_hindi/',views.reporting_ta_form_hindi,name='reporting_form_hindi'),
+        path('reporting_je_form_hindi/',views.reporting_je_form_hindi,name='reporting_je_form_hindi'),
+        path('reporting_ta_form_hindi/',views.reporting_ta_form_hindi,name='reporting_ta_form_hindi'),
         path('reporting/', views.ReportingListView, name='reporting_view'),
         path('update_reporting_je_form_hindi/',views.update_reporting_je_form_hindi,name='update_reporting_je_form_hindi'),
+        path('update_reporting_ta_form_hindi/',views.update_reporting_ta_form_hindi,name='update_reporting_ta_form_hindi'),
         path('reporting_preview/<int:officer_id>/<int:tagging_id>',views.reporting_preview,name='reporting_preview'),
+        path('reporting_ta_preview/<int:officer_id>/<int:tagging_id>',views.reporting_ta_preview,name='reporting_ta_preview'),
         path('generate_pdf_reporting_officer',views.generate_pdf_reporting_officer,name="generate_pdf_reporting_officer"),
         #ReviewvingListView
         path('reviewingList',views.ReviewingListView,name="ReviewingListView"),

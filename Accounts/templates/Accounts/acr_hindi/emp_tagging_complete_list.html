@@ -64,8 +64,15 @@
                                  <td>{{data.empCode.fullName}}</td>
                                  <td>{{data.region}}{{data.circle}}</td>
                                  {% if flag == 1 %}
-                                 
-                                    <td ><a class="btn btn-primary" href="{% url 'reporting_form_hindi'  %}?tagging_id={{data.id}}">Fill ACR </a></td>
+                                  {% if Je_Ae == True %}
+                                    <td ><a class="btn btn-primary" href="{% url 'reporting_je_form_hindi'  %}?tagging_id={{data.id}}">Fill ACR </a></td>
+                                  
+                                  {% elif Ta_La == True %}
+                                    <td ><a class="btn btn-primary" href="{% url 'reporting_ta_form_hindi'  %}?tagging_id={{data.id}}">Fill ACR </a></td>
+                                  {% else %}
+                                    <td ><a class="btn btn-primary" href=" ">Fill ACR </a></td>
+
+                                  {% endif %}
                                  {% else %}
                                     <td ><button class="btn btn-success" disabled data-text="ACR Filled">ACR Filled</button>
 </td>

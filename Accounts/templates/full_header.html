@@ -147,9 +147,21 @@
             <a href="/">
               <i class="icon-home"></i>डैशबोर्ड</a>
           </li>
+          {% if is_tagging == True %}
+          
           <li class="{% if 'tagging' in request.path %} active {% endif %}">
             <a href="/tagging/">
               <i class="icon-tag"></i> कर्मचारी टैगिंग </a>
+          </li>
+          {% else %}
+          <li class="{% if 'tagging' in request.path %} active {% endif %}">
+            <a href=" ">
+              <i class="icon-tag"></i> कर्मचारी टैगिंग </a>
+          </li>
+          {% endif %}
+          <li class="">
+            <a href="">
+              {% comment %} <i class="icon-tag"></i> {{request.user.employmentType['empTypeId']}} </a> {% endcomment %}
           </li>
           {% comment %} <li class="{% if 'appraisee' in request.path %} active {% endif %}">
             <a href="{% url 'appraise_view' %}">

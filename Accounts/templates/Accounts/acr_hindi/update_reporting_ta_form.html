@@ -20,7 +20,7 @@
     </div>
     <!-- END: Breadcrumbs -->
     <!-- START: Card Data -->
-<form  method="post" action="{% url 'reporting_ta_form_hindi' %}"  enctype="multipart/form-data" id="myForm" onsubmit="return validateForm()">
+<form  method="post" action="{% url 'update_reporting_ta_form_hindi' %}"  enctype="multipart/form-data">
     {% csrf_token %}
     <div class="col-12 col-sm-12 p-0 m-0">
       <div class="card">
@@ -32,13 +32,13 @@
            
               <div class="form-group"> 
                 <label>विवरण : </label>
-                <input class="form-control h-auto" name="remark">
+                <input class="form-control h-auto" value='{{data.descriptions}}' name="remark">
                 </textarea>
               </div>
            
-            <input name="tagging_id" value='{{tagging_id}}'hidden/>
+            <input name="reporting_id" value='{{data.id}}'hidden/>
               <h6>
-                (क) कार्यों के निष्पादन हेतु अनुबंधित संविदा कार्मिकों हेतु
+                (क) कार्यपालिक  और सुपरवाइजरी कार्यों के निष्पादन हेतु अनुबंधित संविदा कर्मियों के हेतु
               </h6>
             <div class="table-responsive">
               <table class="table border m-0" id="po_officer_invoice_list">  
@@ -63,9 +63,19 @@
                     <td class="border"> 
                       कार्य के प्रति दृष्टिकोण
                     </td> 
-                    <td class="form-control" input-type="text"> 
+                    <td> 
                       <select class="form-control" name="Grade1" onchange="calculateAverage()" required>
-                        <option value=""> ग्रेड चुनें </option>
+                      {% if data.grade_one == '10' %}
+                        <option value={{data.grade_one}}  selected> क+ </option>
+                      {% elif data.grade_one == '9' %}
+                        <option value={{data.grade_one}} selected> क </option>
+                      {% elif data.grade_one == '7' %}
+                        <option value={{data.grade_one}}  selected> ख </option>
+                      {% elif data.grade_one == '6' %}
+                        <option value={{data.grade_one}}  selected> ग </option>                     
+                      {% else %}
+                        <option value={{data.grade_one}}  selected>  घ </option>
+                      {% endif %}
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -82,9 +92,19 @@
                     <td class="border"> 
                       निर्णय लेने की क्षमता 
                     </td> 
-                    <td class="form-control" input-type="text"> 
+                    <td> 
                       <select class="form-control" name="Grade2" onchange="calculateAverage()" required>
-                        <option value=""> ग्रेड चुनें </option>
+                      {% if data.grade_two == '10' %}
+                        <option value="{{data.grade_two}}" selected> क+ </option>
+                      {% elif data.grade_two  == '9' %}
+                        <option value="{{data.grade_two}}" selected> क </option>
+                      {% elif data.grade_two  == '7' %}
+                        <option value="{{data.grade_two}}" selected> ख </option>
+                      {% elif data.grade_two  == '6' %}
+                        <option value="{{data.grade_two}}" selected> ग </option>                     
+                      {% else %}
+                        <option value="{{data.grade_two}}" selected>  घ </option>
+                      {% endif %}
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -93,17 +113,54 @@
                       </select>
                     </td> 
                   </tr>
-                 
                   <tr>
                      <td class="border">
-                       III
+                      III
                     </td>
                     <td class="border"> 
                       व्यक्तीगत संबंध एवं समूह  कार्य
                     </td> 
-                    <td class="form-control" input-type="text"> 
+                    <td> 
                       <select class="form-control" name="Grade3" onchange="calculateAverage()" required>
-                        <option value=""> ग्रेड चुनें </option>
+                      {% if data.grade_three == '10' %}
+                        <option value="{{data.grade_three}}" selected> क+ </option>
+                      {% elif data.grade_three  == '9' %}
+                        <option value="{{data.grade_three}}" selected> क </option>
+                      {% elif data.grade_three  == '7' %}
+                        <option value="{{data.grade_three}}" selected> ख </option>
+                      {% elif data.grade_three  == '6' %}
+                        <option value="{{data.grade_three}}" selected> ग </option>                     
+                      {% else %}
+                        <option value="{{data.grade_three}}" selected>  घ </option>
+                      {% endif %}
+                        <option value="10"> क+ </option>
+                        <option value="9"> क </option>
+                        <option value="7"> ख  </option>
+                        <option value="6"> ग</option>
+                        <option value="3"> घ</option>
+                      </select>
+                    </td> 
+                  </tr>
+                  <tr>
+                     <td class="border">
+                      IV
+                    </td>
+                    <td class="border"> 
+                       समन्वय की योगिता
+                    </td> 
+                    <td> 
+                      <select class="form-control" name="Grade4" onchange="calculateAverage()" required>
+                      {% if data.grade_four == '10' %}
+                        <option value="{{data.grade_four}}" selected> क+ </option>
+                      {% elif data.grade_four  == '9' %}
+                        <option value="{{data.grade_four}}" selected> क </option>
+                      {% elif data.grade_four  == '7' %}
+                        <option value="{{data.grade_four}}" selected> ख </option>
+                      {% elif data.grade_four  == '6' %}
+                        <option value="{{data.grade_four}}" selected> ग </option>                     
+                      {% else %}
+                        <option selected>  घ </option>
+                      {% endif %}
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -113,18 +170,56 @@
                     </td> 
                   </tr>
                        
-                 
+                  <tr>
+                     <td class="border">
+                      V
+                    </td>
+                    <td class="border"> 
+                      कार्य का ज्ञान  
+
+                    </td> 
+                    <td> 
+                      <select class="form-control" name="Grade5" onchange="calculateAverage()" required>
+                      {% if data.grade_five == '10' %}
+                        <option value="{{data.grade_five}}" selected> क+ </option>
+                      {% elif data.grade_five  == '9' %}
+                        <option value="{{data.grade_five}}" selected> क </option>
+                      {% elif data.grade_five  == '7' %}
+                        <option value="{{data.grade_five}}" selected> ख </option>
+                      {% elif data.grade_five  == '6' %}
+                        <option value="{{data.grade_five}}" selected> ग </option>                     
+                      {% else %}
+                        <option value="{{data.grade_five}}" selected>  घ </option>
+                      {% endif %}
+                        <option value="10"> क+ </option>
+                        <option value="9"> क </option>
+                        <option value="7"> ख  </option>
+                        <option value="6"> ग</option>
+                        <option value="3"> घ</option>
+                      </select>
+                    </td> 
+                  </tr>
  
                   <tr>
                      <td class="border">
-                       IV
+                      VI
                     </td>
                     <td class="border"> 
-                      समन्वय की योगिता
+                      कार्य की गुणवत्ता 
                     </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade4" onchange="calculateAverage()" required>
-                        <option value=""> ग्रेड चुनें </option>
+                    <td> 
+                      <select class="form-control" name="Grade6" onchange="calculateAverage()" required>
+                      {% if data.grade_six == '10' %}
+                        <option value="{{data.grade_six}}" selected> क+ </option>
+                      {% elif data.grade_six  == '9' %}
+                        <option value="{{data.grade_six}}" selected> क </option>
+                      {% elif data.grade_six  == '7' %}
+                        <option value="{{data.grade_six}}" selected> ख </option>
+                      {% elif data.grade_six  == '6' %}
+                        <option value="{{data.grade_six}}" selected> ग </option>                     
+                      {% else %}
+                        <option selected>  घ </option>
+                      {% endif %}
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -135,14 +230,24 @@
                   </tr>
                   <tr>
                      <td class="border">
-                      V
+                      VII
                     </td>
                     <td class="border"> 
-                      कार्य का ज्ञान  
+                       वर्ष की कार्य उत्पादकता
                     </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade5" onchange="calculateAverage()" required>
-                        <option value=""> ग्रेड चुनें </option>
+                    <td> 
+                      <select class="form-control" name="Grade7" onchange="calculateAverage()" required>
+                        {% if data.grade_seven == '10' %}
+                        <option value="{{data.grade_seven}}" selected> क+ </option>
+                      {% elif data.grade_seven  == '9' %}
+                        <option value="{{data.grade_seven}}" selected> क </option>
+                      {% elif data.grade_seven  == '7' %}
+                        <option value="{{data.grade_seven}}" selected> ख </option>
+                      {% elif data.grade_seven  == '6' %}
+                        <option value="{{data.grade_seven}}" selected> ग </option>                     
+                      {% else %}
+                        <option value="{{data.grade_seven}}" selected>  घ </option>
+                      {% endif %}
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
                         <option value="7"> ख  </option>
@@ -151,48 +256,14 @@
                       </select>
                     </td>  
                   </tr>
-                  <tr>
-                     <td class="border">
-                      VI
-                    </td>
-                    <td class="border"> 
-                      कार्य की गुणवत्ता 
-                    </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade6" onchange="calculateAverage()" required>
-                        <option value=""> ग्रेड चुनें </option>
-                        <option value="10"> क+ </option>
-                        <option value="9"> क </option>
-                        <option value="7"> ख  </option>
-                        <option value="6"> ग</option>
-                        <option value="3"> घ</option>
-                      </select>
-                    </td> 
-                  </tr>
                   
-                  <tr>
-                     <td class="border">
-                      VII
-                    </td>
-                    <td class="border"> 
-                      वर्ष की कार्य उत्पादकता
-                    </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade7" onchange="calculateAverage()" required>
-                        <option value=""> ग्रेड चुनें </option>
-                        <option value="10"> क+ </option>
-                        <option value="9"> क </option>
-                        <option value="7"> ख  </option>
-                        <option value="6"> ग</option>
-                        <option value="3"> घ</option>
-                      </select>
-                    </td> 
-                  </tr>
+                  
                    <tr>
-        <td class="border" colspan="2">कुल ग्रेड :</td>
-        <b><td class="form-control" input-type="text" name="final_grade" id="grade"></td></b>
-        </tr>
-        <input type="submit" value="save">
+                      <td class="border" colspan="2">कुल ग्रेड :</td>
+                      <td>
+                        <input class="form-control" type="text" name="final_grade" id="grade" readonly>
+                      </td>
+                    </tr>
                 </tbody>
               </table>
             </div>
@@ -208,6 +279,10 @@
             </h6>
             <h6 id="grading">ग्रेड :-</h6>
 
+            <div style="text-align:center">
+              <input type="submit" value="save"  class="btn btn-info">
+            </div>
+
 
           </div> 
       </div>
@@ -218,6 +293,74 @@
 <!-- END: Content -->
 
 {% include 'full_footer.html' %}
+
+{% comment %} 
+<script>
+
+function calculateTotal() {
+        var total = 0;
+        var count = 0;
+        var selects = document.querySelectorAll("select");
+        selects.forEach(function(select) {
+            if (select.value !== "" && !isNaN(select.value)) {
+                total += parseInt(select.value);
+                count++;
+            }
+        });
+        var average = count > 0 ? total / count : 0;
+        document.getElementById("average").textContent = average.toFixed(2);
+    } 
+
+    function calculateAverage() {
+        var total = 0;
+        var count = 0;
+        var selects = document.querySelectorAll("select");
+        selects.forEach(function(select) {
+            if (select.value !== "" && !isNaN(select.value)) {
+                total += parseInt(select.value);
+                count++;
+            }
+        });
+        var average = count > 0 ? total / count : 0;
+        var gradeCell = document.getElementById("grade");
+
+        if (average >= 9.1 && average <= 10) {
+            gradeCell.textContent = "क+";
+        } else if (average >= 7.1 && average <= 9.0) {
+            gradeCell.textContent = "ख";
+        } else if (average >= 6.1 && average <= 7.0) {
+            gradeCell.textContent = "ग";
+        } else {
+            gradeCell.textContent = "घ+";
+        }
+    }
+</script>  {% endcomment %}
+{% comment %} 
+<script>
+    function calculateAverage() {
+        var total = 0;
+        var count = 0;
+        var selects = document.querySelectorAll("select");
+        selects.forEach(function(select) {
+            if (select.value !== "" && !isNaN(select.value)) {
+                total += parseInt(select.value);
+                count++;
+            }
+        });
+        var average = count > 0 ? total / count : 0;
+        var gradeCell = document.getElementById("grade");
+
+        if (average >= 9.1 && average <= 10) {
+            gradeCell.textContent = "क+";
+        } else if (average >= 7.1 && average <= 9.0) {
+            gradeCell.textContent = "ख";
+        } else if (average >= 6.1 && average <= 7.0) {
+            gradeCell.textContent = "ग";
+        } else {
+            gradeCell.textContent = "घ+";
+        }
+    }
+</script> {% endcomment %}
 
 
 <script>
@@ -256,29 +399,3 @@
         gradingInfo1.textContent = grade;
     }
 </script>
-<script>
-        document.addEventListener("DOMContentLoaded", function() {
-            function validateForm() {
-                var selects = document.querySelectorAll("select");
-                var allSelected = true;
-
-                selects.forEach(function(select) {
-                    console.log("Select value:", select.value);  // Debugging log
-                    if (select.value === "") {
-                        allSelected = false;
-                    }
-                });
-
-                if (allSelected) {
-                    console.log("All options selected.");  // Debugging log
-                    document.getElementById("submitButton").setAttribute("type", "submit");
-                    document.getElementById("myForm").submit();
-                } else {
-                    console.log("Not all options selected.");  // Debugging log
-                    alert("Please select a value for all options.");
-                }
-            }
-
-            document.getElementById("submitButton").addEventListener("click", validateForm);
-        });
-    </script>
