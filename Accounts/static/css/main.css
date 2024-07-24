@@ -1673,7 +1673,7 @@ footer.site-footer {
     text-align: center;
     padding: 10px 0px;
     margin-top: 20px;
-    margin-left: 250px;
+    margin-left: 0px;
 }
 
 @media (max-width: 991px) {

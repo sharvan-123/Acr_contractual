@@ -1,0 +1,1554 @@
+{% include 'full_header.html' %}
+<style>
+.select2.select2-container.select2-container--default.select2-container--disabled {
+    border: 1px solid rgba(72, 94, 144, 0.16);
+    border-radius: 4px;
+    line-height: 2.25rem;
+    height: auto;
+}
+
+.select2-container--default.select2-container--disabled .select2-selection--single {
+    border: 0 !important;
+    padding: 4px 0px;
+    height: auto;
+    {% comment %} background: transparent; {% endcomment %}
+}
+
+span.select2.select2-container.select2-container--default.select2-container--below {
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid rgba(72, 94, 144, 0.16);
+    padding: 4px 0px;
+    height: auto;
+}
+</style>
+<!-- START: Main Content -->
+<main>
+ <div class="container-fluid site-width" data-select2-id="50">
+   <!-- START: Breadcrumbs -->
+   <div class="row">
+      <div class="col-12 align-self-center">
+         <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+            <div class="w-sm-100 mr-auto">
+               <h4 class="mb-0">ACR Portal</h4>
+               <p>Welcome to Annual Confidential Record Portal</p>
+            </div>
+            <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+               <li class="breadcrumb-item">
+                  <a href="/">Home</a>
+               </li>
+               <li class="breadcrumb-item active">Employee-Tagging</li>
+            </ol>
+         </div>
+      </div>
+   </div>
+
+
+
+   <!-- END: Breadcrumbs -->
+   <!-- START: Card Data -->
+   <div class="col-12 col-sm-12 p-0 m-0">
+      <div class="card">
+         <div class="card-header d-flex justify-content-between align-center">
+            <h4 class="card-title m-auto text-primary">वार्षिक गोपनीय रिकॉर्ड 2023-24</h4>
+         </div>
+         <form action="{% url 'emp_tagging_form_ta' %}" method="post"  enctype="multipart/form-data">
+         {% csrf_token %}
+            <div class="card-body">
+               <div class="table-responsive">
+                  <table class="table m-0" id="taggingPart1">
+                     <thead>
+                        <tr>
+                           <th scope="row" colspan="3" class="text-primary text-center">कर्मचारी टैगिंग भाग 1</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <th scope="row" width="150" class="text-primary">कर्मचारी नाम                         </th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6">
+                                 <select class="form-control" name="empCode">
+                                 <option>--कर्मचारी नाम select kre --</option>
+                                 {% for i in emp_detail %}
+                                 <option value="{{i.empCode}}">
+                                 {{i.fullName}}
+                                 </option>
+                                 {% endfor %}
+                                 </select>
+                                  </div>
+                               
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row" width="150" class="text-primary">से / तक तिथि</th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6 m-0"> 
+                                 <input type="date" name="fromDate" class="form-control " id="inputFromDate" placeholder="Select From-Date"  ></div>
+                                 <div class="form-group col-md-6 m-0">
+                                 <input type="date" name="toDate" class="form-control " id="inputToDate" placeholder="Select To-Date" autocomplete="off" disabled="" required=""></div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row" class="text-primary">पोस्टिंग स्थान</th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-3 m-0">
+                                 <input name="region_code" type="text" id="text_regionDropdown" >
+                                    <select class="form-control" name="region" id="regionDropdown1">
+                                    <option value="" >Select region...</option>
+                                    </select>  
+                                 </div>
+                                 <div class="form-group col-md-3 m-0">
+                                 <input name="circle_code" type="text" id="text_circleDropdown1" >
+                                    <select  class="form-control" name="circle"  id="circleDropdown1">
+                                    <option value="" >Select circle...</option>
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-2 m-0"> 
+                                 <input name="division_code" type="text" id="text_Dropdown1" >
+                                    <select class="form-control" name="division" id="divDropdown1">
+                                       <option value="" >
+                                       Select Division...
+                                       </option>
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-2 m-0"> 
+                                 <input name="subdivision_code" type="text" id="text_subDivDropdown1" >
+                                    <select class="form-control" name="subdivision" id="subDivDropdown1">
+                                       <option value="" >
+                                       Select SubDivision...
+                                       </option>
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-2 m-0">
+                                 <input name="dc_code" hidden>
+                                 <input name="dc_code" type="text" id="text_dcDropdown1" >
+
+                                    <select name="dc" class="form-control" name="dc" id="dcDropdown1">
+                                       <option value="">Select DC...</option>
+                                    </select> 
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row" class="text-primary">रिपोर्टिंग अधिकारी</th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6 m-0">
+                                    <input name="reportingDesignation" id="" hidden>  
+
+                                    <select class="form-control" name="reportingDesignation" id="selectDesig1">
+                                       <option value="" id="">Select Designation...</option> 
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-6 m-0">
+                                    <select class="form-control" id="selectOfficer1">
+                                       <option value="">Select Officer...</option>
+                                    </select> 
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row" class="text-primary">समीक्षा अधिकारी</th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6 m-0">
+                                    <select id="selectDesig2" class="form-control">
+                                       <option value="" >Select Designation...</option> 
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-6 m-0">
+                                    <select id="selectOfficer2" class="form-control">
+                                       <option value=""  >Select Officer...</option>
+                                    </select> 
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row" class="text-primary">स्वीकृत अधिकारी</th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6 m-0">
+                                    <select id="selectDesig3" class="form-control">
+                                       <option value=""  >Select Designation...</option> 
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-6 m-0">
+                                    <select id="selectOfficer3" class="form-control">
+                                       <option value="" >Select Officer...</option>
+                                    </select> 
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+
+
+
+
+
+
+                  <table class="table m-0" id="taggingPart2" style="display:none;">
+                  <thead>
+                        <tr>
+                           <th scope="row" colspan="3" class="text-primary text-center">कर्मचारी टैगिंग भाग 2</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {% comment %} <tr>
+                           <th scope="row" width="150" class="text-primary">कर्मचारी नाम (कोड)                         </th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6">
+                                  <input type="text" class="form-control" />
+                                  </div>
+                                 <div class="form-group col-md-5  "> 
+                                 
+                                  <input type="text" class="form-control" />
+                                  </div>
+                              </div>
+                           </td>
+                        </tr> {% endcomment %}
+                        <tr>
+                           <th scope="row" width="150" class="text-primary">से / तक तिथि</th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6 m-0"> 
+                                 <input type="date" name="fromDate" class="form-control " id="inputFromDate1" placeholder="Select From-Date" autocomplete="off"  min="2023-04-01" max="2024-03-31"></div>
+                                 <div class="form-group col-md-6 m-0"><input type="date" name="toDate" class="form-control " id="inputToDate1" placeholder="Select To-Date" autocomplete="off" disabled="" ></div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row" class="text-primary">पोस्टिंग स्थान</th>
+                           <td scope="row">
+                               <div class="form-row">
+                                 <div class="form-group col-md-3 m-0">
+                                    <select class="form-control" name="region" id="regionDropdown2">
+                                    <option value="" >Select region...</option>
+                                    </select>
+                                    <input name="region_code" id="" hidden>  
+                                 </div>
+                                 <div class="form-group col-md-3 m-0">
+                                    <input name="circle_code" id="" hidden>  
+
+                                    <select  class="form-control" name="circle"  id="circleDropdown2">
+                                    <option value="" >Select circle...</option>
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-2 m-0">
+                                 
+                                    <input name="division_code" id="" hidden>  
+
+                                    <select class="form-control" name="division" id="divDropdown2">
+                                       <option value="" >
+                                       Select Division...
+                                       </option>
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-2 m-0">
+                                    <input name="subdivision_code" id="" hidden>  
+
+                                    <select class="form-control" name="subdivision" id="subDivDropdown2">
+
+                                       <option value="" >
+                                       Select SubDivision...
+                                       </option>
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-2 m-0">
+                                    <input name="dc_code" id="" hidden>  
+
+                                    <select name="dc" class="form-control" name="dc" id="dcDropdown2">
+                                       <option value="">Select DC...</option>
+                                    </select> 
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row" class="text-primary">रिपोर्टिंग अधिकारी</th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6 m-0">
+                                    {% comment %} <input name="reportingDesignation" id="" hidden>   {% endcomment %}
+                                    <select class="form-control" name="reportingDesignation" id="selectDesig4">
+                                       <option value="" id="">Select Designation...</option> 
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-6 m-0">
+                                    <input name="reportingOfficerCode" id="" hidden>                       
+                                    <select class="form-control" name="reportingOfficer" id="selectOfficer4">
+                                       <option value="">Select Officer...</option>
+                                    </select> 
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row" class="text-primary">समीक्षा अधिकारी</th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6 m-0">
+                                    <input name="reviewingDesignation" id="" hidden>  
+
+                                    <select id="selectDesig5" class="form-control">
+                                       <option value="" >Select Designation...</option> 
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-6 m-0">
+                                    <input name="reviewingOfficerCode" id="" hidden>
+
+                                    <select id="selectOfficer5" name="reviewingOfficer" class="form-control">
+                                       <option value=""  >Select Officer...</option>
+                                    </select> 
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th scope="row" class="text-primary">स्वीकृत अधिकारी</th>
+                           <td scope="row">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6 m-0">
+                                    <select id="selectDesig6" class="form-control">
+                                       <option value=""  >Select Designation...</option> 
+                                    </select> 
+                                 </div>
+                                 <div class="form-group col-md-6 m-0">
+                                    <input name="acceptingOfficerCode" id="" hidden>  
+                                    <select id="selectOfficer6" name="acceptingOfficer" class="form-control">
+                                       <option value="" >Select Officer...</option>
+                                    </select> 
+                                 </div>
+                              </div>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+
+                  
+                  
+                  </table>
+                  <table class="table m-0">
+                     <thead>
+                        <tr>
+                           <td scope="row" colspan="2">
+                              <div class="form-row">
+                                 <div class="form-group col-md-6" style="display:none;"><input type="checkbox" name="isAnotherTagging" class="form-control" id="isAnotherTagging"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="region" class="form-control" id="inputRegionVal"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="circle" class="form-control" id="inputCircleVal"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="division" class="form-control" id="inputDivisionVal"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="subdivision" class="form-control" id="inputSubDivisionVal"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="dc" class="form-control" id="inputDCVal"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="reportingOfficer" class="form-control" id="inputReportingOfficerVal"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="reviewingOfficer" class="form-control" id="inputReviewingVal"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="acceptingOfficer" class="form-control" id="inputAcceptingOfficerVal"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="hrManager" class="form-control" id="inputhrManagerVal"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="hrManagerCode" class="form-control" id="inputhrManager"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="financialYear" class="form-control" id="financialYear" value="2023-24"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="region2" class="form-control" id="inputRegionVal2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="circle2" class="form-control" id="inputCircleVal2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="division2" class="form-control" id="inputDivisionVal2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="subdivision2" class="form-control" id="inputSubDivisionVal2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="dc2" class="form-control" id="inputDCVal2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="reportingOfficer2" class="form-control" id="inputReportingOfficerVal2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="reviewingOfficer2" class="form-control" id="inputReviewingVal2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="acceptingOfficer2" class="form-control" id="inputAcceptingOfficerVal2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="hrManager2" class="form-control" id="inputhrManagerVal2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="hrManagerCode2" class="form-control" id="inputhrManager2"></div>
+                                 <div class="form-group col-md-6" style="display:none;"><input type="hidden" name="financialYear2" class="form-control" id="financialYear2" value="2023-24"></div>
+                                 <div class="form-group col-md-6" id="addAnotherTaggingDiv">
+                                    <button type="button" id="addAnotherTagging" class="btn btn-primary rounded-btn btn-block">
+                                    एक और टैगिंग जोड़ें</button>
+                                 </div>
+                                 <div class="form-group col-md-6" style="display:none;" id="delAnotherTaggingDiv">
+                                    <button type="button" id="delAnotherTagging" class="btn btn-primary rounded-btn btn-block">Delete Tagging</button>
+                                 </div>
+                                 <div class="form-group col-md-6">
+                                    <input type="submit"  class="btn btn-primary " >
+                                 </div>
+                                 <!-- <div class="form-group col-md-6"><button type="button" onclick="validateOtp()" class="btn btn-primary rounded-btn btn-block" id="submitBtn">Send OTP</button></div> -->
+                              </div>
+                           </td>
+                        </tr>
+                     </thead>
+                  </table>
+               </div>
+            </div>
+         </form>
+
+
+         
+
+
+    <div id="taggingPart2">
+        {% comment %} <select id="regionDropdown1"></select>
+        <select id="circleDropdown1" disabled></select>
+        <select id="divDropdown1" disabled></select>
+        <select id="subDivDropdown1" disabled></select>
+        <select id="dcDropdown1" disabled></select>
+
+        <select id="regionDropdown2"></select>
+        <select id="circleDropdown2" disabled></select>
+        <select id="divDropdown2" disabled></select>
+        <select id="subDivDropdown2" disabled></select>
+        <select id="dcDropdown2" disabled></select> {% endcomment %}
+
+        <!-- Hidden inputs for regionDropdown1 -->
+        <input type="text" id="hidden_regionDropdown1_id">
+        <input type="text" id="hidden_regionDropdown1_name">
+        <input type="text" id="hidden_regionDropdown1_code">
+
+        <!-- Hidden inputs for circleDropdown1 -->
+        <input type="text" id="hidden_circleDropdown1_id">
+        <input type="text" id="hidden_circleDropdown1_name">
+        <input type="text" id="hidden_circleDropdown1_code">
+
+        <!-- Hidden inputs for divDropdown1 -->
+        <input type="text" id="hidden_divDropdown1_id">
+        <input type="text" id="hidden_divDropdown1_name">
+        <input type="text" id="hidden_divDropdown1_code">
+
+        <!-- Hidden inputs for subDivDropdown1 -->
+        <input type="text" id="hidden_subDivDropdown1_id">
+        <input type="text" id="hidden_subDivDropdown1_name">
+        <input type="text" id="hidden_subDivDropdown1_code">
+
+        <!-- Hidden inputs for dcDropdown1 -->
+        <input type="text" id="hidden_dcDropdown1_id">
+        <input type="text" id="hidden_dcDropdown1_name">
+        <input type="text" id="hidden_dcDropdown1_code">
+
+        <!-- Hidden inputs for regionDropdown2 -->
+        <input type="text" id="hidden_regionDropdown2_id">
+        <input type="text" id="hidden_regionDropdown2_name">
+        <input type="text" id="hidden_regionDropdown2_code">
+
+        <!-- Hidden inputs for circleDropdown2 -->
+        <input type="text" id="hidden_circleDropdown2_id">
+        <input type="text" id="hidden_circleDropdown2_name">
+        <input type="text" id="hidden_circleDropdown2_code">
+
+        <!-- Hidden inputs for divDropdown2 -->
+        <input type="text" id="hidden_divDropdown2_id">
+        <input type="text" id="hidden_divDropdown2_name">
+        <input type="text" id="hidden_divDropdown2_code">
+
+        <!-- Hidden inputs for subDivDropdown2 -->
+        <input type="text" id="hidden_subDivDropdown2_id">
+        <input type="text" id="hidden_subDivDropdown2_name">
+        <input type="text" id="hidden_subDivDropdown2_code">
+
+        <!-- Hidden inputs for dcDropdown2 -->
+        <input type="text" id="hidden_dcDropdown2_id">
+        <input type="text" id="hidden_dcDropdown2_name">
+        <input type="text" id="hidden_dcDropdown2_code">
+    </div>
+
+      </div>
+   </div>
+   <!-- END: Card DATA -->
+</div>
+
+</main>
+<!-- END: Content -->
+
+{% include 'full_footer.html' %}
+
+<script>
+
+
+    $("#financialYear" ).val('{{session}}');
+    $("#financialYear2" ).val('{{session}}');
+    $("#inputFromDate" ).attr('min','{{session.fromDate|date:'Y-m-d'}}');
+    $("#inputFromDate" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
+    
+    $("#inputFromDate1" ).attr('min','{{session.fromDate|date:'Y-m-d'}}');
+    $("#inputFromDate1" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
+
+    $("#inputFromDate").change(function () {
+        const date = new Date($("#inputFromDate" ).val());
+        var result = date.setDate(date.getDate() + 1);
+        $("#inputToDate" ).removeAttr('disabled');
+        $("#inputToDate" ).attr('min',new Date(result).toISOString().split('T')[0]);
+        $("#inputToDate" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
+    });
+
+    $("#inputFromDate1").change(function () {
+        const date = new Date($("#inputFromDate1" ).val());
+        var result = date.setDate(date.getDate() + 1);
+        $("#inputToDate1" ).removeAttr('disabled');
+        $("#inputToDate1" ).attr('min',new Date(result).toISOString().split('T')[0]);
+        $("#inputToDate1" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
+    });
+
+    $("#inputToDate").change(function () {
+        const date = new Date($("#inputToDate" ).val());
+        var result = date.setDate(date.getDate() + 1);
+        $("#inputFromDate2" ).val('');
+        $("#inputFromDate2" ).removeAttr('disabled');
+        $("#inputFromDate2" ).attr('min', new Date(result).toISOString().split('T')[0]);
+        $("#inputFromDate2" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
+    });
+
+ 
+
+    $("#inputFromDate2").change(function () { 
+        const date2 = new Date($("#inputFromDate2").val());
+        var result = date2.setDate(date2.getDate() + 121);
+        if ('{{session.toDate|date:'Y-m-d'}}' < new Date(result).toISOString().split('T')[0]) {
+            alert("You are not allowed to fill 2 tagging difference must be 120 lesser then  '{{session.toDate|date:'Y-m-d'}}' ");
+            $('#submitBtn').attr('disabled', 'disabled');
+        } else{
+            $('#submitBtn').removeAttr('disabled');
+        }
+        $("#inputToDate2" ).removeAttr('disabled');
+        $("#inputToDate2" ).attr('min',new Date(result).toISOString().split('T')[0]);
+        $("#inputToDate2" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
+    });
+
+    $( document ).ready(function() {
+        var url = $("#taggingForm").attr("data-branches-url");
+        $.ajax({
+            url: url,
+            data: {'region': 'region'},
+            success: function (data) {
+                $("#inputRegion").html(data);
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {'reportingDesignation': 'reportingDesignation'},
+            success: function (data) {
+                $("#inputReportingDesignation").html(data);
+                $("#inputReportingDesignation").removeAttr('disabled', 'disabled');
+                $("#inputReportingDesignation").attr('required', true);
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {'reportingDesignation': 'reportingDesignation'},
+            success: function (data) {
+                $("#inputReviewingDesignation").html(data);
+                $("#inputReviewingDesignation").removeAttr('disabled', 'disabled');
+                $("#inputReviewingDesignation").attr('required', true);
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {'reportingDesignation': 'reportingDesignation'},
+            success: function (data) {
+                $("#inputAcceptingDesignation").html(data);
+                $("#inputAcceptingDesignation").removeAttr('disabled', 'disabled');
+                $("#inputAcceptingDesignation").attr('required', true);
+            }
+        });
+    });
+
+    $("#inputRegion").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var circleId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'circle': circleId},
+        success: function (data) {
+            console.log(data);
+            $("#inputRegionVal").val($("#inputRegion option:selected" ).text());
+            $("#inputCircle").html(data);
+            $("#inputhrManagerVal").val($($(".RegionEmpName")[0]).val());
+            $("#inputhrManager" ).val($($(".RegionEmpCode")[0]).val());
+            if($('#inputCircle').children('option').length > 4){$("#inputCircle").removeAttr('disabled', 'disabled');}
+            else{
+                $("#inputCircle").attr('disabled', 'disabled');
+                $("#inputDivision").attr('disabled', 'disabled');
+                $("#inputSubDivision").attr('disabled', 'disabled');
+                $("#inputDC").attr('disabled', 'disabled');
+                $("#inputCircleVal").val('');
+                $("#inputDivisionVal").val('');
+                $("#inputSubDivisionVal").val('');
+                $("#inputDCVal").val('');
+            }
+            $("#inputDivision").html('<option value="" selected>Select Division...</option>');
+            $("#inputSubDivision").html('<option value="" selected>Select SubDivision...</option>');
+            $("#inputDC").html('<option value="" selected>Select DC...</option>');
+            $("#inputCircleVal").val('');
+            $("#inputDivisionVal").val('');
+            $("#inputSubDivisionVal").val('');
+            $("#inputDCVal").val('');
+        }
+      });
+    });
+
+    $("#inputCircle").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var divisionId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'division': divisionId},
+        success: function (data) {
+            $("#inputCircleVal").val($("#inputCircle option:selected" ).text());
+            $("#inputDivision").html(data);
+            $("#inputhrManagerVal").val($($(".CircleEmpName")[0]).val());
+            $("#inputhrManager" ).val($($(".CircleEmpCode")[0]).val());
+            if($('#inputDivision').children('option').length > 4){$("#inputDivision").removeAttr('disabled', 'disabled');}
+            else{
+                $("#inputDivision").attr('disabled', 'disabled');
+                $("#inputSubDivision").attr('disabled', 'disabled');
+                $("#inputDC").attr('disabled', 'disabled');
+                $("#inputDivisionVal").val('');
+                $("#inputSubDivisionVal").val('');
+                $("#inputDCVal").val('');
+            }
+            $("#inputSubDivision").html('<option value="" selected>Select SubDivision...</option>');
+            $("#inputDC").html('<option value="" selected>Select DC...</option>');
+            $("#inputDivisionVal").val('');
+            $("#inputSubDivisionVal").val('');
+            $("#inputDCVal").val('');
+        }
+      });
+    });
+
+    $("#inputDivision").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var subDivisionId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'subDivision': subDivisionId},
+        success: function (data) {
+            $("#inputDivisionVal").val($("#inputDivision option:selected" ).text());
+            $("#inputSubDivision").html(data);
+            if($('#inputSubDivision').children('option').length > 1){$("#inputSubDivision").removeAttr('disabled', 'disabled');}
+            else{
+                $("#inputSubDivision").attr('disabled', 'disabled');
+                $("#inputDC").attr('disabled', 'disabled');
+                $("#inputSubDivisionVal").val('');
+                $("#inputDCVal").val('');
+            }
+            $("#inputDC").html('<option value="" selected>Select DC...</option>');
+            $("#inputSubDivisionVal").val('');
+            $("#inputDCVal").val('');
+        }
+      });
+    });
+
+    $("#inputSubDivision").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var dcId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'dc': dcId},
+        success: function (data) {
+            $("#inputSubDivisionVal").val($("#inputSubDivision option:selected" ).text());
+            $("#inputDC").html(data);
+            if($('#inputDC').children('option').length > 1){$("#inputDC").removeAttr('disabled', 'disabled');}
+            else{
+                $("#inputSubDivision").attr('disabled', 'disabled');
+                $("#inputDC").attr('disabled', 'disabled');
+                $("#inputDCVal").val('');
+            }
+            $("#inputDCVal").val('');
+        }
+      });
+    });
+
+    $("#inputDC").change(function () {
+        $("#inputDCVal").val($("#inputDC option:selected").text());
+    });
+
+    $("#inputReportingDesignation").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var reportingOfficerId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'reportingOfficer': reportingOfficerId},
+        success: function (data) {
+            $("#inputReportingOfficer").html(data);
+            if($('#inputReportingOfficer').children('option').length > 1){
+                $("#inputReportingOfficer").removeAttr('disabled', 'disabled');
+                $("#inputReportingOfficer").attr('required', true);
+            }
+            else{
+                $("#inputReportingOfficer").attr('disabled', 'disabled');
+                $("#inputReportingOfficer").removeAttr('required', 'required');
+            }
+        }
+      });
+    });
+
+    $("#inputReportingOfficer").change(function () {
+        $("#inputReportingOfficerVal").val($("#inputReportingOfficer option:selected" ).text());
+    });
+
+    $("#inputReviewingDesignation").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var reviewingOfficerId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'reportingOfficer': reviewingOfficerId},
+        success: function (data) {
+            $("#inputReviewing").html(data);
+            if($('#inputReviewing').children('option').length > 1){
+                $("#inputReviewing").removeAttr('disabled', 'disabled');
+                $("#inputReviewing").attr('required', true);
+            }
+            else{
+                $("#inputReviewing").attr('disabled', 'disabled');
+                $("#inputReviewing").attr('required', false);
+            }
+        }
+      });
+    });
+
+    $("#inputReviewing").change(function () {
+        $("#inputReviewingVal").val($("#inputReviewing option:selected" ).text());
+    });
+
+    $("#inputAcceptingDesignation").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var acceptingOfficerId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'reportingOfficer': acceptingOfficerId},
+        success: function (data) {
+            $("#inputAcceptingOfficer").html(data);
+            if($('#inputAcceptingOfficer').children('option').length > 1){
+                $("#inputAcceptingOfficer").removeAttr('disabled', 'disabled');
+                $("#inputAcceptingOfficer").attr('required', true);
+            }
+            else{
+                $("#inputAcceptingOfficer").attr('disabled', 'disabled');
+                $("#inputAcceptingOfficer").attr('required', false);
+            }
+        }
+      });
+    });
+
+    $("#inputAcceptingOfficer").change(function () {
+        $("#inputAcceptingOfficerVal").val($("#inputAcceptingOfficer option:selected" ).text());
+    });
+ 
+    
+
+    $("#inputRegion2").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var circleId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'circle': circleId},
+        success: function (data) {
+            console.log(data);
+            $("#inputCircle2").html(data);
+            $("#inputhrManagerVal2").val($($(".RegionEmpName")[1]).val());
+            $("#inputhrManager2" ).val($($(".RegionEmpCode")[1]).val());
+            if($('#inputCircle2').children('option').length > 4){$("#inputCircle2").removeAttr('disabled', 'disabled');}
+            else{
+                $("#inputCircle2").attr('disabled', 'disabled');
+                $("#inputDivision2").attr('disabled', 'disabled');
+                $("#inputSubDivision2").attr('disabled', 'disabled');
+                $("#inputDC2").attr('disabled', 'disabled');
+                $("#inputCircleVal2").val('');
+                $("#inputDivisionVal2").val('');
+                $("#inputSubDivisionVal2").val('');
+                $("#inputDCVal2").val('');
+            }
+            $("#inputDivision2").html('<option value="" selected>Select Division...</option>');
+            $("#inputSubDivision2").html('<option value="" selected>Select SubDivision...</option>');
+            $("#inputDC2").html('<option value="" selected>Select DC...</option>');
+            $("#inputRegionVal2").val($("#inputRegion2 option:selected" ).text());
+            $("#inputCircleVal2").val('');
+            $("#inputDivisionVal2").val('');
+            $("#inputSubDivisionVal2").val('');
+            $("#inputDCVal2").val('');
+        }
+      });
+    });
+
+    $("#inputCircle2").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var divisionId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'division': divisionId},
+        success: function (data) {
+            $("#inputCircleVal2").val($("#inputCircle2 option:selected" ).text());
+            $("#inputDivision2").html(data);
+            $("#inputhrManagerVal2").val($($(".CircleEmpName")[1]).val());
+            $("#inputhrManager2" ).val($($(".CircleEmpCode")[1]).val());
+            if($('#inputDivision2').children('option').length > 4){$("#inputDivision2").removeAttr('disabled', 'disabled');}
+            else{
+                $("#inputDivision2").attr('disabled', 'disabled');
+                $("#inputSubDivision2").attr('disabled', 'disabled');
+                $("#inputDC2").attr('disabled', 'disabled');
+                $("#inputDivisionVal2").val('');
+                $("#inputSubDivisionVal2").val('');
+                $("#inputDCVal2").val('');
+            }
+            $("#inputSubDivision2").html('<option value="" selected>Select SubDivision...</option>');
+            $("#inputDC2").html('<option value="" selected>Select DC...</option>');
+            $("#inputDivisionVal2").val('');
+            $("#inputSubDivisionVal2").val('');
+            $("#inputDCVal2").val('');
+        }
+      });
+    });
+
+    $("#inputDivision2").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var subDivisionId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'subDivision': subDivisionId},
+        success: function (data) {
+            $("#inputDivisionVal2").val($("#inputDivision2 option:selected" ).text());
+            $("#inputSubDivision2").html(data);
+            if($('#inputSubDivision2').children('option').length > 1){$("#inputSubDivision2").removeAttr('disabled', 'disabled');}
+            else{
+                $("#inputSubDivision2").attr('disabled', 'disabled');
+                $("#inputDC2").attr('disabled', 'disabled');
+                $("#inputSubDivisionVal2").val('');
+                $("#inputDCVal2").val('');
+            }
+            $("#inputDC2").html('<option value="" selected>Select DC...</option>');
+            $("#inputSubDivisionVal2").val('');
+            $("#inputDCVal2").val('');
+        }
+      });
+    });
+
+    $("#inputSubDivision2").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var dcId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'dc': dcId},
+        success: function (data) {
+            $("#inputSubDivisionVal2").val($("#inputSubDivision2 option:selected" ).text());
+            $("#inputDC2").html(data);
+            if($('#inputDC2').children('option').length > 1){$("#inputDC2").removeAttr('disabled', 'disabled');}
+            else{
+                $("#inputSubDivision2").attr('disabled', 'disabled');
+                $("#inputDC2").attr('disabled', 'disabled');
+                $("#inputDCVal2").val('');
+            }
+            $("#inputDCVal2").val('');
+        }
+      });
+    });
+
+    $("#inputDC2").change(function () {
+        $("#inputDCVal2").val($("#inputDC2 option:selected").text());
+    });
+
+    $("#inputReportingDesignation2").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var reportingOfficerId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'reportingOfficer': reportingOfficerId},
+        success: function (data) {
+            $("#inputReportingOfficer2").html(data);
+            if($('#inputReportingOfficer2').children('option').length > 1){
+                $("#inputReportingOfficer2").removeAttr('disabled', 'disabled');
+                $("#inputReportingOfficer2").attr('required', true);
+            }
+            else{
+                $("#inputReportingOfficer2").attr('disabled', 'disabled');
+                $("#inputReportingOfficer2").removeAttr('required', 'required');
+            }
+        }
+      });
+    });
+
+    $("#inputReportingOfficer2").change(function () {
+        $("#inputReportingOfficerVal2").val($("#inputReportingOfficer2 option:selected" ).text());
+    });
+
+    $("#inputReviewingDesignation2").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var reviewingOfficerId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'reportingOfficer': reviewingOfficerId},
+        success: function (data) {
+            $("#inputReviewing2").html(data);
+            if($('#inputReviewing2').children('option').length > 1){
+                $("#inputReviewing2").removeAttr('disabled', 'disabled');
+                $("#inputReviewing2").attr('required', true);
+            }
+            else{
+                $("#inputReviewing2").attr('disabled', 'disabled');
+                $("#inputReviewing2").attr('required', false);
+            }
+        }
+      });
+    });
+
+    $("#inputReviewing2").change(function () {
+        $("#inputReviewingVal2").val($("#inputReviewing2 option:selected" ).text());
+    });
+
+    $("#inputAcceptingDesignation2").change(function () {
+      var url = $("#taggingForm").attr("data-branches-url");
+      var acceptingOfficerId = $(this).val();
+      $.ajax({
+        url: url,
+        data: {'reportingOfficer': acceptingOfficerId},
+        success: function (data) {
+            $("#inputAcceptingOfficer2").html(data);
+            if($('#inputAcceptingOfficer2').children('option').length > 1){
+                $("#inputAcceptingOfficer2").removeAttr('disabled', 'disabled');
+                $("#inputAcceptingOfficer2").attr('required', true);
+            }
+            else{
+                $("#inputAcceptingOfficer2").attr('disabled', 'disabled');
+                $("#inputAcceptingOfficer2").attr('required', false);
+            }
+        }
+      });
+    });
+
+    $("#inputAcceptingOfficer2").change(function () {
+        $("#inputAcceptingOfficerVal2").val($("#inputAcceptingOfficer2 option:selected" ).text());
+    });
+
+    //Employee Tagging 2 Methods
+
+    $("#addAnotherTagging").click(function () {
+
+
+const container = document.getElementById('taggingPart2');
+const inputs = container.querySelectorAll('input[type="text"], input[type="date"], select');
+inputs.forEach(function(input) {
+    input.setAttribute("required", "true");
+});
+
+    
+
+
+
+
+
+
+
+
+
+      var url = $("#taggingForm").attr("data-branches-url");
+      $("#taggingPart2").css('display', 'table');
+      $("#addAnotherTaggingDiv").css('display', 'none');
+      $("#delAnotherTaggingDiv").css('display', 'block');
+      $('#submitBtn').attr('disabled', 'disabled');
+
+      $("#isAnotherTagging").prop("checked", true);
+
+      $("#inputFromDate2").attr('required', true);
+      $("#inputToDate2").attr('required', true);
+      $("#inputRegion2").attr('required', true);
+      $("#inputReportingDesignation2").attr('required', true);
+      $("#inputReviewingDesignation2").attr('required', true);
+      $("#inputAcceptingDesignation2").attr('required', true);
+
+      $.ajax({
+            url: url,
+            data: {'region': 'region'},
+            success: function (data) {
+                $("#inputRegion2").html(data);
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {'reportingDesignation': 'reportingDesignation'},
+            success: function (data) {
+                $("#inputReportingDesignation2").html(data);
+                $("#inputReportingDesignation2").removeAttr('disabled', 'disabled');
+                $("#inputReportingDesignation2").attr('required', true);
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {'reportingDesignation': 'reportingDesignation'},
+            success: function (data) {
+                $("#inputReviewingDesignation2").html(data);
+                $("#inputReviewingDesignation2").removeAttr('disabled', 'disabled');
+                $("#inputReviewingDesignation2").attr('required', true);
+            }
+        });
+        $.ajax({
+            url: url,
+            data: {'reportingDesignation': 'reportingDesignation'},
+            success: function (data) {
+                $("#inputAcceptingDesignation2").html(data);
+                $("#inputAcceptingDesignation2").removeAttr('disabled', 'disabled');
+                $("#inputAcceptingDesignation2").attr('required', true);
+            }
+        });
+
+
+    });
+
+    $("#delAnotherTagging").click(function () {
+
+
+
+      $("#taggingPart2").css('display', 'none');
+      $("#addAnotherTaggingDiv").css('display', 'block');
+      $("#delAnotherTaggingDiv").css('display', 'none');
+
+      $("#isAnotherTagging").prop("checked", false);
+      $('#submitBtn').removeAttr('disabled');
+      $("#inputFromDate2").removeAttr('required', false);
+      $("#inputToDate2").removeAttr('required', false);
+      $("#inputRegion2").removeAttr('required', false);
+      $("#inputReportingDesignation2").removeAttr('required', false);
+      $("#inputReviewingDesignation2").removeAttr('required', false);
+      $("#inputAcceptingDesignation2").removeAttr('required', false);
+
+      $("#inputFromDate2").val('');
+      $("#inputToDate2").val('');
+      $("#inputRegion2").val('');
+      $("#inputReportingDesignation2").val('');
+      $("#inputReviewingDesignation2").val('');
+      $("#inputAcceptingDesignation2").val('');
+
+
+      const container = document.getElementById('taggingPart2');
+    const inputs = container.querySelectorAll('input[type="text"], input[type="date"], select');
+    inputs.forEach(function(input) {
+        $(input).removeAttr("required");
+    }); 
+     
+
+    });
+
+    function validateOtp(){
+
+        Swal.fire({
+          title: 'Enter OTP',
+          input: 'text',
+          inputAttributes: {
+            autocapitalize: 'off'
+          },
+          showCancelButton: true,
+          confirmButtonText: 'Verify',
+          showLoaderOnConfirm: true,
+          preConfirm: (otp) => {
+            // Send the OTP to the backend for validation
+            return fetch('/validate-otp', {
+              method: 'POST',
+              body: JSON.stringify({ otp: otp }),
+              headers: {
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error(response.statusText)
+              }
+              return response.json()
+            })
+            .catch(error => {
+              Swal.showValidationMessage(
+                `Request failed: ${error}`
+              )
+            })
+          },
+          allowOutsideClick: () => !Swal.isLoading()
+        }).then(result => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'OTP Verified!',
+              icon: 'success'
+            })
+          }
+        })
+    }
+</script>
+
+{% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const regionDropdown = document.getElementById('regionDropdown');
+        const circleDropdown = document.getElementById('circleDropdown');
+        const divDropdown = document.getElementById('divDropdown');
+        const subDivDropdown = document.getElementById('subDivDropdown');
+        const dcDropdown = document.getElementById('dcDropdown');
+
+
+        // Function to fetch regions and populate dropdown
+        fetch('https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllRegions/')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched Regions Data:', data);
+                if (data && data.list && Array.isArray(data.list)) {
+                    data.list.forEach(region => {
+                        const option = document.createElement('option');
+                        option.value = region.regionId;
+                        option.textContent = region.name;
+                        regionDropdown.appendChild(option);
+                    });
+
+                    // Initialize Select2 for regionDropdown
+                    $(regionDropdown).select2();
+
+                    // Trigger change event to populate circles for default region
+                    $(regionDropdown).trigger('change');
+                } else {
+                    console.error('Unexpected data format:', data);
+                }
+            })
+            .catch(error => console.error('Error fetching regions:', error));
+
+        // Event listener for regionDropdown change
+        $(regionDropdown).on('change', function() {
+            const selectedRegionId = $(this).val();
+            console.log('Selected Region ID:', selectedRegionId);
+
+            // Clear existing options in circleDropdown
+            circleDropdown.innerHTML = '';
+
+            // Fetch and populate circles based on selected region
+            fetch(`https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllCirclesByRegionId/${selectedRegionId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched Circles Data:', data);
+
+                    // Populate circleDropdown with fetched data
+                    if (data && data.list && Array.isArray(data.list)) {
+                        data.list.forEach(circle => {
+                            const option = document.createElement('option');
+                            option.value = circle.circleId;
+                            option.textContent = circle.name;
+                            circleDropdown.appendChild(option);
+                        });
+                    } else {
+                        console.error('Unexpected data format:', data);
+                    }
+
+                    // Initialize Select2 for circleDropdown
+                    $(circleDropdown).select2();
+                })
+                .catch(error => console.error('Error fetching circles:', error));
+        });
+         $(circleDropdown).on('change', function() {
+            const selectedDivisionId = $(this).val();
+            console.log('Selected Circle ID:', selectedDivisionId);
+
+            // Clear existing options in circleDropdown
+            divDropdown.innerHTML = '';
+
+            // Fetch and populate circles based on selected region
+            fetch(`https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllDivisionsByCircleId/${selectedDivisionId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched Circles Data:', data);
+
+                    // Populate circleDropdown with fetched data
+                    if (data && data.list && Array.isArray(data.list)) {
+                        data.list.forEach(division => {
+                            const option = document.createElement('option');
+                            option.value = division.divisionId;
+                            option.textContent = division.name;
+                            divDropdown.appendChild(option);
+                        });
+                    } else {
+                        console.error('Unexpected data format:', data);
+                    }
+
+                    // Initialize Select2 for circleDropdown
+                    $(divDropdown).select2();
+                })
+                .catch(error => console.error('Error fetching circles:', error));
+
+         });
+
+         $(divDropdown).on('change', function() {
+            const selectedSubDivisionId = $(this).val();
+            console.log('Selected Circle ID:', selectedSubDivisionId);
+
+            // Clear existing options in circleDropdown
+            subDivDropdown.innerHTML = '';
+
+            // Fetch and populate circles based on selected region
+            fetch(`https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllSubDivisionsByDivisionId/${selectedSubDivisionId}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched Division Data:', data);
+
+                    // Populate circleDropdown with fetched data
+                    if (data && data.list && Array.isArray(data.list)) {
+                        data.list.forEach(subDivision => {
+                            const option = document.createElement('option');
+                            option.value = subDivision.subdivisionId;
+                            option.textContent = subDivision.name;
+                            subDivDropdown.appendChild(option);
+                        });
+                    } else {
+                        console.error('Unexpected data format:', data);
+                    }
+
+                    // Initialize Select2 for circleDropdown
+                    $(subDivDropdown).select2();
+                })
+                .catch(error => console.error('Error fetching circles:', error));
+
+         });
+          
+         $(subDivDropdown).on('change', function() {
+            const selectedDc = $(this).val();
+            console.log('Selected Circle ID:', selectedDc);
+
+            // Clear existing options in circleDropdown
+            dcDropdown.innerHTML = '';
+
+            // Fetch and populate circles based on selected region
+            fetch(`https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllDcsBySubDivisionId/${selectedDc}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Fetched Division Data:', data);
+
+                    // Populate circleDropdown with fetched data
+                    if (data && data.list && Array.isArray(data.list)) {
+                        data.list.forEach(sdc => {
+                            const option = document.createElement('option');
+                            option.value = sdc.dcId;
+                            option.textContent = sdc.name;
+                            dcDropdown.appendChild(option);
+                        });
+                    } else {
+                        console.error('Unexpected data format:', data);
+                    }
+
+                    // Initialize Select2 for circleDropdown
+                    $(dcDropdown).select2();
+                })
+                .catch(error => console.error('Error fetching circles:', error));
+
+         });
+          
+    });
+</script> {% endcomment %}
+{% comment %} <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const regionDropdown = document.getElementById('regionDropdown');
+        const circleDropdown = document.getElementById('circleDropdown');
+        //const circleDropdownval = document.getElementById('regionDropdown').value();
+        const divDropdown = document.getElementById('divDropdown');
+        const subDivDropdown = document.getElementById('subDivDropdown');
+        const dcDropdown = document.getElementById('dcDropdown');
+
+        function populateDropdown(fetchUrl, dropdown, defaultText, callback) {
+            fetch(fetchUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(`Fetched Data for ${dropdown.id}:`, data);
+                    if (data && data.list && Array.isArray(data.list)) {
+                                      console.log(`Length of data.list: ${data.list.length}`);
+
+                        dropdown.innerHTML = `<option value="">${defaultText}</option>`;
+                        data.list.forEach(item => {
+                            const option = document.createElement('option');
+                            option.value = item.id || item.regionId || item.circleId || item.divisionId || item.subdivisionId || item.dcId;
+                            option.textContent = item.name;
+                            dropdown.appendChild(option);
+                        });
+                        // dropdown.disabled = false;
+                         if (data.list.length > 0) {
+                        dropdown.disabled = false;
+                        dropdown.required = true;  // Make dropdown required if it has options
+                    } else {
+                        dropdown.disabled = true;
+                        dropdown.required = false;  // Remove required if no options
+                    }
+                        $(dropdown).select2();
+                        if (callback) callback();
+                    } else {
+                        console.error('Unexpected data format:', data);
+                    }
+                })
+                .catch(error => console.error(`Error fetching data for ${dropdown.id}:`, error));
+        }
+
+        // Initial population of region dropdown
+        populateDropdown('https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllRegions/', regionDropdown, 'Please select a region');
+
+        $(regionDropdown).on('change', function() {
+            const selectedRegionId = $(this).val();
+            console.log('Selected Region ID:', selectedRegionId);
+            circleDropdown.innerHTML = '<option value="">Please select a circle</option>';
+            divDropdown.innerHTML = '<option value="">Please select a division</option>';
+            subDivDropdown.innerHTML = '<option value="">Please select a sub-division</option>';
+            dcDropdown.innerHTML = '<option value="">Please select a DC</option>';
+             
+            circleDropdown.disabled = true;
+            divDropdown.disabled = true;
+            subDivDropdown.disabled = true;
+            dcDropdown.disabled = true;
+
+            if (selectedRegionId) {
+                populateDropdown(`https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllCirclesByRegionId/${selectedRegionId}`, circleDropdown, 'Please select a circle');
+            }
+        });
+
+        $(circleDropdown).on('change', function() {
+            const selectedCircleId = $(this).val();
+            console.log('Selected Circle ID:', selectedCircleId);
+            divDropdown.innerHTML = '<option value="">Please select a division</option>';
+            subDivDropdown.innerHTML = '<option value="">Please select a sub-division</option>';
+            dcDropdown.innerHTML = '<option value="">Please select a DC</option>';
+            divDropdown.disabled = true;
+            subDivDropdown.disabled = true;
+            dcDropdown.disabled = true;
+
+            if (selectedCircleId) {
+                populateDropdown(`https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllDivisionsByCircleId/${selectedCircleId}`, divDropdown, 'Please select a division');
+            }
+        });
+
+        $(divDropdown).on('change', function() {
+            const selectedDivisionId = $(this).val();
+            console.log('Selected Division ID:', selectedDivisionId);
+            subDivDropdown.innerHTML = '<option value="">Please select a sub-division</option>';
+            dcDropdown.innerHTML = '<option value="">Please select a DC</option>';
+            subDivDropdown.disabled = true;
+            dcDropdown.disabled = true;
+
+            if (selectedDivisionId) {
+                populateDropdown(`https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllSubDivisionsByDivisionId/${selectedDivisionId}`, subDivDropdown, 'Please select a sub-division');
+            }
+        });
+
+        $(subDivDropdown).on('change', function() {
+            const selectedSubDivisionId = $(this).val();
+            console.log('Selected Sub-Division ID:', selectedSubDivisionId);
+            dcDropdown.innerHTML = '<option value="">Please select a DC</option>';
+            dcDropdown.disabled = true;
+
+            if (selectedSubDivisionId) {
+                populateDropdown(`https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllDcsBySubDivisionId/${selectedSubDivisionId}`, dcDropdown, 'Please select a DC');
+            }
+        });
+    });
+    </script> {% endcomment %}
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    function populateDropdown(fetchUrl, dropdown, defaultText, callback) {
+        fetch(fetchUrl)
+            .then(response => response.json())
+            .then(data => {
+                console.log(`Fetched Data for ${dropdown.id}:`, data);
+                if (data && data.list && Array.isArray(data.list)) {
+                    dropdown.innerHTML = `<option value="">${defaultText}</option>`;
+                    data.list.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id || item.regionId || item.circleId || item.divisionId || item.subdivisionId || item.dcId;
+                        option.textContent = item.name;
+                        option.setAttribute('data-name', item.name);
+                        if (item.code) {
+                            option.setAttribute('data-code', item.code);
+                        }
+                        dropdown.appendChild(option);
+                    });
+                    
+                    if (data.list.length > 0) {
+                        dropdown.disabled = false;
+                        dropdown.required = true;  // Make dropdown required if it has options
+                    } else {
+                        dropdown.disabled = true;
+                        dropdown.required = false;  // Remove required if no options
+                    }
+
+                    $(dropdown).select2();
+                    if (callback) callback();
+                } else {
+                    console.error('Unexpected data format:', data);
+                }
+            })
+            .catch(error => console.error(`Error fetching data for ${dropdown.id}:`, error));
+    }
+
+    function setupDropdownChain(parentDropdown, childDropdown, fetchUrlFn, defaultText) {
+        $(parentDropdown).on('change', function() {
+            const selectedId = $(this).val();
+            const selectedOption = $(this).find('option:selected');
+            const selectedName = selectedOption.data('name');
+            const selectedCode = selectedOption.data('code');
+
+            console.log(`Selected ${parentDropdown.id} ID:`, selectedId); 
+
+            // Set hidden input fields
+            $(`#hidden_${parentDropdown.id}_id`).val(selectedId);
+            $(`#hidden_${parentDropdown.id}_name`).val(selectedName);
+            if (selectedCode) {
+                $(`#hidden_${parentDropdown.id}_code`).val(selectedCode);
+            }
+
+            // Reset child dropdown
+            childDropdown.innerHTML = `<option value="">Please select ${defaultText}</option>`;
+            childDropdown.disabled = true;
+
+            if (selectedId) {
+                populateDropdown(fetchUrlFn(selectedId), childDropdown, `Please select ${defaultText}`);
+            }
+        });
+    }
+
+    // Setup first set of dropdown chains
+    setupDropdownChain(document.getElementById('regionDropdown1'), document.getElementById('circleDropdown1'),
+        selectedRegionId => `https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllCirclesByRegionId/${selectedRegionId}`,
+        'a circle');
+
+    setupDropdownChain(document.getElementById('circleDropdown1'), document.getElementById('divDropdown1'),
+        selectedCircleId => `https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllDivisionsByCircleId/${selectedCircleId}`,
+        'a division');
+
+    setupDropdownChain(document.getElementById('divDropdown1'), document.getElementById('subDivDropdown1'),
+        selectedDivisionId => `https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllSubDivisionsByDivisionId/${selectedDivisionId}`,
+        'a sub-division');
+
+    setupDropdownChain(document.getElementById('subDivDropdown1'), document.getElementById('dcDropdown1'),
+        selectedSubDivisionId => `https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllDcsBySubDivisionId/${selectedSubDivisionId}`,
+        'a DC');
+
+    // Setup second set of dropdown chains
+    setupDropdownChain(document.getElementById('regionDropdown2'), document.getElementById('circleDropdown2'),
+        selectedRegionId => `https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllCirclesByRegionId/${selectedRegionId}`,
+        'a circle');
+
+    setupDropdownChain(document.getElementById('circleDropdown2'), document.getElementById('divDropdown2'),
+        selectedCircleId => `https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllDivisionsByCircleId/${selectedCircleId}`,
+        'a division');
+
+    setupDropdownChain(document.getElementById('divDropdown2'), document.getElementById('subDivDropdown2'),
+        selectedDivisionId => `https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllSubDivisionsByDivisionId/${selectedDivisionId}`,
+        'a sub-division');
+
+    setupDropdownChain(document.getElementById('subDivDropdown2'), document.getElementById('dcDropdown2'),
+        selectedSubDivisionId => `https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllDcsBySubDivisionId/${selectedSubDivisionId}`,
+        'a DC');
+
+    // Initial population of dropdowns
+    populateDropdown('https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllRegions/', document.getElementById('regionDropdown1'), 'Please select a region');
+    populateDropdown('https://attendance.mpcz.in:8888/E-Attendance/api/location/getAllRegions/', document.getElementById('regionDropdown2'), 'Please select a region');
+});
+
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    function populateDesignation(selectDesig, selectOfficer) {
+        fetch('https://attendance.mpcz.in:8888/E-Attendance/api/employee/getRoDesignation')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched Officer Data:', data);
+                if (data && data.list && Array.isArray(data.list)) {
+                    // Add default option for selectDesig
+                    const defaultOptionDesig = document.createElement('option');
+                    defaultOptionDesig.value = '';
+                    defaultOptionDesig.textContent = 'Please select a designation';
+                    selectDesig.appendChild(defaultOptionDesig);
+
+                    data.list.forEach(officer => {
+                        const option = document.createElement('option');
+                        option.value = officer.id;
+                        option.textContent = officer.name;
+                        option.setAttribute('data-name', officer.name);
+                        selectDesig.appendChild(option);
+                    });
+
+                    // Initialize Select2 for selectDesig
+                    $(selectDesig).select2();
+
+                    // Trigger change event to populate officers for default designation
+                    $(selectDesig).trigger('change');
+                } else {
+                    console.error('Unexpected data format:', data);
+                }
+            })
+            .catch(error => console.error('Error fetching designations:', error));
+
+        // Event listener for selectDesig change
+        $(selectDesig).on('change', function() {
+            const selectedDesignationId = $(this).val();
+            console.log('Selected Designation ID:', selectedDesignationId);
+
+            // Clear existing options in selectOfficer
+            selectOfficer.innerHTML = '';
+
+            // Add default option for selectOfficer
+            const defaultOptionOfficer = document.createElement('option');
+            defaultOptionOfficer.value = '';
+            defaultOptionOfficer.textContent = 'Please select an officer';
+            selectOfficer.appendChild(defaultOptionOfficer);
+
+            // Fetch and populate officers based on selected designation
+            if (selectedDesignationId) {
+                fetch(`https://attendance.mpcz.in:8888/E-Attendance/api/employee/getRoByDesignationId/${selectedDesignationId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Fetched Officers Data:', data);
+
+                        // Populate selectOfficer with fetched data
+                        if (data && data.list && Array.isArray(data.list)) {
+                            data.list.forEach(officer => {
+                                const option = document.createElement('option');
+                                option.value = officer.id;
+                                option.textContent = officer.name;
+                                option.setAttribute('data-name', officer.name);
+                                selectOfficer.appendChild(option);
+                            });
+
+                            // Initialize Select2 for selectOfficer
+                            $(selectOfficer).select2();
+                        } else {
+                            console.error('Unexpected data format:', data);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching officers:', error));
+            }
+        });
+    }
+
+    // Populate dropdowns for multiple instances
+    populateDesignation(document.getElementById('selectDesig1'), document.getElementById('selectOfficer1'));
+    populateDesignation(document.getElementById('selectDesig2'), document.getElementById('selectOfficer2'));
+    populateDesignation(document.getElementById('selectDesig3'), document.getElementById('selectOfficer3'));
+    populateDesignation(document.getElementById('selectDesig4'), document.getElementById('selectOfficer4'));
+    populateDesignation(document.getElementById('selectDesig5'), document.getElementById('selectOfficer5'));
+    populateDesignation(document.getElementById('selectDesig6'), document.getElementById('selectOfficer6'));
+});
+
+
+
+
+ 
+{% comment %} const container = document.getElementById('containerId'); 
+container.addEventListener('click', function() { 
+    const inputs = container.querySelectorAll('input[type="text"]');
+    inputs.forEach(function(input) {
+        input.focus();
+    });
+}); {% endcomment %}
+
+$(document).ready(function(){
+    const container = document.getElementById('taggingPart2');
+    const inputs = container.querySelectorAll('input[type="text"], input[type="date"], select');
+    inputs.forEach(function(input) {
+        $(input).removeAttr("required");
+    }); 
+ });
+
+
+ 
+    </script>

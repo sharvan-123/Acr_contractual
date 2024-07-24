@@ -1,4 +1,28 @@
 {% include 'full_header.html' %}
+
+<style>
+.cform-control {
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.sbtninfo {
+    padding: 8px 20px;
+    font-size: 16px;
+    text-transform: capitalize;
+}
+</style>
+
 <!-- START: Main Content -->
 <main>
   <div class="container-fluid site-width">
@@ -31,8 +55,8 @@
           <div class="card-body">
            
               <div class="form-group"> 
-                <label>विवरण : </label>
-                <input class="form-control h-auto" name="remark">
+                <label>कार्य के प्रति संक्षिप्त विवरण : </label>
+                <input class="cform-control h-auto" placeholder="विवरण दर्ज करे......" name="remark">
                 </textarea>
               </div>
            
@@ -63,8 +87,8 @@
                     <td class="border"> 
                       कार्य के प्रति दृष्टिकोण
                     </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade1" onchange="calculateAverage()" required>
+                    <td> 
+                      <select class="cform-control" name="Grade1" onchange="calculateAverage()" required>
                         <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
@@ -82,8 +106,8 @@
                     <td class="border"> 
                       निर्णय लेने की क्षमता 
                     </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade2" onchange="calculateAverage()" required>
+                    <td> 
+                      <select class="cform-control" name="Grade2" onchange="calculateAverage()" required>
                         <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
@@ -101,8 +125,8 @@
                     <td class="border"> 
                       व्यक्तीगत संबंध एवं समूह  कार्य
                     </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade3" onchange="calculateAverage()" required>
+                    <td> 
+                      <select class="cform-control" name="Grade3" onchange="calculateAverage()" required>
                         <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
@@ -122,8 +146,8 @@
                     <td class="border"> 
                       समन्वय की योगिता
                     </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade4" onchange="calculateAverage()" required>
+                    <td> 
+                      <select class="cform-control" name="Grade4" onchange="calculateAverage()" required>
                         <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
@@ -140,8 +164,8 @@
                     <td class="border"> 
                       कार्य का ज्ञान  
                     </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade5" onchange="calculateAverage()" required>
+                    <td> 
+                      <select class="cform-control" name="Grade5" onchange="calculateAverage()" required>
                         <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
@@ -158,8 +182,8 @@
                     <td class="border"> 
                       कार्य की गुणवत्ता 
                     </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade6" onchange="calculateAverage()" required>
+                    <td> 
+                      <select class="cform-control" name="Grade6" onchange="calculateAverage()" required>
                         <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
@@ -177,8 +201,8 @@
                     <td class="border"> 
                       वर्ष की कार्य उत्पादकता
                     </td> 
-                    <td class="form-control" input-type="text"> 
-                      <select class="form-control" name="Grade7" onchange="calculateAverage()" required>
+                    <td> 
+                      <select class="cform-control" name="Grade7" onchange="calculateAverage()" required>
                         <option value=""> ग्रेड चुनें </option>
                         <option value="10"> क+ </option>
                         <option value="9"> क </option>
@@ -189,13 +213,20 @@
                     </td> 
                   </tr>
                    <tr>
-        <td class="border" colspan="2">कुल ग्रेड :</td>
-        <b><td class="form-control" input-type="text" name="final_grade" id="grade"></td></b>
-        </tr>
-        <input type="submit" value="save">
+                    <td class="border" colspan="2">कुल ग्रेड :</td>
+                    <td>
+                      <input type="text" class="cform-control" name="final_grade" id="grade" />
+                    </td> 
+                  </tr>  
                 </tbody>
               </table>
             </div>
+              <br><br><br>
+              <div class="form-group">
+              <div style="text-align:center">
+                      <input type="submit" value="save" id="submitButton" class="btn btn-info sbtninfo">
+                    </div>
+                    </div>
 </form>
 
             <br><br><br>

@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from dateutil.relativedelta import relativedelta
 from django.core.files.base import ContentFile
 from django.shortcuts import render
-# from django.conf import settings
+from ACRPortal.settings import config
 from django.contrib.auth.models import Group
 from excel_response import ExcelResponse
 from django.urls import reverse_lazy
@@ -30,12 +30,20 @@ apiUrl = settings.APIURL
 @login_required(login_url='/login/')
 def dashboard(request):
     print(request.user.employmentType['empTypeId'],request.user.designation['designationId'],"type id............")
-    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']== 37 or 98 or 84 or 99) :
+    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']==  98 or 99) :
         is_tagging=True
     else:
         is_tagging=False
     print(is_tagging)
-    return render(request, 'index.html',{'is_tagging':is_tagging})
+    user = request.user
+    user_groups = user.groups.all()
+    group_names = [group.name for group in user_groups]
+
+    context = {
+        'group_names': group_names,
+        'is_tagging':is_tagging
+    }
+    return render(request, 'index.html',context)
 
 
 @method_decorator(check_valid_referer, name='dispatch')
@@ -411,24 +419,22 @@ def reporting_je_form_hindi(request):
 @login_required(login_url='/login/')
 def ReportingListView(request):
     data=EmployeeTagging.objects.filter(reportingOfficer__icontains=request.user.empCode).filter(isFinal=True)
-    data2=EmployeeTagging.objects.filter(reportingOfficer__icontains=request.user.empCode).filter(isFinal=True).first()
-    print(request.user.mobileNo,"mobile no.....")
+    print(request.user.mobileNo,"mobile no.....",data)
     flag=[]
+    JE_TA_data=[]
     for i in data:
+        if i.empCode.designation['designationId'] == 99 or i.empCode.designation['designationId']== 98:
+            JE_TA_data.append(0)
+        elif i.empCode.designation['designationId'] == 84 or i.empCode.designation['designationId']== 37:
+            JE_TA_data.append(1)
         reporting_officer = ReportingOfficer.objects.filter(tagging__id=i.id).filter(is_Status=True)
+        print('i.empCode.designation',i.empCode.designation['designationId'],JE_TA_data)
         if reporting_officer:
             flag.append(0)
         else:
             flag.append(1)
-    data1=zip(data,flag)
-    Je_Ae=False
-    Ta_La=False
-    if data2.empCode.designation['designationId'] == 99 or data2.empCode.designation['designationId']== 98:
-        Je_Ae=True
-    elif data2.empCode.designation['designationId'] == 84 or data2.empCode.designation['designationId']== 37:
-        Ta_La=True
-    print("Je_AeJe_AeJe_AeJe_Ae",Je_Ae,Ta_La)
-    return render(request, "Accounts/acr_hindi/emp_tagging_complete_list.html",{'final_data':data1,'Je_Ae':Je_Ae,'Ta_La':Ta_La})
+    data1=zip(data,flag,JE_TA_data)
+    return render(request, "Accounts/acr_hindi/emp_tagging_complete_list.html",{'final_data':data1})
 
 @login_required(login_url='/login/')
 def reporting_ta_form_hindi(request):
@@ -679,56 +685,89 @@ def generate_pdf_reporting_officer(request):
             tagging_id = request.POST.get('tagging_id')
             print("repoting_officer_id",repoting_officer_id,"tagging_id",tagging_id,"post method call ")
             model = ReportingOfficer.objects.get(id=repoting_officer_id)
-            tagging_data = EmployeeTagging.objects.get(id=tagging_id)
-            emptype = tagging_data.empCode.employmentType['name']
-            emp_des = tagging_data.empCode.designation['name']
-            g_one = int(model.grade_one)
-            g_two = int(model.grade_two)
-            g_three = int(model.grade_three)
-            g_four = int(model.grade_four)
-            g_five = int(model.grade_five)
-            g_six = int(model.grade_six)
-            g_seven = int(model.grade_seven)
-            g_eight = int(model.grade_eight)
-            g_nine = int(model.grade_nine)
-            g_ten = int(model.grade_ten)
-            description = model.descriptions
-            html_file = render_to_string(
-                # 'Accounts/acr_hindi/test.html',
-                'Accounts/acr_hindi/pdf_genrate_reportingofficer.html',
-                {
-                    'tagging_data': tagging_data,
-                    'emptype': emptype,
-                    'emp_des': emp_des,
-                    'reported_data': model,
-                    'g_one': g_one,
-                    'g_two': g_two,
-                    'g_three': g_three,
-                    'g_four': g_four,
-                    'g_five': g_five,
-                    'g_six': g_six,
-                    'g_seven': g_seven,
-                    'g_eight': g_eight,
-                    'g_nine': g_nine,
-                    'g_ten': g_ten,
-                    'description': description,
-                    'i': model,
-                }
-            )
-            # path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe' # Update this path
-
-            # path_to_wkhtmltopdf = settings.PDF_PATH
-            #path_to_wkhtmltopdf=settings.PDF_PATH
-
-            path_to_wkhtmltopdf = r'/usr/local/bin/wkhtmltopdf' # Update this path
-
-            config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
-            pdf_content = pdfkit.from_string(html_file,False,configuration=config)
-            model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
-            model.is_Status = True
-            model.save()
-            LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
-            return redirect(ReportingListView)
+            if model.grade_eight is not None:
+                tagging_data = EmployeeTagging.objects.get(id=tagging_id)
+                emptype = tagging_data.empCode.employmentType['name']
+                emp_des = tagging_data.empCode.designation['name']
+                g_one = int(model.grade_one)
+                g_two = int(model.grade_two)
+                g_three = int(model.grade_three)
+                g_four = int(model.grade_four)
+                g_five = int(model.grade_five)
+                g_six = int(model.grade_six)
+                g_seven = int(model.grade_seven)
+                g_eight = int(model.grade_eight)
+                g_nine = int(model.grade_nine)
+                g_ten = int(model.grade_ten)
+                description = model.descriptions
+                html_file = render_to_string(
+                    # 'Accounts/acr_hindi/test.html',
+                    'Accounts/acr_hindi/pdf_genrate_reportingofficer.html',
+                    {
+                        'tagging_data': tagging_data,
+                        'emptype': emptype,
+                        'emp_des': emp_des,
+                        'reported_data': model,
+                        'g_one': g_one,
+                        'g_two': g_two,
+                        'g_three': g_three,
+                        'g_four': g_four,
+                        'g_five': g_five,
+                        'g_six': g_six,
+                        'g_seven': g_seven,
+                        'g_eight': g_eight,
+                        'g_nine': g_nine,
+                        'g_ten': g_ten,
+                        'description': description,
+                        'i': model,
+                    }
+                )
+                conf = pdfkit.configuration(wkhtmltopdf=config)
+                pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
+                model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
+                model.is_Status = True
+                model.save()
+                # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
+                return redirect(ReportingListView)
+            else:
+                tagging_data = EmployeeTagging.objects.get(id=tagging_id)
+                emptype = tagging_data.empCode.employmentType['name']
+                emp_des = tagging_data.empCode.designation['name']
+                g_one = int(model.grade_one)
+                g_two = int(model.grade_two)
+                g_three = int(model.grade_three)
+                g_four = int(model.grade_four)
+                g_five = int(model.grade_five)
+                g_six = int(model.grade_six)
+                g_seven = int(model.grade_seven)
+                description = model.descriptions
+                html_file = render_to_string(
+                    # 'Accounts/acr_hindi/test.html'
+                    'Accounts/acr_hindi/pdf_genrate_ta_reportingofficer.html',
+                    {
+                        'tagging_data': tagging_data,
+                        'emptype': emptype,
+                        'emp_des': emp_des,
+                        'reported_data': model,
+                        'g_one': g_one,
+                        'g_two': g_two,
+                        'g_three': g_three,
+                        'g_four': g_four,
+                        'g_five': g_five,
+                        'g_six': g_six,
+                        'g_seven': g_seven,
+                        'description': description,
+                        'i': model,
+                    }
+                )
+                conf = pdfkit.configuration(wkhtmltopdf=config)
+                pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
+                model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
+                model.is_Status = True
+                model.save()
+                LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
+                return redirect(ReportingListView)
+                
         else:
             attempts = request.session.get('totp_attempts', 0)
             attempts += 1
@@ -774,23 +813,17 @@ def reportingOtp(request):
 @login_required(login_url='/login/')
 def ReviewingListView(request):
     data2=EmployeeTagging.objects.filter(reviewingOfficer__icontains=request.user.empCode).filter(isFinal=True)
-    print(request.user.mobileNo,"mobile no.....")
     flag=[]
+    data1=[]
     for i in data2:
-        print(i.id,"tagging id ..........")
         data = ReportingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
         if data:
-            print(data,"dataaaaaaaaaaaaaa")
             for j in data:
-                print(j,"jjjjjjjjjjjjjjjj")
                 reviewing_officer=ReviewingOfficer.objects.filter(tagging__id=j.tagging.id,is_Status=True)
                 if reviewing_officer:
                     flag.append(0)
                 else:
                     flag.append(1)
-
-                print(reviewing_officer,"+++++++++++++++++++++reviewing_officer+++++++++++")
-                print(j.tagging_id,"true wali id ")
         data1=zip(data,flag)
     return render(request, "Accounts/acr_hindi/reporting_complete_list.html",{'final_data':data1})
 
@@ -918,10 +951,8 @@ def generate_pdf_reviewing_officer(request):
                     'tagging_data':tagging_data,
                 }
             )
-            # path_to_wkhtmltopdf =r'usr/local/bin/wkhtmltopdf.exe' # Update this path
-            path_to_wkhtmltopdf=settings.PDF_PATH
-            config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
-            pdf_content = pdfkit.from_string(html_file,False,configuration=config)
+            conf = pdfkit.configuration(wkhtmltopdf=config)
+            pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
             reviewing_model.reviewing_officer_pdf.save('ReviewingOfficerPdf.pdf', ContentFile(pdf_content))
             reviewing_model.is_Status = True
             reviewing_model.save()
@@ -1079,7 +1110,6 @@ def generate_pdf_accepting_officer(request):
     if request.method == "POST":
         user = CustomUser.objects.get(empCode=request.user.empCode)
         hotp = pyotp.HOTP(user.otpSecretKey)
-        print("?????????????")
         tagging_id = request.POST.get('tagging_id')
         # print(request.POST.get('otp'),tagging_id,"post wali method", user.otpCounter,request.user.otpSecretKey)
         # if code == request.POST.get('otp'):
@@ -1113,9 +1143,8 @@ def generate_pdf_accepting_officer(request):
                 }
             )
             # path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
-            path_to_wkhtmltopdf=settings.PDF_PATH
-            config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
-            pdf_content = pdfkit.from_string(html_file,False,configuration=config)
+            conf = pdfkit.configuration(wkhtmltopdf=config)
+            pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
             accepting_model.accepting_officer_pdf.save('AcceptingOfficerPdf.pdf', ContentFile(pdf_content))
             accepting_model.is_Status = True
             accepting_model.save()
@@ -1137,3 +1166,124 @@ def generate_pdf_accepting_officer(request):
             
     print("data saved")
     return render(request,"Accounts/acr_hindi/otp_accepting_officer.html",{'tagging_id':tagging_id})
+
+
+
+from django.db.models import Q
+def emp_tagging_form_ta(request):
+    if request.method=="GET":
+        emp_detail=CustomUser.objects.filter(employmentType__empTypeId=6 ,designation__designationId__in=[37,84])
+        # region_url = f"{apiUrl}/location/getAllRegions/"
+        # import requests
+        # response = requests.get(region_url)
+        # if response.status_code == 200:
+        #     data = response.json()
+        #     print(data)
+        #     # result = CustomUser.objects.filter(
+        #     # Q(designation__n='Asst. Engineer') &
+        #     # Q(employmentType__empTypeId=6))
+        context={
+                'emp_detail':emp_detail
+            }
+    else:
+        tagging=EmployeeTagging()
+        print("is_final check",request.POST.get('is_final'))
+        isanotherTagging1=request.POST.get("isanotherTagging1")
+        tagging_id=CustomUser.objects.get(empCode=request.POST.get("empCode"))
+        tagging.empCode_id=tagging_id.id
+        tagging.fromDate=request.POST.get("from_Date")
+        tagging.toDate=request.POST.get("toDate")
+        tagging.region=request.POST.get("region")
+        tagging.region_code=request.POST.get("region_code")
+        # tagging.region_code=2233
+        tagging.circle=request.POST.get("circle")
+        # tagging.circle_code=1122
+        tagging.circle_code=request.POST.get("circle_code")
+        tagging.division=request.POST.get("division")
+        tagging.division_code=request.POST.get("division_code")
+        # tagging.division_code=444555
+        tagging.subdivision=request.POST.get("subdivision")
+        # tagging.subdivision_code=111222333
+        tagging.subdivision_code=request.POST.get("subdivision_code")
+        tagging.dc=request.POST.get("dc")
+        # tagging.dc_code=11223344
+        tagging.dc_code=request.POST.get("dc_code")
+        tagging.reportingDesignation=request.POST.get("reportingDesignation_one")
+        tagging.reportingOfficerCode=request.POST.get("reportingOfficerCode")
+        tagging.reportingOfficer=request.POST.get("reportingOfficer")
+        tagging.reviewingDesignation=request.POST.get("reviewingDesignation_one")
+        tagging.reviewingOfficerCode=request.POST.get("reviewingOfficerCode")
+        tagging.reviewingOfficer=request.POST.get("reviewingOfficer")
+        tagging.acceptingDesignation=request.POST.get("acceptingDesignation_one")
+        tagging.acceptingOfficerCode=request.POST.get("acceptingOfficerCode")
+        tagging.acceptingOfficer=request.POST.get("acceptingOfficer")
+        tagging.financialYear='2023-24'
+        if request.POST.get("region_code") is not None and request.POST.get("circle_code") is not None and request. POST.get("circle_code") != "" :
+            hr_manager_data=HrManagers.objects.filter(circleCode=request.POST.get("circle_code")).first()
+            tagging.hrManager=hr_manager_data.empName
+            tagging.hrManagerCode=hr_manager_data.empCode
+            
+        elif request.POST.get("region_code") is not None and (request.POST.get("circle_code") is None or request.POST.get("circle_code") == ""):
+            hr_manager_data=HrManagers.objects.filter(regionCode=request.POST.get("region_code")).first()
+        # print(hr_manager_data,"+++++++=======+++++++",hr_manager_data.empName,hr_manager_data.empCode,"hr data 2")
+            tagging.hrManager=hr_manager_data.empName
+            tagging.hrManagerCode=hr_manager_data.empCode
+            
+        # tagging.isAnotherTagging=request.POST.get("isAnotherTagging")
+        if isanotherTagging1 == '1':
+            tagging.isAnotherTagging=True
+        else:
+            tagging.isAnotherTagging=False
+        if request.POST.get('is_final') == 'True' :
+            tagging.isFinal=True
+        else:
+            tagging.isFinal=False
+        tagging.save()
+        if isanotherTagging1 == '1':
+            tagging2=EmployeeTagging()
+
+            tagging_id=CustomUser.objects.get(empCode=request.POST.get("empCode"))
+            tagging2.empCode_id=tagging_id.id
+            tagging2.fromDate=request.POST.get("from_Date2")
+            tagging2.toDate=request.POST.get("toDate2")
+            tagging2.region=request.POST.get("region2")
+            tagging2.region_code=request.POST.get("region_code2")
+            # taggi2ng.region_code=2233
+            tagging2.circle=request.POST.get("circle2")
+            # taggi2ng.circle_code=1122
+            tagging2.circle_code=request.POST.get("circle_code2")
+            tagging2.division=request.POST.get("division2")
+            tagging2.division_code=request.POST.get("division_code2")
+            tagging2.subdivision=request.POST.get("subdivision2")
+            # taggi2ng.subdivision_code=111222333
+            tagging2.subdivision_code=request.POST.get("subdivision_code2")
+            tagging2.dc=request.POST.get("dc2")
+            tagging2.dc_code=request.POST.get("dc_code2")
+            tagging2.reportingDesignation=request.POST.get("reportingDesignation_two")
+            tagging2.reportingOfficerCode=request.POST.get("reportingOfficerCode2")
+            tagging2.reportingOfficer=request.POST.get("reportingOfficer2")
+            tagging2.reviewingDesignation=request.POST.get("reviewingDesignation_two")
+            tagging2.reviewingOfficerCode=request.POST.get("reviewingOfficerCode2")
+            tagging2.reviewingOfficer=request.POST.get("reviewingOfficer2")
+            tagging2.acceptingDesignation=request.POST.get("acceptingDesignation_two")
+            tagging2.acceptingOfficerCode=request.POST.get("acceptingOfficerCode2")
+            tagging2.acceptingOfficer=request.POST.get("acceptingOfficer2")
+            if request.POST.get("region_code2") is not None and request.POST.get("circle_code2") is not None and request. POST.get("circle_code2") != "" :
+                hr_manager_data=HrManagers.objects.filter(circleCode=request.POST.get("circle_code2")).first()
+            elif request.POST.get("region_code2") is not None and (request.POST.get("circle_code2") is None or request.POST.get("circle_code2") == ""):
+                hr_manager_data=HrManagers.objects.filter(regionCode=request.POST.get("region_code2")).first()
+            tagging2.hrManager=hr_manager_data.empName
+            tagging2.hrManagerCode=hr_manager_data.empCode
+            # taggi2ng.hrManager=request.POST.get("hrManager2")
+            # taggi2ng.hrManagerCode=request.POST.get("hrManagerCode2")
+            tagging2.financialYear='2023-24'
+            if request.POST.get('is_final') == 'True' :
+                tagging.isFinal=True
+            else:
+                tagging.isFinal=False
+            tagging2.isAnotherTagging=True
+            tagging2.save()
+
+        return redirect(dashboard)
+        # print(emp_detail,"all details of ta form ")
+    return render(request,"Accounts\employeetagging_form_ta.html",context)

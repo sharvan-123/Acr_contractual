@@ -39,6 +39,8 @@ urlpatterns = [
         path('acceptingOfficer_form/<int:tagging_id>',views.acceptingOfficer_form,name="acceptingOfficer_form"),
         path('accepting_preview/<int:tagging_id>',views.accepting_preview,name="accepting_preview"),
         path('update_accepting_form_hindi/<int:tagging_id>',views.update_accepting_form_hindi,name="update_accepting_form_hindi"),
-        path('generate_pdf_accepting_officer',views.generate_pdf_accepting_officer,name="generate_pdf_accepting_officer")
+        path('generate_pdf_accepting_officer',views.generate_pdf_accepting_officer,name="generate_pdf_accepting_officer"),
+        path('emp_tagging_form_ta',views.emp_tagging_form_ta,name="emp_tagging_form_ta")
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
