@@ -16,7 +16,7 @@ def check_valid_dates(Type):
             Session = ACR_Session.objects.filter(isActive=True)[0]  # Assumes you have at least one instance of MyModel
             Date = ACR_Dates.objects.filter(acr_session=Session)[0]
             if Type == 'Tagging':
-                if request.user.employmentType['empTypeId'] not in [1,5,7,9]:
+                if request.user.employmentType['empTypeId'] not in [6]:
                     messages.error(request, 'You are not authorized to perform this task.')
                     return redirect('Dashboard')
                 elif Date.tagging_start_date <= datetime.now().date() <= Date.tagging_end_date:

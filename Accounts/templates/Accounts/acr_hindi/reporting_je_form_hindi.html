@@ -33,8 +33,8 @@
           <div class="card-body">
            
               <div class="form-group"> 
-                <label>विवरण : </label>
-                <input class="form-control" name="remark" style="height:44px;font-size:16px;">
+                <label>कार्य के प्रति संक्षिप्त विवरण : </label>
+                <input class="form-control" placeholder="विवरण दर्ज करे......" name="remark" style="height:44px;font-size:16px;">
                 </textarea>
               </div>
            
@@ -252,7 +252,7 @@
                 </tbody>
               </table>
               <div style="text-align:center">
-                      <input type="button" value="save" id="submitButton" class="btn btn-info">
+                      <input type="button" value="save" id="submitButton" class="btn btn-info sbtninfo">
                     </div>
             </div>
 </form>
@@ -291,6 +291,11 @@
     border: 1px solid #ced4da;
     border-radius: .25rem;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.sbtninfo {
+    padding: 8px 20px;
+    font-size: 16px;
+    text-transform: capitalize;
 }
 </style>
 {% include 'full_footer.html' %}

@@ -1,62 +1,59 @@
 {% include 'full_header.html'%}
-
 <style>
-  button.btn.btn-success {
-    cursor: pointer;
-  }
-  button.btn.btn-success[data-text="ACR Filled"] {
-    pointer-events: none;
-  }
+   button.btn.btn-success {
+   cursor: pointer;
+   }
+   button.btn.btn-success[data-text="ACR Filled"] {
+   pointer-events: none;
+   }
 </style>
-
-
-{% comment %} <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-
+{% comment %} 
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script> {% endcomment %}
 {% comment %} <script  {% endcomment %}
-
- <main>
-            <div class="container-fluid site-width">
-                <!-- START: Breadcrumbs-->
-                <div class="row ">
-                    <div class="col-12  align-self-center">
-                        <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
-                            <div class="w-sm-100 mr-auto"><h4 class="mb-0">ACR Portal</h4> <p>Welcome to Annual Confidential Record Portal </p></div>
-                            <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
-                                <li class="breadcrumb-item"><a href="{% url 'Dashboard' %}">Home</a></li>
-                                <li class="breadcrumb-item">Tagging completed list</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <!-- END: Breadcrumbs-->
-
-                <!-- START: Card Data-->
-                <div class="row row-eq-height">
-                    <div class="col-12 col-lg-12 todo-menu-bar flip-menu pl-lg-3 pr-lg-3">
-                        <a href="#" class="d-inline-block d-lg-none mt-1 flip-menu-close"><i class="icon-close"></i></a>
-                        <div class="card border h-100 contact-list-section">
-                            <div class="card-header border-bottom p-1 d-flex">
-                                <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
-<!--                                <input type="text" class="form-control border-0 p-2 w-50 h-100 contact-search mr-5" placeholder="Search ...">-->
-                                <a href="#" class="list-style search-bar-menu border-0 active"><i class="icon-list"></i></a>
-                                <a href="#" class="grid-style search-bar-menu"><i class="icon-grid"></i></a>
-                            </div>
-                            <div class="card-body">
-                             
-                <div class="ed-tableinfo-block ed-orderinfo-block">
+<main>
+<div class="container-fluid site-width">
+   <!-- START: Breadcrumbs-->
+   <div class="row ">
+      <div class="col-12  align-self-center">
+         <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+            <div class="w-sm-100 mr-auto">
+               <h4 class="mb-0">ACR Portal</h4>
+               <p>Welcome to Annual Confidential Record Portal </p>
+            </div>
+            <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+               <li class="breadcrumb-item"><a href="{% url 'Dashboard' %}">Home</a></li>
+               <li class="breadcrumb-item">Tagging completed list</li>
+            </ol>
+         </div>
+      </div>
+   </div>
+   <!-- END: Breadcrumbs-->
+   <!-- START: Card Data-->
+   <div class="row row-eq-height">
+      <div class="col-12 col-lg-12 todo-menu-bar flip-menu pl-lg-3 pr-lg-3">
+         <a href="#" class="d-inline-block d-lg-none mt-1 flip-menu-close"><i class="icon-close"></i></a>
+         <div class="card border h-100 contact-list-section">
+            <div class="card-header border-bottom p-1 d-flex">
+               <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
+               <!--                                <input type="text" class="form-control border-0 p-2 w-50 h-100 contact-search mr-5" placeholder="Search ...">-->
+               <a href="#" class="list-style search-bar-menu border-0 active"><i class="icon-list"></i></a>
+               <a href="#" class="grid-style search-bar-menu"><i class="icon-grid"></i></a>
+            </div>
+            <div class="card-body">
+               <div class="ed-tableinfo-block ed-orderinfo-block">
                   <div class="table-responsive">
-                     <table class="table table-hover table-bordered display" id="view_offer">
-                              <thead  class="table-dark">
-                                <tr>
-                                  <th>S no.</th>
-                                  <th>Employee code</th>
-                                  <th>Employee Name</th>
-                                  <th>Location(region,Circle)</th>
-                                  <th>Action</th>
-                                </tr>
-                              </thead>
-                               {% for data,flag in final_data %}
+                     <table id="example" class="table table-hover table-bordered display" id="view_offer">
+                        <thead  class="table-dark">
+                           <tr>
+                              <th>S no.</th>
+                              <th>Employee code</th>
+                              <th>Employee Name</th>
+                              <th>Location(region,Circle)</th>
+                              <th>Action</th>
+                           </tr>
+                        </thead>
+                        {% for data,flag,JE_TA_data in final_data %}
                                     {% if data %}
                               <tr>
                                <td>{{forloop.counter}}</td>
@@ -64,10 +61,10 @@
                                  <td>{{data.empCode.fullName}}</td>
                                  <td>{{data.region}}{{data.circle}}</td>
                                  {% if flag == 1 %}
-                                  {% if Je_Ae == True %}
+                                  {% if JE_TA_data == 0 %}
                                     <td ><a class="btn btn-primary" href="{% url 'reporting_je_form_hindi'  %}?tagging_id={{data.id}}">Fill ACR </a></td>
                                   
-                                  {% elif Ta_La == True %}
+                                  {% elif JE_TA_data == 1 %}
                                     <td ><a class="btn btn-primary" href="{% url 'reporting_ta_form_hindi'  %}?tagging_id={{data.id}}">Fill ACR </a></td>
                                   {% else %}
                                     <td ><a class="btn btn-primary" href=" ">Fill ACR </a></td>
@@ -85,27 +82,32 @@
                                             
                                 {% endif %} 
                                 {% endfor %}
-                      </table>
-                 </div>
+                     </table>
+                  </div>
                </div>
             </div>
-            </div>
-            </div>
-            </div>
-            </div>
-            </div>
-
-
+         </div>
+      </div>
+   </div>
+</div>
+<script>
+  $(document).ready(function() {
+      $('#example').DataTable({
+          "paging": true,
+          "lengthMenu": [10, 25, 50, 100], // You can set the pagination options here
+          "pageLength": 10 // Default number of rows per page
+      });
+  });
+</script>
 
 {% include 'full_footer.html'%}
-
 {% comment %} 
-             <script>
-    $(document).ready(function () {
-      alert();
-      $('#view_offer').DataTable({
-          pagingType: 'full_numbers',
-      });
-      alert();
-  });
-  </script> {% endcomment %}
+<script>
+   $(document).ready(function () {
+     alert();
+     $('#view_offer').DataTable({
+         pagingType: 'full_numbers',
+     });
+     alert();
+   });
+</script> {% endcomment %}

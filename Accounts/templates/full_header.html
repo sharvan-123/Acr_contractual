@@ -61,6 +61,21 @@
   <!-- END: Custom CSS-->
 
 
+<style>
+.sidebar .sidebar-menu > li ul li.dropdown.active {}
+
+.sidebar .sidebar-menu > li ul li.dropdown .dropdown-menu {
+    position: relative;
+    width: 100%;
+    padding: 2px 10px;
+    margin: 0 0 10px;
+}
+
+.sidebar .sidebar-menu > li ul li.dropdown.active .dropdown-menu {
+    display: block;
+}
+</style>
+
 </head>
 <!-- END Head-->
 <!-- START: Body-->
@@ -147,21 +162,27 @@
             <a href="/">
               <i class="icon-home"></i>डैशबोर्ड</a>
           </li>
-          {% if is_tagging == True %}
-          
-          <li class="{% if 'tagging' in request.path %} active {% endif %}">
-            <a href="/tagging/">
+          {% comment %} <li  class="{% if 'dropdown tagging' in request.path %} active {% endif %}"> {% endcomment %}
+          <li  class="dropdown">
+            {% comment %} <a href="/tagging/"> {% endcomment %}
+            <a href="javascript:;" class>
               <i class="icon-tag"></i> कर्मचारी टैगिंग </a>
-          </li>
-          {% else %}
-          <li class="{% if 'tagging' in request.path %} active {% endif %}">
-            <a href=" ">
-              <i class="icon-tag"></i> कर्मचारी टैगिंग </a>
-          </li>
-          {% endif %}
-          <li class="">
-            <a href="">
-              {% comment %} <i class="icon-tag"></i> {{request.user.employmentType['empTypeId']}} </a> {% endcomment %}
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/tagging/">
+                    <i class="icon-tag"></i>कर्मचारी टैगिंग</a>
+                </li>
+              {% for i in group_names  %}
+              
+               {% if i == 'Hr' %}
+                <li>
+                  <a href="/emp_tagging_form_ta">
+                    <i class="icon-tag"></i>कर्मचारी टैगिंग(TA/LA)</a>
+                </li>
+               {% endif %}
+              {% endfor %}
+              
+              </ul>
           </li>
           {% comment %} <li class="{% if 'appraisee' in request.path %} active {% endif %}">
             <a href="{% url 'appraise_view' %}">
@@ -191,9 +212,9 @@
             <a href="{% url 'reviewing_class_3' %}">
               <i class="icon-book-open"></i> Reviewing (Class-3) </a>
           </li>
-          <li class="{% if 'acceptingclass3/' in request.path %} active {% endif %}">
-            <a href="{% url 'accepting_class_3' %}">
-              <i class="icon-badge"></i> Accepting (Class-3) </a>
+          <li class="{% if 'emp_tagging_form_ta' in request.path %} active {% endif %}">
+            <a href="{% url 'emp_tagging_form_ta' %}">
+              <i class="icon-badge"></i> </a>
           </li> {% endcomment %}
           {% for grp in user.groups.all %} {% if grp.name == "Hr" and user.isManagerHr %}
           <li class="{% if 'mis' in request.path %} active {% endif %}">
