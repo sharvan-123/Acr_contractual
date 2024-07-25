@@ -1288,3 +1288,115 @@ def emp_tagging_form_ta(request):
         # print(emp_detail,"all details of ta form ")
 
     return render(request,"Accounts/employeetagging_form_ta.html",context)
+
+
+
+from django.db.models import Q
+def emp_tagging_form_je(request):
+    if request.method== "POST":
+        if EmployeeTagging.objects.filter(empCode_id=request.user.id).exists():
+            print("if ke adnar hai...........")
+            # messages.error("tagging already submitted")
+            messages.error(request, ('Tagging already submitted'))
+        else:
+            print("esle ke adnar hai...........")
+            tagging=EmployeeTagging()
+            print("is_final check",request.POST.get('is_final'))
+            isanotherTagging1=request.POST.get("isanotherTagging1")
+            tagging.empCode_id=request.user.id
+            tagging.fromDate=request.POST.get("from_Date")
+            tagging.toDate=request.POST.get("toDate")
+            tagging.region=request.POST.get("region")
+            tagging.region_code=request.POST.get("region_code")
+            # tagging.region_code=2233
+            tagging.circle=request.POST.get("circle")
+            # tagging.circle_code=1122
+            tagging.circle_code=request.POST.get("circle_code")
+            tagging.division=request.POST.get("division")
+            tagging.division_code=request.POST.get("division_code")
+            # tagging.division_code=444555
+            tagging.subdivision=request.POST.get("subdivision")
+            # tagging.subdivision_code=111222333
+            tagging.subdivision_code=request.POST.get("subdivision_code")
+            tagging.dc=request.POST.get("dc")
+            # tagging.dc_code=11223344
+            tagging.dc_code=request.POST.get("dc_code")
+            tagging.reportingDesignation=request.POST.get("reportingDesignation_one")
+            tagging.reportingOfficerCode=request.POST.get("reportingOfficerCode")
+            tagging.reportingOfficer=request.POST.get("reportingOfficer")
+            tagging.reviewingDesignation=request.POST.get("reviewingDesignation_one")
+            tagging.reviewingOfficerCode=request.POST.get("reviewingOfficerCode")
+            tagging.reviewingOfficer=request.POST.get("reviewingOfficer")
+            tagging.acceptingDesignation=request.POST.get("acceptingDesignation_one")
+            tagging.acceptingOfficerCode=request.POST.get("acceptingOfficerCode")
+            tagging.acceptingOfficer=request.POST.get("acceptingOfficer")
+            tagging.financialYear='2023-24'
+            if request.POST.get("region_code") is not None and request.POST.get("circle_code") is not None and request. POST.get("circle_code") != "" :
+                hr_manager_data=HrManagers.objects.filter(circleCode=request.POST.get("circle_code")).first()
+                tagging.hrManager=hr_manager_data.empName
+                tagging.hrManagerCode=hr_manager_data.empCode
+                
+            elif request.POST.get("region_code") is not None and (request.POST.get("circle_code") is None or request.POST.get("circle_code") == ""):
+                hr_manager_data=HrManagers.objects.filter(regionCode=request.POST.get("region_code")).first()
+            # print(hr_manager_data,"+++++++=======+++++++",hr_manager_data.empName,hr_manager_data.empCode,"hr data 2")
+                tagging.hrManager=hr_manager_data.empName
+                tagging.hrManagerCode=hr_manager_data.empCode
+                
+            # tagging.isAnotherTagging=request.POST.get("isAnotherTagging")
+            if isanotherTagging1 == '1':
+                tagging.isAnotherTagging=True
+            else:
+                tagging.isAnotherTagging=False
+            if request.POST.get('is_final') == 'True' :
+                tagging.isFinal=True
+            else:
+                tagging.isFinal=False
+            tagging.save()
+            if isanotherTagging1 == '1':
+                tagging2=EmployeeTagging()
+                tagging2.empCode_id=request.user.id
+                tagging2.fromDate=request.POST.get("from_Date2")
+                tagging2.toDate=request.POST.get("toDate2")
+                tagging2.region=request.POST.get("region2")
+                tagging2.region_code=request.POST.get("region_code2")
+                # taggi2ng.region_code=2233
+                tagging2.circle=request.POST.get("circle2")
+                # taggi2ng.circle_code=1122
+                tagging2.circle_code=request.POST.get("circle_code2")
+                tagging2.division=request.POST.get("division2")
+                tagging2.division_code=request.POST.get("division_code2")
+                tagging2.subdivision=request.POST.get("subdivision2")
+                # taggi2ng.subdivision_code=111222333
+                tagging2.subdivision_code=request.POST.get("subdivision_code2")
+                tagging2.dc=request.POST.get("dc2")
+                tagging2.dc_code=request.POST.get("dc_code2")
+                tagging2.reportingDesignation=request.POST.get("reportingDesignation_two")
+                tagging2.reportingOfficerCode=request.POST.get("reportingOfficerCode2")
+                tagging2.reportingOfficer=request.POST.get("reportingOfficer2")
+                tagging2.reviewingDesignation=request.POST.get("reviewingDesignation_two")
+                tagging2.reviewingOfficerCode=request.POST.get("reviewingOfficerCode2")
+                tagging2.reviewingOfficer=request.POST.get("reviewingOfficer2")
+                tagging2.acceptingDesignation=request.POST.get("acceptingDesignation_two")
+                tagging2.acceptingOfficerCode=request.POST.get("acceptingOfficerCode2")
+                tagging2.acceptingOfficer=request.POST.get("acceptingOfficer2")
+                if request.POST.get("region_code2") is not None and request.POST.get("circle_code2") is not None and request. POST.get("circle_code2") != "" :
+                    hr_manager_data=HrManagers.objects.filter(circleCode=request.POST.get("circle_code2")).first()
+                elif request.POST.get("region_code2") is not None and (request.POST.get("circle_code2") is None or request.POST.get("circle_code2") == ""):
+                    hr_manager_data=HrManagers.objects.filter(regionCode=request.POST.get("region_code2")).first()
+                tagging2.hrManager=hr_manager_data.empName
+                tagging2.hrManagerCode=hr_manager_data.empCode
+                # taggi2ng.hrManager=request.POST.get("hrManager2")
+                # taggi2ng.hrManagerCode=request.POST.get("hrManagerCode2")
+                tagging2.financialYear='2023-24'
+                if request.POST.get('is_final') == 'True' :
+                    tagging.isFinal=True
+                else:
+                    tagging.isFinal=False
+                tagging2.isAnotherTagging=True
+                tagging2.save()
+
+        return redirect(dashboard)
+        # print(emp_detail,"all details of ta form ")
+
+    return render(request,"Accounts/employeetagging_form_je.html")
+
