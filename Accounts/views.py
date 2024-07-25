@@ -1286,4 +1286,5 @@ def emp_tagging_form_ta(request):
 
         return redirect(dashboard)
         # print(emp_detail,"all details of ta form ")
-    return render(request,"Accounts\employeetagging_form_ta.html",context)
+
+    return render(request,"Accounts/employeetagging_form_ta.html",context)
