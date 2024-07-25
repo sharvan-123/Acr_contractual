@@ -19,6 +19,7 @@ urlpatterns = [
         path('ajax/load-posting-data/', views.load_posting_data, name='ajax_load_posting_data'),
         path('download-excel/<str:type>/', admin.download_excel, name='download_excel'),
         path('generate_pdf/<str:taggingId>/', views.generate_pdf, name='download_excel'),
+        path('emp_tagging_form_je',views.emp_tagging_form_je,name='emp_tagging_form_je'),
         # Extras
         path('reporting_je_form_hindi/',views.reporting_je_form_hindi,name='reporting_je_form_hindi'),
         path('reporting_ta_form_hindi/',views.reporting_ta_form_hindi,name='reporting_ta_form_hindi'),
