@@ -24,7 +24,7 @@
                             <div class="w-sm-100 mr-auto"><h4 class="mb-0">ACR Portal</h4> <p>Welcome to Annual Confidential Record Portal </p></div>
                             <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
                                 <li class="breadcrumb-item"><a href="{% url 'Dashboard' %}">Home</a></li>
-                                <li class="breadcrumb-item">Tagging completed list</li>
+                                <li class="breadcrumb-item">list</li>
                             </ol>
                         </div>
                     </div>
@@ -40,13 +40,13 @@
                                 <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
 <!--                                <input type="text" class="form-control border-0 p-2 w-50 h-100 contact-search mr-5" placeholder="Search ...">-->
                                 <a href="#" class="list-style search-bar-menu border-0 active"><i class="icon-list"></i></a>
-                                <a href="#" class="grid-style search-bar-menu"><i class="icon-grid"></i></a>
+                                {% comment %} <a href="#" class="grid-style search-bar-menu"><i class="icon-grid"></i></a> {% endcomment %}
                             </div>
                             <div class="card-body">
                              
                 <div class="ed-tableinfo-block ed-orderinfo-block">
                   <div class="table-responsive">
-                     <table class="table table-hover table-bordered display" id="view_offer">
+                     <table class="table table-hover table-bordered display" id="example">
                               <thead  class="table-dark">
                                 <tr>
                                   <th>S no.</th>
@@ -91,3 +91,31 @@
 
 
 {% include 'full_footer.html'%}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+
+<script>
+  $(document).ready(function() { 
+      $('#example').DataTable({
+          "paging": true,
+          "lengthMenu": [10, 25, 50, 100], // You can set the pagination options here
+          "pageLength": 50 // Default number of rows per page
+      }); 
+  });
+</script>
+<style>
+.dataTables_wrapper {
+    display: block !important;
+}
+
+
+</style>
