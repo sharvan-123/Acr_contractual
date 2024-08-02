@@ -234,6 +234,13 @@ class ReportingOfficer(models.Model):
     updated_at= models.DateTimeField(null=True, blank=True,auto_now=True)
     is_Status=models.BooleanField()
 
+    def save(self,*args,**kwargs):
+        if not self.pk:
+            self.created_at = timezone.now()
+        else:
+            self.updated_at = timezone.now()
+        super().save(*args,**kwargs)
+
 class LoginOtp(models.Model):
     emp=models.ForeignKey(CustomUser,on_delete=models.CASCADE,null=True)
     otp=models.IntegerField(null=True,blank=True)
@@ -242,19 +249,33 @@ class LoginOtp(models.Model):
 
 class ReviewingOfficer(models.Model):
     tagging=models.ForeignKey(EmployeeTagging,on_delete=models.CASCADE,null=True)
-    # descriptions=models.CharField(max_length=100, null=True, blank=True)
+    descriptions=models.CharField(max_length=100, null=True, blank=True)
     final_grade=models.CharField(max_length=100, null=True, blank=True)
     reviewing_officer_pdf=models.FileField(upload_to="reviewing_officer_pdf", null=True, blank=True)
     created_at= models.DateTimeField(null=True, blank=True,auto_now=True)
     updated_at= models.DateTimeField(null=True, blank=True,auto_now=True)
     is_Status=models.BooleanField()
+        
+    def save(self,*args,**kwargs):
+        if not self.pk:
+            self.created_at = timezone.now()
+        else:
+            self.updated_at = timezone.now()
+        super().save(*args,**kwargs)
 
 
 class AcceptingOfficer(models.Model):
     tagging=models.ForeignKey(EmployeeTagging,on_delete=models.CASCADE,null=True)
-    # descriptions=models.CharField(max_length=100, null=True, blank=True)
+    descriptions=models.CharField(max_length=100, null=True, blank=True)
     final_grade=models.CharField(max_length=100, null=True, blank=True)
     accepting_officer_pdf=models.FileField(upload_to="accepting_officer_pdf", null=True, blank=True)
     created_at= models.DateTimeField(null=True, blank=True,auto_now=True)
     updated_at= models.DateTimeField(null=True, blank=True,auto_now=True)
     is_Status=models.BooleanField()
+
+    def save(self,*args,**kwargs):
+        if not self.pk:
+            self.created_at = timezone.now()
+        else:
+            self.updated_at = timezone.now()
+        super().save(*args,**kwargs)
