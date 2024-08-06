@@ -840,6 +840,7 @@ def reviewingOfficer_form(request,tagging_id):
         # i.tagging__id=tagging_id
         print(request.POST.get('tagging_id'),"++++++++++++++++++++++++++")
         i.final_grade=request.POST.get('final_grade')
+        i.descriptions=request.POST.get('remark')
         i.tagging_id=request.POST.get('tagging_id')
         i.is_Status=False
         i.save()
@@ -863,6 +864,8 @@ def reviewing_preview(request,tagging_id):
             'g_ten':reporting_grade,
             'reviewing_data':reviewing_data,
             'reviewing_grade':reviewing_grade,
+            'reporting_data':reporting_data,
+            'reviewing_data':reviewing_data
             })
 
 
@@ -883,12 +886,15 @@ def update_reviewing_form_hindi(request,tagging_id):
                                                                                'tagging_data':tagging_data,
                                                                                'reporting_grade':reporting_grade,
                                                                                'reviewing_grade':reviewing_grade,
+                                                                               'reporting_data':reporting_data,
+                                                                               'reviewing_data':reviewing_data
                                                                               })
     else:
         print(tagging_id,"qwertyuiopoiuytrewertyuioiuytrewertyuiuytre")
         i=ReviewingOfficer.objects.get(tagging__id=tagging_id)
         tagging_id=i.tagging.id    
         i.final_grade=request.POST.get('final_grade')
+        i.descriptions=request.POST.get('remark')
         i.is_Status=False
         i.save()
         officer_id=i.id
@@ -949,6 +955,8 @@ def generate_pdf_reviewing_officer(request):
                     'reviewing_grade':reviewing_grade,
                     'reporting_grade':reporting_grade,
                     'tagging_data':tagging_data,
+                    'reporting_model':reporting_model,
+                    'reviewing_model':reviewing_model,
                 }
             )
             conf = pdfkit.configuration(wkhtmltopdf=config)
@@ -1023,7 +1031,7 @@ def acceptingOfficer_form(request,tagging_id):
         url = reverse('accepting_preview',args=[tagging_id])
         return redirect(url)
         return HttpResponse("data saved")
-    return render(request,'Accounts/acr_hindi/accepting_form.html',{'tagging_id':tagging_id,'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reportingGrade':reportingGrade,'reviewingGrade':reviewingGrade})
+    return render(request,'Accounts/acr_hindi/accepting_form.html',{'tagging_id':tagging_id,'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reportingGrade':reportingGrade,'reviewingGrade':reviewingGrade,'reporting_officer_data':reporting_officer_data,'reviewing_officer_data':reviewing_officer_data})
 
 @login_required(login_url='/login/')
 def accepting_preview(request,tagging_id):
@@ -1031,20 +1039,21 @@ def accepting_preview(request,tagging_id):
     tagging_data=EmployeeTagging.objects.get(id=tagging_id)
     reporting_data=ReportingOfficer.objects.get(tagging__id=tagging_id)
     reviewing_data=ReviewingOfficer.objects.get(tagging__id=tagging_id)
-    accepting_data=AcceptingOfficer.objects.get(tagging__id=tagging_id)
+    accepting_data1=AcceptingOfficer.objects.get(tagging__id=tagging_id)
     emptype= tagging_data.empCode.employmentType['name']
     emp_des=tagging_data.empCode.designation['name']
     reporting_grade=float(reporting_data.final_grade) 
     reviewing_grade=float(reviewing_data.final_grade)
-    accepting_data=float(accepting_data.final_grade)
+    accepting_data=float(accepting_data1.final_grade)
 
 
     return render(request,'Accounts/acr_hindi/preview_accepting.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,
             'g_ten':reporting_grade,
             'accepting_data':accepting_data,
             'reviewing_grade':reviewing_grade,
-            'accepting_data':accepting_data,
-
+            'accepting_data1':accepting_data1,
+            'reporting_data':reporting_data,
+            'reviewing_data':reviewing_data
             })
 
 @login_required(login_url='/login/')
@@ -1072,7 +1081,10 @@ def update_accepting_form_hindi(request,tagging_id):
                                                                                'tagging_data':tagging_data,
                                                                                'reporting_grade':reporting_grade,
                                                                                'reviewing_grade':reviewing_grade,
-                                                                               'accepting_grade':accepting_grade
+                                                                               'accepting_grade':accepting_grade,
+                                                                               'accepting_data':accepting_data,
+                                                                               'reviewing_data':reviewing_data,
+                                                                               'reporting_data':reporting_data
                                                                               })
     else:
         # tagging_id=request.POST.get("tagging_id")
@@ -1081,6 +1093,7 @@ def update_accepting_form_hindi(request,tagging_id):
         tagging_id=i.tagging.id    
         # tagging_data=EmployeeTagging.objects.get(id=i.tagging.id)
         i.final_grade=request.POST.get('final_grade')
+        i.descriptions=request.POST.get('remark')
         i.is_Status=False
         i.save()
         officer_id=i.id
@@ -1140,6 +1153,10 @@ def generate_pdf_accepting_officer(request):
                     'reporting_grade':reporting_grade,
                     'accepting_grade':accepting_grade,
                     'tagging_data':tagging_data,
+                    'reporting_model':reporting_model,
+                    'reviewing_model':reviewing_model,
+                    'accepting_model':accepting_model
+
                 }
             )
             # path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path

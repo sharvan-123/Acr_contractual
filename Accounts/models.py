@@ -161,9 +161,12 @@ class EmployeeTagging(models.Model):
     def __str__(self):
         return str(self.id)
 
-    def save(self, *args, **kwargs):
-        self.updated_at = timezone.now()
-        super().save(*args, **kwargs)
+    def save(self,*args,**kwargs):
+        if not self.pk:
+            self.created_at = timezone.now()
+        else:
+            self.updated_at = timezone.now()
+        super().save(*args,**kwargs)
 
     # def __str__(self):
     #     return str(self.empCode) + " - " +str(self.id)

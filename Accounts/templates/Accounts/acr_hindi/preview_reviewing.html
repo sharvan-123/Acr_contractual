@@ -249,9 +249,9 @@
                                         <br>
                                         <br>
                                         
-                                        <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
+                                        <h4 style="font-size: 20px; text-align:left; margin-bottom:15px;">
                                             <u>
-                                                (रिपोर्टिंग अधिकारी  द्वारा दी हुई ग्रेड)
+                                                रिपोर्टिंग अधिकारी  द्वारा दी हुई ग्रेड :-
                                                
                                             </u>
                                         </h4>
@@ -272,6 +272,17 @@
                                                         {% endif %}
                                                       
                                                     </div> 
+
+                                                    <br><br>
+                                                    <h4 style="font-size: 16px; text-align:left; margin-bottom:15px;">
+                                                        <u>
+                                                            रिपोर्टिंग अधिकारी द्वारा कार्य का संक्षिप्त विवरण :-
+                                                           
+                                                        </u>
+                                                    </h4>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                    {{reporting_data.descriptions}}</div>
+                                                          
                                 
                                         <br>
 
@@ -280,34 +291,46 @@
                                         <table style="width:100%; margin-bottom:10px;">
 
                                             <tr>
-                                                
+                                                <td style="width: 10%;">
+                                                    <h4 style="font-size: 20px; text-align:left; margin-bottom:15px;">
+                                                        <u>
+                                                            पुनरीक्षण कर्ता अधिकारी  द्वारा दी हुई ग्रेड
+                                                        </u>
+                                                    </h4>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                        {% if reviewing_grade >= 9.1 and reviewing_grade <= 10 %}
+                                                               उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
+                                                            {% elif reviewing_grade >= 7.1 and reviewing_grade <= 9.0 %}
+                                                           बहुत अच्छा (क)
+                                                            {% elif reviewing_grade >= 6.1 and reviewing_grade <= 7.0 %}
+                                                            अच्छा (ख)
+                                                            {% elif reviewing_grade >= 3.1 and reviewing_grade <= 6.0 %}
+                                                                औसत (ग)
+                                                            {% elif reviewing_grade <= 3.0  %}
+                                                                सेवा में जारी रखने योग्य नहीं (घ)
+                                                            {% endif %}
+                                                          
+                                                        </div>
+                                                        
+                                                    <br>
+                                                </td>
                                             </tr>
-                                             <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
-                                            <u>
-                                                (पुनरीक्षण कर्ता अधिकारी  द्वारा दी हुई ग्रेड)
-                                            </u>
-                                        </h4>
-                                        <br>
                                         <tr>
                                                 <td style="width: 10%;">
-                                                    <div style="text-align: left;">
-                                                      
-                                                    </div>
+                                                    <br>
+                                                    <h4 style="font-size: 16px; text-align:left; margin-bottom:15px;">
+                                                        <u>
+                                                            पुनरीक्षण कर्ता अधिकारी द्वारा कार्य का संक्षिप्त विवरण :-
+                                                           
+                                                        </u>
+                                                    </h4>
+                                                    
                                                     <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
-                                                    {% if reviewing_grade >= 9.1 and reviewing_grade <= 10 %}
-                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
-                                                        {% elif reviewing_grade >= 7.1 and reviewing_grade <= 9.0 %}
-                                                       बहुत अच्छा (क)
-                                                        {% elif reviewing_grade >= 6.1 and reviewing_grade <= 7.0 %}
-                                                        अच्छा (ख)
-                                                        {% elif reviewing_grade >= 3.1 and reviewing_grade <= 6.0 %}
-                                                            औसत (ग)
-                                                        {% elif reviewing_grade <= 3.0  %}
-                                                            सेवा में जारी रखने योग्य नहीं (घ)
-                                                        {% endif %}
-                                                      
-                                                    </div>
+                                                    {{reviewing_data.descriptions}}</div>
+                                                    
+                                                    
                                                 </td>
+                                                <br>
                                             </tr>
                                         </table>
 
