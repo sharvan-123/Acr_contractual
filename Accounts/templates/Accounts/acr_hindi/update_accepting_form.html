@@ -258,7 +258,7 @@
                                         
                                                     <div style="text-align: left;">
                                                          <h6>
-                                                            रिपोर्टिंग अधिकारी  द्वारा  di hui grade
+                                                            रिपोर्टिंग अधिकारी द्वारा दी हुई ग्रेड :-
                                                         </h6>
                                                     </div>
                                                     <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
@@ -279,18 +279,22 @@
                                                     </div>
 
                                                 <br>
-
-                                        <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
-                                            <u>
-                                                (reviewing अधिकारी भाग-I द्वारा 
-                                                (कर्मचारियों के लिए लागू))
-                                            </u>
-                                        </h4>
-                                        
+                                                <br>
                                                     <div style="text-align: left;">
-                                                         <h6>
-                                                            reviewing अधिकारी  द्वारा  di hui grade
-                                                        </h6>
+                                                        <h6>
+                                                            रिपोर्टिंग अधिकारी द्वारा कार्य का संक्षिप्त विवरण :-
+                                                       </h6>
+                                                   </div>
+                                                   
+                                                   <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reporting_data.descriptions}}
+                                                        </div>                                      
+                                        <br>
+                                                    <div >
+                                                        <h4 style="font-size: 16px; text-align:left; margin-bottom:15px;">
+                                                            <u>
+                                                                पुनरीक्षण कर्ता अधिकारी  द्वारा दी हुई ग्रेड :-
+                                                            </u>
+                                                        </h4>
                                                     </div>
                                                     <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
                                                         {% comment %} {{reported_data.grade_one}} {% endcomment %}
@@ -310,27 +314,35 @@
                                                     </div>
 
 
-
+                                                    <br>
+                                                    <div style="text-align: left;">
+                                                        <h6>
+                                                            पुनरीक्षण कर्ता अधिकारी द्वारा कार्य का संक्षिप्त विवरण :-
+                                                       </h6>
+                                                   </div>
+                                                   
+                                                   <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reviewing_data.descriptions}}
+                                                        </div>                                      
+                                        <br>
 
                                                     <br>
-                                                    <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
+                                                    {% comment %} <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
                                             <u>
                                                 (Accepting अधिकारी  द्वारा di hui grade
                                                 )
                                             </u>
-                                        </h4>
+                                        </h4> {% endcomment %}
                                         
 
-                                                    <br>
-                                                    <br>
+                                                    <br> 
                                                
 
-                                        <table style="width:100%; margin-bottom:10px;">
-                                            <tr>
+                                        {% comment %} <table style="width:100%; margin-bottom:10px;">
+                                            <tr> {% endcomment %}
                                             
                                 <form  method="post" action="/update_accepting_form_hindi/{{tagging_data.id}}"  enctype="multipart/form-data">
                                     {% csrf_token %}
-                                    <div class="col-12 col-sm-12 p-0 m-0">
+                                    {% comment %} <div class="col-12 col-sm-12 p-0 m-0">
                                     <div class="card">
                                         <div class="card-header d-flex justify-content-between align-center">
                                         <h4 class="card-title m-auto text-primary"> कार्य मूल्यांकन</h4>
@@ -390,17 +402,90 @@
 
 
                                            
-                                            </table>
+                                            </table> {% endcomment %}
 
 
     
 
-                                        <br>
+                                        {% comment %} <br>
 
 
                                     </td>
                                 </tr>
-                            </table>
+                            </table> {% endcomment %}
+
+
+
+
+                            <div class="col-12 col-sm-12 p-0 m-0">
+                                <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
+                                    <u>
+                                        स्वीकृतकर्ता अधिकारी द्वारा दी हुई ग्रेड
+                                    </u>
+                                </h4>
+                            <div class="card p-2">
+                                <div class="card-header d-flex justify-content-between align-center">
+                                <h4 class="card-title m-auto text-primary"> कार्य मूल्यांकन</h4>
+                                </div>
+                                
+                                
+                                    <input name="tagging_id" value='{{tagging_id}}'hidden/>
+                                    
+
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <h6 class="text">
+                                                    कार्य के प्रति संक्षिप्त विवरण : 
+                                                </h6>  
+                                                <input value='{{accepting_data.descriptions}}' name="remark" class="form-control" required/>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h6 class="text">
+                                                    स्वीकृतकर्ता अधिकारी द्वारा दी हुई ग्रेड
+                                                </h6>  
+                                                <select class="cform-control form-control" style="width:100%;" name="final_grade" onchange="calculateAverage()" required>
+                                                    <option disable> ग्रेड चुनें </option>
+                                                 {% if accepting_grade == '10' %}
+                                                    <option value={{accepting_grade}}  selected> क+ </option>
+                                                {% elif accepting_grade == '9' %}
+                                                    <option value={{accepting_grade}} selected> क </option>
+                                                {% elif accepting_grade == '7' %}
+                                                    <option value={{accepting_grade}}  selected> ख </option>
+                                                {% elif accepting_grade == '6' %}
+                                                    <option value={{accepting_grade}}  selected> ग </option>                     
+                                                {% else %}
+                                                    <option value={{accepting_grade}}  selected>  घ </option>
+                                                {% endif %}
+                                                    <option value="10"> क+ </option>
+                                                    <option value="9"> क </option>
+                                                    <option value="7"> ख  </option>
+                                                    <option value="6"> ग</option>
+                                                    <option value="3"> घ</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                
+
+
+                                <br>
+
+
+                            </td>
+                        </tr>
+                    </table>
+
+
+
+
+
+
                              <div style="text-align:center">
                       <input type="submit" value="save"  class="btn btn-info">
                     </div>

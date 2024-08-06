@@ -251,14 +251,14 @@
 
                                         <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
                                             <u>
-                                                (रिपोर्टिंग अधिकारी भाग-I द्वारा 
-                                                (कर्मचारियों के लिए लागू))
+                                                रिपोर्टिंग अधिकारी भाग-I द्वारा 
+                                                
                                             </u>
                                         </h4>
                                         
                                                     <div style="text-align: left;">
                                                          <h6>
-                                                            रिपोर्टिंग अधिकारी  द्वारा  di hui grade
+                                                            रिपोर्टिंग अधिकारी  द्वारा दी हुई ग्रेड
                                                         </h6>
                                                     </div>
                                                     <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
@@ -278,14 +278,25 @@
                                                        
                                                     </div>
 
+                                                    <br>
+
+                                                    <div style="text-align: left;">
+                                                        <h6>
+                                                           रिपोर्टिंग अधिकारी  द्वारा कार्य के प्रति संक्षिप्त विवरण : 
+                                                       </h6>
+                                                   </div>
+                                                   <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                   {{reporting_data.descriptions}}
+                                                   </div>
+
 
                                                     <br>
                                                     <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
                                             <u>
-                                                (reviewing अधिकारी  द्वारा di hui grade
-                                                )
+                                                पुनरीक्षण कर्ता अधिकारी द्वारा दी हुई ग्रेड
                                             </u>
                                         </h4>
+                                        
                                         
 
                                                     <br>
@@ -297,69 +308,56 @@
                                             
                                 <form  method="post" action="/update_reviewing_form_hindi/{{tagging_data.id}}"  enctype="multipart/form-data">
                                     {% csrf_token %}
-                                    <div class="col-12 col-sm-12 p-0 m-0">
-                                    <div class="card">
+                                    <div class="col-12 col-sm-12 p-0 m-0"> 
+                                    <div class="card p-2">
                                         <div class="card-header d-flex justify-content-between align-center">
                                         <h4 class="card-title m-auto text-primary"> कार्य मूल्यांकन</h4>
                                         </div>
                                         
                                         
                                             <input name="tagging_id" value='{{tagging_id}}'hidden/>
-                                            <h6>
-                                                (क) कार्यपालिक  और सुपरवाइजरी कार्यों के निष्पादन हेतु अनुबंधित संविदा कर्मियों के हेतु
-                                            </h6>
-                                            <div class="table-responsive">
-                                            <table class="table border m-0" id="po_officer_invoice_list">  
-                                                <thead>
-                                                <tr>
-                                                    <th class="text-primary text-left border" style="width: 10%;">
-                                                    (क)
-                                                    </th>
-                                                    <th  class="text-primary text-left border" style="width: 75%;">
-                                                    विशेषताएँ
-                                                    </th>
-                                                    <th class="text-primary text-left border" style="width: 15%;">
-                                                    ग्रेड
-                                                    </th>
-                                                </tr>
-                                                </thead>            
-                                                <tbody>    
-                                                <tr>
-                                                    <td class="border">
-                                                    I
-                                                    </td>
-                                                    <td class="border"> 
-                                                    कार्य के प्रति दृष्टिकोण
-                                                    </td> 
-                                                    <td> 
-                                                    <select class="cform-control" name="final_grade" onchange="calculateAverage()" required>
-                                                        <option disable> ग्रेड चुनें </option>
-                                                     {% if reviewing_grade == '10' %}
-                                                        <option value={{reviewing_grade}}  selected> क+ </option>
-                                                    {% elif reviewing_grade == '9' %}
-                                                        <option value={{reviewing_grade}} selected> क </option>
-                                                    {% elif reviewing_grade == '7' %}
-                                                        <option value={{reviewing_grade}}  selected> ख </option>
-                                                    {% elif reviewing_grade == '6' %}
-                                                        <option value={{reviewing_grade}}  selected> ग </option>                     
-                                                    {% else %}
-                                                        <option value={{reviewing_grade}}  selected>  घ </option>
-                                                    {% endif %}
-                                                        <option value="10"> क+ </option>
-                                                        <option value="9"> क </option>
-                                                        <option value="7"> ख  </option>
-                                                        <option value="6"> ग</option>
-                                                        <option value="3"> घ</option>
-                                                    </select>
-                                                    </td> 
-                                                </tr>
-                                                
+                                            
 
-
-                                           
-                                            </table>
-
-
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <h6 class="text">
+                                                            कार्य के प्रति संक्षिप्त विवरण : 
+                                                        </h6>  
+                                                        <input  name="remark" value="{{reviewing_data.descriptions}}"  class="form-control" required/>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <h6 class="text">
+                                                            पुनरीक्षण कर्ता के द्वारा दी जाने वाली ग्रेड
+                                                        </h6>  
+                                                        <select class="cform-control " name="final_grade" onchange="calculateAverage()" style="min-width:160px; width:100%;" required>
+                                                            <option disable> ग्रेड चुनें </option>
+                                                         {% if reviewing_grade == '10' %}
+                                                            <option value={{reviewing_grade}}  selected> क+ </option>
+                                                        {% elif reviewing_grade == '9' %}
+                                                            <option value={{reviewing_grade}} selected> क </option>
+                                                        {% elif reviewing_grade == '7' %}
+                                                            <option value={{reviewing_grade}}  selected> ख </option>
+                                                        {% elif reviewing_grade == '6' %}
+                                                            <option value={{reviewing_grade}}  selected> ग </option>                     
+                                                        {% else %}
+                                                            <option value={{reviewing_grade}}  selected>  घ </option>
+                                                        {% endif %}
+                                                            <option value="10"> क+ </option>
+                                                            <option value="9"> क </option>
+                                                            <option value="7"> ख  </option>
+                                                            <option value="6"> ग</option>
+                                                            <option value="3"> घ</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        
     
 
                                         <br>
