@@ -1023,6 +1023,7 @@ def acceptingOfficer_form(request,tagging_id):
         # i.tagging__id=tagging_id
         print(request.POST.get('tagging_id'),"++++++++++++++++++++++++++")
         i.final_grade=request.POST.get('final_grade')
+        i.descriptions=request.POST.get('remark')
         i.tagging_id=request.POST.get('tagging_id')
 
         i.is_Status=False
@@ -1417,3 +1418,20 @@ def emp_tagging_form_je(request):
 
     return render(request,"Accounts/employeetagging_form_je.html")
 
+
+def complete_acr_list(request):
+    accepting_data=AcceptingOfficer.objects.filter(is_Status=True)
+    reviewing_data=[]
+    reporting_data=[]
+    tagging_data=[]
+    for i in accepting_data:
+    # emp_data=EmployeeTagging.objects.filter(id=accepting_data.tagging.id)
+        reviewing_data1=ReviewingOfficer.objects.get(tagging__id=i.tagging.id)
+        reviewing_data.append(reviewing_data1)
+        reporting_data1=ReportingOfficer.objects.get(tagging__id=i.tagging.id)
+        reporting_data.append(reporting_data1)
+        tagging_data1=EmployeeTagging.objects.get(id=i.tagging.id)
+        tagging_data.append(tagging_data1)
+    data=zip(accepting_data,reviewing_data,reporting_data,tagging_data)
+    print(accepting_data,reviewing_data,tagging_data)        
+    return render(request,'Accounts/acr_hindi/complete_acr_list.html',{'data':data})
