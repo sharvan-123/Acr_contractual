@@ -847,7 +847,7 @@ def reviewingOfficer_form(request,tagging_id):
         from django.urls import reverse
         url = reverse('reviewing_preview',args=[tagging_id])
         return redirect(url)
-    return render(request,'Accounts/acr_hindi/reviewing_form.html',{'tagging_id':tagging_id,'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reportingGrade':reportingGrade})
+    return render(request,'Accounts/acr_hindi/reviewing_form.html',{'tagging_id':tagging_id,'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reportingGrade':reportingGrade,'reporting_officer_data':reporting_officer_data})
 
 
 
@@ -987,6 +987,7 @@ def AcceptingListView(request):
     data=EmployeeTagging.objects.filter(acceptingOfficer__icontains=request.user.empCode).filter(isFinal=True)
     print(request.user.mobileNo,"mobile no.....")
     flag=[]
+    data1=zip([0],[0])
     for i in data:
         print(i.id,"tagging id ..........")
         reviewing_officer = ReviewingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
@@ -998,7 +999,7 @@ def AcceptingListView(request):
             else:
                 flag.append(0)
         data1=zip(reviewing_officer,flag)
-
+    
         print(reviewing_officer,accepting_officer,"+++++++++++++++++++++",flag)
         # for j,k in data1:
         #     print(j,k)
@@ -1024,7 +1025,7 @@ def acceptingOfficer_form(request,tagging_id):
         print(request.POST.get('tagging_id'),"++++++++++++++++++++++++++")
         i.final_grade=request.POST.get('final_grade')
         i.tagging_id=request.POST.get('tagging_id')
-
+        i.descriptions=request.POST.get('remark')
         i.is_Status=False
         i.save()
         from django.urls import reverse
