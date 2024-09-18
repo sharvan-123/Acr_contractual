@@ -1,0 +1,178 @@
+{% include 'full_header.html'%}
+<style>
+   button.btn.btn-success {
+   cursor: pointer;
+   }
+   button.btn.btn-success[data-text="ACR Filled"] {
+   pointer-events: none;
+   }
+</style>
+
+
+<script>
+   
+</script>
+
+{% comment %} 
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script> {% endcomment %}
+{% comment %} <script  {% endcomment %}
+<main>
+<div class="container-fluid site-width">
+   <!-- START: Breadcrumbs-->
+   <div class="row ">
+      <div class="col-12  align-self-center">
+         <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+            <div class="w-sm-100 mr-auto">
+               <h4 class="mb-0">ACR Portal</h4>
+               <p>Welcome to Annual Confidential Record Portal </p>
+            </div>
+            <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+               <li class="breadcrumb-item"><a href="{% url 'Dashboard' %}">Home</a></li>
+               <li class="breadcrumb-item">Tagging completed list</li>
+            </ol>
+         </div>
+      </div>
+   </div>
+   <!-- END: Breadcrumbs-->
+   <!-- START: Card Data-->
+   <div class="row row-eq-height">
+      <div class="col-12 col-lg-12 todo-menu-bar flip-menu pl-lg-3 pr-lg-3">
+         <a href="#" class="d-inline-block d-lg-none mt-1 flip-menu-close"><i class="icon-close"></i></a>
+         <div class="card border h-100 contact-list-section">
+            <div class="card-header border-bottom p-1 d-flex">
+               <a href="#" class="d-inline-block d-lg-none flip-menu-toggle"><i class="icon-menu"></i></a>
+               <!--                                <input type="text" class="form-control border-0 p-2 w-50 h-100 contact-search mr-5" placeholder="Search ...">-->
+               <a href="#" class="list-style search-bar-menu border-0 active"><i class="icon-list"></i></a>
+               <a href="#" class="grid-style search-bar-menu"><i class="icon-grid"></i></a> 
+            </div>
+            <div class="card-body">
+               <div class="ed-tableinfo-block ed-orderinfo-block">
+                  <div class="table-responsive">
+                     <table id="example" class="table table-hover table-bordered display" id="view_offer">
+                        <thead  class="table-dark">
+                           <tr>
+                              <th>S no.</th>
+                              <th>Employee Name</th>
+                              <th>Reporting officer Acr</th>
+                              <th>Reviewing officer Acr</th>
+                              <th>Accepting officer Acr</th>
+                           </tr>
+                        </thead>
+                        {% for i in final_data %}
+                                <tr>
+                                <td>{{forloop.counter}}</td>
+                                {% for j in i %}
+                                <td>
+                                {% if forloop.counter == 1 %}
+                                {{j}}
+                                {% elif j == 0 %}
+                                <span class="btn btn-warning">No record</span>
+
+                                {% else %}
+                                 {% if j.reporting_pdf %}
+                                 <a href='{{j.reporting_pdf}}' class="btn btn-primary">view</a>
+                                 {% elif j.reviewing_officer_pdf%}
+                                 <a href='{{j.reviewing_officer_pdf}}' class="btn btn-primary">view</a>
+                                 {% else %}
+                                 <a href='{{j.accepting_officer_pdf}}' class="btn btn-primary">view</a>
+                                 {% endif %}
+                                {% endif %}
+                                </td>
+                                {% endfor %}
+                               
+                                </tr> 
+                                {% endfor %}                              
+                               {% comment %} {% else %}
+                                    
+                                 <h6> No Data Found</h6>
+                                            
+                                {% endif %}  {% endcomment %}
+                          
+                     </table>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+{% include 'full_footer.html'%}
+{% comment %} 
+<script>
+   $(document).ready(function () {
+     alert();
+     $('#view_offer').DataTable({
+         pagingType: 'full_numbers',
+     });
+     alert();
+   });
+</script> {% endcomment %}
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css">
+
+<script type="text/javascript" charset="utf8" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+
+<script>
+  $(document).ready(function() { 
+      $('#example').DataTable({
+          "paging": true,
+          "lengthMenu": [10, 25, 50, 100], // You can set the pagination options here
+          "pageLength": 50 // Default number of rows per page
+      }); 
+  });
+</script>
+
+<style>
+.dataTables_wrapper {
+    display: block !important;
+}
+
+</style>
+{% comment %} <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    {% for j in i %}
+                                    {% if forloop.counter == 1 %}
+                                    <td>{{j}}</td>
+                                    
+                                    {% else %}
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% if i.reporting_pdf %}
+                                        <td><a href='{{i.reporting_pdf}}' class="btn btn-primary">view</a></td>
+                                    {% else %}
+                                    <td>No record</td>
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% for reviewing_data in reviewing_data1 %}
+                                    {% if reviewing_data.tagging.empCode == i.tagging.empCode %}
+                                        {% if reviewing_data.reviewing_officer_pdf %}
+                                            <td><a href="{{ reviewing_data.reviewing_officer_pdf }}" class="btn btn-primary">view</a></td>
+                                        
+                                        {% endif %}
+                                    {% else %}
+                                            <td><span class="btn btn-warning">No record</span></td>
+
+                                    {% endif %}
+                                {% endfor %}
+                                {% for accepting_data in accepting_data1 %}
+                                    {% if accepting_data.tagging.empCode == i.tagging.empCode %}
+                                        {% if accepting_data.accepting_officer_pdf %}
+                                            <td><a href="{{ accepting_data.accepting_officer_pdf }}" class="btn btn-primary">view</a></td>
+                                        
+                                        {% endif %}
+                                        {% else %}
+                                            <td><span class="btn btn-warning">No record</span></td>
+
+                                    {% endif %}
+                                {% endfor %}
+                                </tr>
+                                 {% endcomment %}
