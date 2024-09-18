@@ -1418,3 +1418,87 @@ def emp_tagging_form_je(request):
 
     return render(request,"Accounts/employeetagging_form_je.html")
 
+#150033
+# def complete_acr_list(request):
+#     print(request.user.empCode,"codddddddddddddd")
+#     if request.user.empCode == '12345678':
+#         # tagging_data1=EmployeeTagging.objects.filter(empCode__designation['designationId']==99)
+#         tagging_data1 = EmployeeTagging.objects.filter(empCode__designation__contains={'designationId': 37},isFinal=True)
+#         accepting_data=[]
+#         reviewing_data=[]
+#         reporting_data=[]
+#         for i in tagging_data1:
+#             # print(i.id,"id jo loop me hai")
+#             accepting_data1=AcceptingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
+#             accepting_data.append(accepting_data1)
+
+#             reviewing_data1=ReviewingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
+#             reviewing_data.append(reviewing_data1)
+            
+#             reporting_data1=ReportingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
+#             reporting_data.append(reporting_data1)
+            
+#         print()
+#         data=zip(accepting_data,reviewing_data,reporting_data)
+#         print(accepting_data,reviewing_data1,tagging_data1,"+++++++++++++++")        
+#         return render(request,'Accounts/acr_hindi/complete_acr_list.html',{'data':data
+#         })
+#     else:
+#         print("qwertyuiopoiuytrew12345678")
+#         accepting_data=AcceptingOfficer.objects.filter(is_Status=True)
+#         reviewing_data=[]
+#         reporting_data=[]
+#         tagging_data=[]
+#         for i in accepting_data:
+#         # emp_data=EmployeeTagging.objects.filter(id=accepting_data.tagging.id)
+#             reviewing_data1=ReviewingOfficer.objects.get(tagging__id=i.tagging.id)
+#             reviewing_data.append(reviewing_data1)
+#             reporting_data1=ReportingOfficer.objects.get(tagging__id=i.tagging.id)
+#             reporting_data.append(reporting_data1)
+#             tagging_data1=EmployeeTagging.objects.get(id=i.tagging.id)
+#             tagging_data.append(tagging_data1)
+#         data=zip(accepting_data,reviewing_data,reporting_data,tagging_data)
+#         print(accepting_data,reviewing_data,tagging_data)        
+#     return render(request,'Accounts/acr_hindi/complete_acr_list.html',{'data':data})
+
+def complete_acr_list(request):
+    # tagging_data1=EmployeeTagging.objects.filter(empCode__designation['designationId']==99)
+    tagging_data1 = list(EmployeeTagging.objects.filter(
+    empCode__designation__designationId=37,
+    isFinal=True
+    ).values_list('id',flat=True))
+    accepting_data1=AcceptingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
+    reviewing_data1=ReviewingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
+    reporting_data1=ReportingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
+    off_list=[]
+    data=[]
+    for i in reporting_data1:
+        off_list.append(i)
+
+    for j in off_list:
+        data2=[]
+        data2.append(j.tagging.empCode.fullName)
+        if j.reporting_pdf:
+            data2.append(j)
+        else:
+            data2.append(0)
+        reviewing_data2=ReviewingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True,tagging__empCode=j.tagging.empCode).first()
+        if reviewing_data2:
+            data2.append(reviewing_data2)
+        else:
+            data2.append(0)
+        accepting_data2=AcceptingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True,tagging__empCode=j.tagging.empCode).first()
+        if accepting_data2:
+            data2.append(accepting_data2)
+        else:
+            data2.append(0)
+        data.append(data2)
+    # print(data,"fianl data")
+        
+    c=0
+    for i in accepting_data1:
+        c+=1
+    # print(c,"QQQQQQQQQQQQQQQQQQQ")
+    # print(accepting_data,reviewing_data1,tagging_data1,"+++++++++++++++")        
+    return render(request,'Accounts/acr_hindi/complete_acr_list.html',{'final_data':data
+    })
