@@ -147,7 +147,10 @@ def Login(request):
         if request.POST.get('empCode') == str(request.session.get('empCode')) and request.POST.get('password') == request.session.get('password'):
             user = CustomUser.objects.get(empCode=request.POST.get('empCode'))
             hotp = pyotp.HOTP(user.otpSecretKey)
-            if hotp.verify(request.POST.get('otp'), user.otpCounter):
+            response = verifyOtp(user.mobileNo,request.POST.get('otp'))
+            print("reponse++++++",response['code'])
+            if response['code']=="200":
+            # if hotp.verify(request.POST.get('otp'), user.otpCounter):
                 request.session['totp_verified'] = True
                 request.session['totp_attempts'] = 0
                 user = authenticate(request, empCode=request.POST.get('empCode'), password=request.POST.get('password'))
@@ -250,7 +253,6 @@ def generate_totp(request):
                     request.session['empCode'] = data['empCode']
                     request.session['password'] = request.POST.get('password')
                     response = loginOtp(data["mobileNo"], code)
-                    response['code'] = code
                     return JsonResponse(response, safe=False)
                 else:return JsonResponse({'status': False, 'message': "You are not authorized to login ACR Portal"}, safe=False)
             else:return JsonResponse({'status': False, 'message': "Invalid Login Credentials"}, safe=False)
@@ -302,7 +304,6 @@ def generate_totp(request):
                 code = hotp.at(1)
                 request.session['empCode'] = data['empCode']
                 response = loginOtp(data["mobileNo"], code)
-                response['code'] = code
                 return JsonResponse(response, safe=False)
             else:return JsonResponse({'status': False, 'message': "Invalid Login Credentials"}, safe=False)
         except Exception as e:return JsonResponse({'status': False, 'message': "Invalid Login Credentials"}, safe=False)
@@ -313,7 +314,10 @@ def forgetPassword(request):
         if request.POST.get('empCode') == str(request.session.get('empCode')):
             user = CustomUser.objects.get(empCode=request.POST.get('empCode'))
             hotp = pyotp.HOTP(user.otpSecretKey)
-            if hotp.verify(request.POST.get('otp'), user.otpCounter):
+            # if hotp.verify(request.POST.get('otp'), user.otpCounter):
+            response = verifyOtp(user.mobileNo,request.POST.get('otp'))
+            print("reponse++++++",response['code'])
+            if response['code']=="200":
                 request.session['totp_attempts'] = 0
                 url = f"https://attendance.mpcz.in:8888/E-Attendance/api/user-login/updatePassword"
                 payload = json.dumps({
@@ -662,10 +666,10 @@ def generate_pdf_reporting_officer(request):
     print(code,flag,"bheja hua flag")
     if flag is None:
         response = loginOtp(request.user.mobileNo, code)
-        LoginOtp.objects.create(emp_id=request.user.id,otp=code)
-        response['code'] = code
+        # LoginOtp.objects.create(emp_id=request.user.id,otp=code)
+        # response['code'] = code
         user = request.user
-        hotp = pyotp.HOTP(user.otpSecretKey)
+        # hotp = pyotp.HOTP(user.otpSecretKey)
     repoting_officer_id = request.GET.get("id")
     tagging_id = request.GET.get('tagging_id')
     print(repoting_officer_id,tagging_id,"repoting_officer_idrepoting_officer_idrepoting_officer_idrepoting_officer_id")
@@ -678,7 +682,10 @@ def generate_pdf_reporting_officer(request):
         print(request.POST.get('otp'),repoting_officer_id,tagging_id,"post wali method", user.otpCounter,request.user.otpSecretKey)
         # if code == request.POST.get('otp'):
         # if hotp.verify(request.POST.get('otp'), user.otpCounter):
-        if LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).exists():
+        # if LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).exists():
+        response = verifyOtp(request.user.mobileNo,request.POST.get('otp'))
+        print("reponse++++++",response['code'])
+        if response['code']=="200":
             request.session['totp_verified'] = True
             request.session['totp_attempts'] = 0
             repoting_officer_id = request.POST.get("repoting_officer_id")
@@ -765,7 +772,7 @@ def generate_pdf_reporting_officer(request):
                 model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
                 model.is_Status = True
                 model.save()
-                LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
+                # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
                 return redirect(ReportingListView)
                 
         else:
@@ -918,10 +925,10 @@ def generate_pdf_reviewing_officer(request):
     print(code,flag,"bheja hua flag")
     if flag is None:
         response = loginOtp(request.user.mobileNo, code)
-        LoginOtp.objects.create(emp_id=request.user.id,otp=code)
-        response['code'] = code
+        # LoginOtp.objects.create(emp_id=request.user.id,otp=code)
+        # response['code'] = code
         user = request.user
-        hotp = pyotp.HOTP(user.otpSecretKey)
+        # hotp = pyotp.HOTP(user.otpSecretKey)
     tagging_id = request.GET.get('tagging_id')
     # print(repoting_officer_id,tagging_id,"repoting_officer_idrepoting_officer_idrepoting_officer_idrepoting_officer_id")
     if request.method == "POST":
@@ -932,7 +939,10 @@ def generate_pdf_reviewing_officer(request):
         # print(request.POST.get('otp'),tagging_id,"post wali method", user.otpCounter,request.user.otpSecretKey)
         # if code == request.POST.get('otp'):
         # if hotp.verify(request.POST.get('otp'), user.otpCounter):
-        if LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).exists():
+        # if LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).exists():
+        response = verifyOtp(request.user.mobileNo,request.POST.get('otp'))
+        print("reponse++++++",response['code'])
+        if response['code']=="200":
             request.session['totp_verified'] = True
             request.session['totp_attempts'] = 0
             # repoting_officer_id = request.POST.get("repoting_officer_id")
@@ -964,7 +974,7 @@ def generate_pdf_reviewing_officer(request):
             reviewing_model.reviewing_officer_pdf.save('ReviewingOfficerPdf.pdf', ContentFile(pdf_content))
             reviewing_model.is_Status = True
             reviewing_model.save()
-            LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
+            # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
             return redirect(ReviewingListView)
         else:
             attempts = request.session.get('totp_attempts', 0)
@@ -1115,10 +1125,10 @@ def generate_pdf_accepting_officer(request):
     print(code,flag,"bheja hua flag")
     if flag is None:
         response = loginOtp(request.user.mobileNo, code)
-        LoginOtp.objects.create(emp_id=request.user.id,otp=code)
-        response['code'] = code
+        # LoginOtp.objects.create(emp_id=request.user.id,otp=code)
+        # response['code'] = code
         user = request.user
-        hotp = pyotp.HOTP(user.otpSecretKey)
+        # hotp = pyotp.HOTP(user.otpSecretKey)
     tagging_id = request.GET.get('tagging_id')
     # print(repoting_officer_id,tagging_id,"repoting_officer_idrepoting_officer_idrepoting_officer_idrepoting_officer_id")
     if request.method == "POST":
@@ -1128,7 +1138,10 @@ def generate_pdf_accepting_officer(request):
         # print(request.POST.get('otp'),tagging_id,"post wali method", user.otpCounter,request.user.otpSecretKey)
         # if code == request.POST.get('otp'):
         # if hotp.verify(request.POST.get('otp'), user.otpCounter):
-        if LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).exists():
+        # if LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).exists():
+        response = verifyOtp(request.user.mobileNo,request.POST.get('otp'))
+        print("reponse++++++",response['code'])
+        if response['code']=="200":
             request.session['totp_verified'] = True
             request.session['totp_attempts'] = 0
             # repoting_officer_id = request.POST.get("repoting_officer_id")
@@ -1166,7 +1179,7 @@ def generate_pdf_accepting_officer(request):
             accepting_model.accepting_officer_pdf.save('AcceptingOfficerPdf.pdf', ContentFile(pdf_content))
             accepting_model.is_Status = True
             accepting_model.save()
-            LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
+            # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
             return redirect(AcceptingListView)
         else:
             attempts = request.session.get('totp_attempts', 0)
@@ -1463,10 +1476,22 @@ def emp_tagging_form_je(request):
 
 def complete_acr_list(request):
     # tagging_data1=EmployeeTagging.objects.filter(empCode__designation['designationId']==99)
-    tagging_data1 = list(EmployeeTagging.objects.filter(
-    empCode__designation__designationId=37,
-    isFinal=True
-    ).values_list('id',flat=True))
+    if request.user.empCode == '150033':
+        tagging_data1 = list(EmployeeTagging.objects.filter(
+        empCode__designation__designationId=98,
+        isFinal=True
+        ).values_list('id',flat=True))
+    elif request.user.region is not None and request.user.circle is None and request.user.groups.filter(name='Hr').exists():
+        tagging_data1 = list(EmployeeTagging.objects.filter(
+        empCode__designation__designationId__in=[37,99],region_code=request.user.region['regionId'],       
+        isFinal=True
+        ).values_list('id',flat=True))
+    elif request.user.region is not None and request.user.circle is not None and request.user.groups.filter(name='Hr').exists():
+        tagging_data1 = list(EmployeeTagging.objects.filter(
+        empCode__designation__designationId=84,region_code=request.user.region['regionId'],circle_code=request.user.circle['circleId'],     
+        isFinal=True
+        ).values_list('id',flat=True))
+
     accepting_data1=AcceptingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
     reviewing_data1=ReviewingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
     reporting_data1=ReportingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
