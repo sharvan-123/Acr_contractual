@@ -159,7 +159,7 @@
   <div class="site-width">
     <!-- START: Menu-->
     <ul id="side-menu" class="sidebar-menu">
-      <li class="dropdown active">
+      <li class="dropdown active" >
         <a href="/">
           <i class="icon-home mr-1"></i> डैशबोर्ड </a>
         <ul>
@@ -177,9 +177,7 @@
                   <a href="/emp_tagging_form_je">
                     <i class="icon-tag"></i>कर्मचारी टैगिंग</a>
                 </li>
-              {% for i in group_names  %}
-              
-               {% if i == 'Hr' %}
+              {% for grp in user.groups.all %} {% if grp.name == "Hr" and user.isManagerHr %}
                 <li>
                   <a href="/emp_tagging_form_ta">
                     <i class="icon-tag"></i>कर्मचारी टैगिंग(TA/LA)</a>
@@ -232,18 +230,30 @@
           </li> {% endcomment %}
           
           {% endif %} {% endfor %}
-          <li>
+          <li class="{% if 'reporting' in request.path %} active {% endif %}">
             <a href="/reporting/">
-              <i class="icon-badge"></i> रिपोर्ट अधिकारी </a>
+              <i class="icon-badge"></i> रिपोर्टिंग अधिकारी </a>
           </li>
-          <li>
+          <li class="{% if 'reviewingList' in request.path %} active {% endif %}">
             <a href="/reviewingList">
               <i class="icon-badge"></i> पुनरीक्षण कर्ता अधिकारी </a>
           </li>
-          <li>
+          <li class="{% if 'acceptingListView' in request.path %} active {% endif %}">
             <a href="/acceptingListView">
               <i class="icon-badge"></i> स्वीकृतकर्ता अधिकारी</a>
           </li>
+          
+          {% for grp in user.groups.all %} {% if grp.name == "Hr" and user.isManagerHr %}
+          <li class="{% if 'complete_acr_list' in request.path %} active {% endif %}">
+            <a href="/complete_acr_list">
+              <i class="icon-list"></i>ACR की पूर्ण सूची </a>
+          </li>
+          {% comment %} <li>
+            <a href="#">
+              <i class="icon-book-open"></i> Old ACR Pdf </a>
+          </li> {% endcomment %}
+          
+          {% endif %} {% endfor %}
         </ul>
       </li>
     </ul>

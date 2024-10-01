@@ -57,7 +57,7 @@
 
    $('#otp').on('keyup',function(){
      var charLength = $(this).val().length;
-     if(charLength == 6){
+     if(charLength == 4){
        $('#login_btn').removeAttr('disabled');
      }else{
        $('#login_btn').attr('disabled',true);
@@ -94,7 +94,7 @@
 
             $.ajax(settings).done(function (response) {
               var r = JSON.parse(response);
-              if (r.status==true) {
+              if (r.code==200) {
                 $('#otp_div').show();
                 $('#otp_resend').show();
                 $('#otp_resend').attr('disabled', true);
