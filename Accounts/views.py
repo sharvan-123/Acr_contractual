@@ -684,7 +684,7 @@ def generate_pdf_reporting_officer(request):
         # if hotp.verify(request.POST.get('otp'), user.otpCounter):
         # if LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).exists():
         response = verifyOtp(request.user.mobileNo,request.POST.get('otp'))
-        print("reponse++++++",response['code'])
+        # print("reponse++++++",response['code'])
         if response['code']=="200":
             request.session['totp_verified'] = True
             request.session['totp_attempts'] = 0
@@ -941,7 +941,7 @@ def generate_pdf_reviewing_officer(request):
         # if hotp.verify(request.POST.get('otp'), user.otpCounter):
         # if LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).exists():
         response = verifyOtp(request.user.mobileNo,request.POST.get('otp'))
-        print("reponse++++++",response['code'])
+        # print("reponse++++++",response['code'])
         if response['code']=="200":
             request.session['totp_verified'] = True
             request.session['totp_attempts'] = 0
@@ -1140,7 +1140,7 @@ def generate_pdf_accepting_officer(request):
         # if hotp.verify(request.POST.get('otp'), user.otpCounter):
         # if LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).exists():
         response = verifyOtp(request.user.mobileNo,request.POST.get('otp'))
-        print("reponse++++++",response['code'])
+        # print("reponse++++++",response['code'])
         if response['code']=="200":
             request.session['totp_verified'] = True
             request.session['totp_attempts'] = 0
