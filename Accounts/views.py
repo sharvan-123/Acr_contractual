@@ -133,11 +133,11 @@ class TaggingUpdateView(UpdateView):
     template_name = 'Accounts/employeetagging_form_update.html'
     success_url = "/mis/"
 
-    def get_context_data(self, *args, **kwargs):
-        context = super(TaggingUpdateView, self).get_context_data()
-        session = ACR_Session.objects.get(isActive=True)
-        context["session"] = session
-        return context
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super(TaggingUpdateView, self).get_context_data()
+    #     # session = ACR_Session.objects.get(isActive=True)
+    #     # context["session"] = session
+    #     # return context
 
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 #@ratelimit(key='post:empCode',rate='10/m',block=True)
@@ -1476,7 +1476,7 @@ def emp_tagging_form_je(request):
 
 def complete_acr_list(request):
     # tagging_data1=EmployeeTagging.objects.filter(empCode__designation['designationId']==99)
-    if request.user.empCode == '150033':
+    if request.user.empCode == '150033' or '12345678':
         tagging_data1 = list(EmployeeTagging.objects.filter(
         empCode__designation__designationId=98,
         isFinal=True
