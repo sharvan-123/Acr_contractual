@@ -229,7 +229,7 @@ span.select2.select2-container.select2-container--default.select2-container--bel
                               <div class="form-row">
                                  <div class="form-group col-md-6 m-0"> 
                                  {% comment %} <input type="date" name="fromDate2" class="form-control " id="inputFromDate1" placeholder="Select From-Date" autocomplete="off" > {% endcomment %}
-                                 <input type="date" name="from_Date2" class="form-control " id="inputFromDate1"   />
+                                 <input type="date" name="from_Date2" class="form-control ddd" id="inputFromDate1"   />
                                  </div>
                                  <div class="form-group col-md-6 m-0"><input type="date" name="toDate2" class="form-control " id="inputToDate1" placeholder="Select To-Date" autocomplete="off" disabled="" ></div>
                               </div>
@@ -473,18 +473,25 @@ span.select2.select2-container.select2-container--default.select2-container--bel
 
     $("#inputFromDate").change(function () {
         const date = new Date($("#inputFromDate" ).val());
-        var result = date.setDate(date.getDate() + 1);
+        var result = date.setDate(date.getDate() + 120);
         $("#inputToDate" ).removeAttr('disabled');
         $("#inputToDate" ).attr('min',new Date(result).toISOString().split('T')[0]);
         $("#inputToDate" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
     });
 
-    $("#inputFromDate1").change(function () {
+    $("#inputFromDate1").click(function () {
         const date = new Date($("#inputFromDate1" ).val());
+        //const date = $("#inputFromDate1" ).val();
+        //alert(date);
         var result = date.setDate(date.getDate() + 1);
+        var result1 = date.setDate(date.getDate() + 120);
+        console.log("result",result);
         //$("#inputFromDate1" ).val('');
+        //var inputToDateval = $("#inputToDate" ).val('');
         $("#inputToDate1" ).removeAttr('disabled');
-        $("#inputToDate1" ).attr('min',new Date(result).toISOString().split('T')[0]);
+        //$("#inputToDate1" ).attr('min',new Date(result).toISOString().split('T')[0]);
+        $("#inputFromDate1" ).attr('min',new Date(result).toISOString().split('T')[0]);
+        $("#inputToDate1" ).attr('min',new Date(result1).toISOString().split('T')[0]);
         $("#inputToDate1" ).attr('max','{{session.toDate|date:'Y-m-d'}}');
     });
 
@@ -518,6 +525,12 @@ span.select2.select2-container.select2-container--default.select2-container--bel
     //Employee Tagging 2 Methods
 
     $("#addAnotherTagging").click(function () { 
+        const date = $("#inputToDate" ).val();
+         //$('#inputFromDate1').innerText = date;
+         $('.ddd').val(date);
+         //document.getElementById("inputFromDate1").innerHTML= date;
+        //alert(date);
+
         $('#myCheckbox').prop('checked', true);
         const container = document.getElementById('taggingPart2');
         const inputs = container.querySelectorAll('input[type="date"], select');
