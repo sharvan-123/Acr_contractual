@@ -432,7 +432,8 @@ def ReportingListView(request):
         elif i.empCode.designation['designationId'] == 84 or i.empCode.designation['designationId']== 37:
             JE_TA_data.append(1)
         reporting_officer = ReportingOfficer.objects.filter(tagging__id=i.id).filter(is_Status=True)
-        print('i.empCode.designation',i.empCode.designation['designationId'],JE_TA_data)
+
+        print('reporting officer',reporting_officer)
         if reporting_officer:
             flag.append(0)
         else:
@@ -655,7 +656,7 @@ from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.core.files.base import ContentFile
 import pdfkit
-
+from datetime import datetime
 
 def generate_pdf_reporting_officer(request):
     print("its call a this function")
@@ -692,6 +693,7 @@ def generate_pdf_reporting_officer(request):
             tagging_id = request.POST.get('tagging_id')
             print("repoting_officer_id",repoting_officer_id,"tagging_id",tagging_id,"post method call ")
             model = ReportingOfficer.objects.get(id=repoting_officer_id)
+            current_time = datetime.now()
             if model.grade_eight is not None:
                 tagging_data = EmployeeTagging.objects.get(id=tagging_id)
                 emptype = tagging_data.empCode.employmentType['name']
@@ -727,11 +729,13 @@ def generate_pdf_reporting_officer(request):
                         'g_ten': g_ten,
                         'description': description,
                         'i': model,
+                        'current_time':current_time,
                     }
                 )
                 conf = pdfkit.configuration(wkhtmltopdf=config)
                 pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
-                model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
+
+                model.reporting_pdf.save(str(tagging_data.empCode)+'_ReportingPdf.pdf', ContentFile(pdf_content))
                 model.is_Status = True
                 model.save()
                 # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
@@ -765,11 +769,12 @@ def generate_pdf_reporting_officer(request):
                         'g_seven': g_seven,
                         'description': description,
                         'i': model,
+                        'current_time':current_time
                     }
                 )
                 conf = pdfkit.configuration(wkhtmltopdf=config)
                 pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
-                model.reporting_pdf.save('ReportingOfficerPdf.pdf', ContentFile(pdf_content))
+                model.reporting_pdf.save(str(tagging_data.empCode)+'_ReportingPdf.pdf', ContentFile(pdf_content))
                 model.is_Status = True
                 model.save()
                 # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
@@ -824,6 +829,7 @@ def ReviewingListView(request):
     data1=[]
     for i in data2:
         data = ReportingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
+        reviewing_officer=""
         if data:
             for j in data:
                 reviewing_officer=ReviewingOfficer.objects.filter(tagging__id=j.tagging.id,is_Status=True)
@@ -831,7 +837,9 @@ def ReviewingListView(request):
                     flag.append(0)
                 else:
                     flag.append(1)
+        print(flag)
         data1=zip(data,flag)
+        
     return render(request, "Accounts/acr_hindi/reporting_complete_list.html",{'final_data':data1})
 
 @login_required(login_url='/login/')
@@ -955,6 +963,7 @@ def generate_pdf_reviewing_officer(request):
             emp_des = tagging_data.empCode.designation['name']
             reviewing_grade=float(reviewing_model.final_grade)
             reporting_grade=float(reporting_model.final_grade)
+            current_time = datetime.now()
             html_file = render_to_string(
                 # 'Accounts/acr_hindi/test.html',
                 'Accounts/acr_hindi/pdf_genrate_reviewingofficer.html',
@@ -967,11 +976,12 @@ def generate_pdf_reviewing_officer(request):
                     'tagging_data':tagging_data,
                     'reporting_model':reporting_model,
                     'reviewing_model':reviewing_model,
+                    'current_time':current_time
                 }
             )
             conf = pdfkit.configuration(wkhtmltopdf=config)
             pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
-            reviewing_model.reviewing_officer_pdf.save('ReviewingOfficerPdf.pdf', ContentFile(pdf_content))
+            reviewing_model.reviewing_officer_pdf.save(str(tagging_data.empCode)+'_ReviewingOfficerPdf.pdf', ContentFile(pdf_content))
             reviewing_model.is_Status = True
             reviewing_model.save()
             # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
@@ -1156,6 +1166,7 @@ def generate_pdf_accepting_officer(request):
             reviewing_grade=float(reviewing_model.final_grade)
             reporting_grade=float(reporting_model.final_grade)
             accepting_grade=float(accepting_model.final_grade)
+            current_time = datetime.now()
             html_file = render_to_string(
                 # 'Accounts/acr_hindi/test.html',
                 'Accounts/acr_hindi/pdf_genrate_acceptingofficer.html',
@@ -1169,14 +1180,14 @@ def generate_pdf_accepting_officer(request):
                     'tagging_data':tagging_data,
                     'reporting_model':reporting_model,
                     'reviewing_model':reviewing_model,
-                    'accepting_model':accepting_model
-
+                    'accepting_model':accepting_model,
+                    'current_time':current_time
                 }
             )
             # path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
             conf = pdfkit.configuration(wkhtmltopdf=config)
             pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
-            accepting_model.accepting_officer_pdf.save('AcceptingOfficerPdf.pdf', ContentFile(pdf_content))
+            accepting_model.accepting_officer_pdf.save(str(tagging_data.empCode)+'_AcceptingOfficerPdf.pdf', ContentFile(pdf_content))
             accepting_model.is_Status = True
             accepting_model.save()
             # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()

@@ -2,7 +2,7 @@ import requests
 
 #For Login
 def loginOtp(mobile,otp):
-	mobile = "7909586325"
+	mobile = "8517007090"
 	url = "https://resourceutils.mpcz.in:8888/MPCZ_OTP/api/otp/getOtp"
 	payload = {"source": "Test App","mobileNo": str(mobile)}
 	headers = {
@@ -20,7 +20,7 @@ def loginOtp(mobile,otp):
 		return {"status":True,"message":"Something Went Wrong "}
 	
 def verifyOtp(mobile,otp):
-	mobile = "7909586325"
+	mobile = "8517007090"
 	url = "https://resourceutils.mpcz.in:8888/MPCZ_OTP/api/otp/verifyOtpAll"
 	payload = {
 		"mobileNo": str(mobile),
