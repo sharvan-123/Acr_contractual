@@ -439,7 +439,7 @@ def ReportingListView(request):
         else:
             flag.append(1)
     data1=zip(data,flag,JE_TA_data)
-    return render(request, "Accounts/acr_hindi/emp_tagging_complete_list.html",{'final_data':data1})
+    return render(request, "Accounts/acr_hindi/tagging_list/emp_tagging_complete_list.html",{'final_data':data1})
 
 @login_required(login_url='/login/')
 def reporting_ta_form_hindi(request):
@@ -496,7 +496,7 @@ def update_reporting_je_form_hindi(request):
         data=ReportingOfficer.objects.get(id=repoting_officer_id)
 
 
-        return render(request,'Accounts/acr_hindi/update_reporting_je_form.html',{'data':data})
+        return render(request,'Accounts/acr_hindi/update_form/update_reporting_je_form.html',{'data':data})
     else:
         reporting_id=request.POST.get("reporting_id")
         i=ReportingOfficer.objects.get(id=reporting_id)
@@ -550,7 +550,7 @@ def update_reporting_ta_form_hindi(request):
         data=ReportingOfficer.objects.get(id=repoting_officer_id)
 
 
-        return render(request,'Accounts/acr_hindi/update_reporting_ta_form.html',{'data':data})
+        return render(request,'Accounts/acr_hindi/update_form/update_reporting_ta_form.html',{'data':data})
     else:
         reporting_id=request.POST.get("reporting_id")
         print(reporting_id,"12345678987654321234567")
@@ -607,7 +607,7 @@ def reporting_preview(request,officer_id,tagging_id):
     description=i.descriptions,
     
 
-    return render(request,'Accounts/acr_hindi/preview_officer.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reported_data':i,'g_one':g_one,
+    return render(request,'Accounts/acr_hindi/preview_officers/preview_officer.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reported_data':i,'g_one':g_one,
             'g_two':g_two,
             'g_three':g_three,
             'g_four':g_four,
@@ -638,7 +638,7 @@ def reporting_ta_preview(request,officer_id,tagging_id):
     description=i.descriptions,
     
 
-    return render(request,'Accounts/acr_hindi/preview_ta_officer.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reported_data':i,'g_one':g_one,
+    return render(request,'Accounts/acr_hindi/preview_officers/preview_ta_officer.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reported_data':i,'g_one':g_one,
             'g_two':g_two,
             'g_three':g_three,
             'g_four':g_four,
@@ -711,7 +711,7 @@ def generate_pdf_reporting_officer(request):
                 description = model.descriptions
                 html_file = render_to_string(
                     # 'Accounts/acr_hindi/test.html',
-                    'Accounts/acr_hindi/pdf_genrate_reportingofficer.html',
+                    'Accounts/acr_hindi/pdf_genration/pdf_genrate_reportingofficer.html',
                     {
                         'tagging_data': tagging_data,
                         'emptype': emptype,
@@ -754,7 +754,7 @@ def generate_pdf_reporting_officer(request):
                 description = model.descriptions
                 html_file = render_to_string(
                     # 'Accounts/acr_hindi/test.html'
-                    'Accounts/acr_hindi/pdf_genrate_ta_reportingofficer.html',
+                    'Accounts/acr_hindi/pdf_genration/pdf_genrate_ta_reportingofficer.html',
                     {
                         'tagging_data': tagging_data,
                         'emptype': emptype,
@@ -793,7 +793,7 @@ def generate_pdf_reporting_officer(request):
                 officer_id=repoting_officer_id
                 url = reverse('reporting_preview',args=[officer_id,tagging_id])
                 return redirect(url)
-    return render(request,"Accounts/acr_hindi/otp_reportingofficer.html",{'repoting_officer_id':repoting_officer_id,'tagging_id':tagging_id})
+    return render(request,"Accounts/acr_hindi/genrate_otp/otp_reportingofficer.html",{'repoting_officer_id':repoting_officer_id,'tagging_id':tagging_id})
 
 
 @login_required(login_url='/login/')
@@ -840,7 +840,7 @@ def ReviewingListView(request):
         print(flag)
         data1=zip(data,flag)
         
-    return render(request, "Accounts/acr_hindi/reporting_complete_list.html",{'final_data':data1})
+    return render(request, "Accounts/acr_hindi/tagging_list/reporting_complete_list.html",{'final_data':data1})
 
 @login_required(login_url='/login/')
 def reviewingOfficer_form(request,tagging_id):
@@ -875,7 +875,7 @@ def reviewing_preview(request,tagging_id):
     emp_des=tagging_data.empCode.designation['name']
     reporting_grade=float(reporting_data.final_grade) 
     reviewing_grade=float(reviewing_data.final_grade)
-    return render(request,'Accounts/acr_hindi/preview_reviewing.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,
+    return render(request,'Accounts/acr_hindi/preview_officers/preview_reviewing.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,
             'g_ten':reporting_grade,
             'reviewing_data':reviewing_data,
             'reviewing_grade':reviewing_grade,
@@ -896,7 +896,7 @@ def update_reviewing_form_hindi(request,tagging_id):
         emp_des=tagging_data.empCode.designation['name']
         reporting_grade=float(reporting_data.final_grade) 
         reviewing_grade=reviewing_data.final_grade
-        return render(request,'Accounts/acr_hindi/update_reviewing_form.html',{'emptype':emptype,
+        return render(request,'Accounts/acr_hindi/update_form/update_reviewing_form.html',{'emptype':emptype,
                                                                                'emp_des':emp_des,
                                                                                'tagging_data':tagging_data,
                                                                                'reporting_grade':reporting_grade,
@@ -966,7 +966,7 @@ def generate_pdf_reviewing_officer(request):
             current_time = datetime.now()
             html_file = render_to_string(
                 # 'Accounts/acr_hindi/test.html',
-                'Accounts/acr_hindi/pdf_genrate_reviewingofficer.html',
+                'Accounts/acr_hindi/pdf_genration/pdf_genrate_reviewingofficer.html',
                 {
                     'tagging_data': tagging_data,
                     'emptype': emptype,
@@ -999,7 +999,7 @@ def generate_pdf_reviewing_officer(request):
                 
                 url = reverse('reviewing_preview',args=[tagging_id])
                 return redirect(url)
-    return render(request,"Accounts/acr_hindi/otp_reviewingofficer.html",{'tagging_id':tagging_id})
+    return render(request,"Accounts/acr_hindi/genrate_otp/otp_reviewingofficer.html",{'tagging_id':tagging_id})
 
 
 @login_required(login_url='/login/')
@@ -1068,7 +1068,7 @@ def accepting_preview(request,tagging_id):
     accepting_data=float(accepting_data1.final_grade)
 
 
-    return render(request,'Accounts/acr_hindi/preview_accepting.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,
+    return render(request,'Accounts/acr_hindi/preview_officers/preview_accepting.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,
             'g_ten':reporting_grade,
             'accepting_data':accepting_data,
             'reviewing_grade':reviewing_grade,
@@ -1097,7 +1097,7 @@ def update_accepting_form_hindi(request,tagging_id):
         print('accepting_grade',accepting_grade)
 
 
-        return render(request,'Accounts/acr_hindi/update_accepting_form.html',{'emptype':emptype,
+        return render(request,'Accounts/acr_hindi/update_form/update_accepting_form.html',{'emptype':emptype,
                                                                                'emp_des':emp_des,
                                                                                'tagging_data':tagging_data,
                                                                                'reporting_grade':reporting_grade,
@@ -1169,7 +1169,7 @@ def generate_pdf_accepting_officer(request):
             current_time = datetime.now()
             html_file = render_to_string(
                 # 'Accounts/acr_hindi/test.html',
-                'Accounts/acr_hindi/pdf_genrate_acceptingofficer.html',
+                'Accounts/acr_hindi/pdf_genration/pdf_genrate_acceptingofficer.html',
                 {
                     'tagging_data': tagging_data,
                     'emptype': emptype,
@@ -1207,7 +1207,7 @@ def generate_pdf_accepting_officer(request):
                 return redirect(url)
             
     print("data saved")
-    return render(request,"Accounts/acr_hindi/otp_accepting_officer.html",{'tagging_id':tagging_id})
+    return render(request,"Accounts/acr_hindi/genrate_otp/otp_accepting_officer.html",{'tagging_id':tagging_id})
 
 
 
@@ -1536,5 +1536,5 @@ def complete_acr_list(request):
         c+=1
     # print(c,"QQQQQQQQQQQQQQQQQQQ")
     # print(accepting_data,reviewing_data1,tagging_data1,"+++++++++++++++")        
-    return render(request,'Accounts/acr_hindi/complete_acr_list.html',{'final_data':data
+    return render(request,'Accounts/acr_hindi/tagging_list/complete_acr_list.html',{'final_data':data
     })
