@@ -23,7 +23,7 @@ import requests
 import pdfkit
 import pyotp
 import json
-
+import re
 
 apiUrl = settings.APIURL
 
@@ -657,6 +657,7 @@ from django.template.loader import render_to_string
 from django.core.files.base import ContentFile
 import pdfkit
 from datetime import datetime
+from .smsapi import reporting_sms
 
 def generate_pdf_reporting_officer(request):
     print("its call a this function")
@@ -738,6 +739,10 @@ def generate_pdf_reporting_officer(request):
                 model.reporting_pdf.save(str(tagging_data.empCode)+'_ReportingPdf.pdf', ContentFile(pdf_content))
                 model.is_Status = True
                 model.save()
+                mobile = tagging_data.empCode.mobileNo
+                reviewingName = re.sub(r'\s*-\s*\d+$', '', tagging_data.reviewingOfficer)
+                name = tagging_data.empCode.fullName
+                reporting_sms(name,mobile, reviewingName)
                 # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
                 return redirect(ReportingListView)
             else:
@@ -777,6 +782,10 @@ def generate_pdf_reporting_officer(request):
                 model.reporting_pdf.save(str(tagging_data.empCode)+'_ReportingPdf.pdf', ContentFile(pdf_content))
                 model.is_Status = True
                 model.save()
+                mobile = tagging_data.empCode.mobileNo
+                reviewingName = re.sub(r'\s*-\s*\d+$', '', tagging_data.reviewingOfficer)
+                name = tagging_data.empCode.fullName
+                reporting_sms(name,mobile, reviewingName)
                 # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
                 return redirect(ReportingListView)
                 

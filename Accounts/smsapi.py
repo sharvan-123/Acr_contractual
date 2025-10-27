@@ -1,4 +1,5 @@
 import requests
+proxyDict = {"http": "proxy.mpcz.in:8080", "https": "proxy.mpcz.in:8080"}
 
 #For Login
 def loginOtp(mobile,otp):
@@ -51,18 +52,22 @@ def appraiseeOtp(name,mobile,session):
 	except:
 		return {"status":True,"message":"Something Went Wrong"}
 
-def reportingOtp(name,mobile,session, reviewingName):
-	message = "Dear "+str(name)+", Your Appraisal Report for year "+str(session)+" has been completed by your Reporting Officer and forwarded next to your Reviewing Officer "+str(reviewingName)+" l. Thank you. -MPMKVVCL BHOPAL"
+def reporting_sms():
+	mobile = "8827053980"
+	name = "Pawan Singh"
+	reviewingName = "Sumit Parmar"
+	message = "प्रिय "+str(name)+", आपकी ACR रिपोर्ट आपके रिपोर्टिंग अधिकारी द्वारा पूरी कर ली गई है और आपके समीक्षा अधिकारी "+str(reviewingName)+" को भेज दी गई है| Thank You. -MPMKVVCL BHOPAL"
 	header = {"User-Agent": "Opera/9.80 (X11; Linux x86_64; U; de) Presto/2.2.15 Version/10.00"}
-	url = "https://sms.mpcz.in/api/v1/send-message?app_key=VgsdaQYXmsmVFsUi2Fe4tC7vn&app_secret=dwGINQswrHtyngc&dlt_template_id=1207160595156524521&message=" + str(message) + "&campaign=&mobile_numbers=" +str(mobile)+ "&message_type=1&route_type=0&schedule_date=&is_flash=0"
+	url = "https://api.pinnacle.in/index.php/sms/urlsms?sender=CCMPCZ&numbers="+str(mobile)+"&messagetype=TXT&message="+ str(message) +" &response=Y&dltentityid=1201158039515302745&apikey=210d59-4684c1-525x69-0e1352-5fde17&dlttempid=1007688303325051886"
+	print(url,"123456")
 	try:
-		response = requests.get(url, headers=header)
+		response = requests.get(url, proxies=proxyDict, headers=header)
 		if response:return response.json()
 	except:
 		return {"status":True,"message":"Something Went Wrong"}
-
-def reviewingOtp(name,mobile,session, acceptingName):
-	message =     "Dear "+str(name)+", your Appraisal Report for "+str(session)+" has been completed by your Reviewing Officer and forwarded next to your Accepting Officer "+str(acceptingName)+" . Thank you. -MPMKVVCL BHOPAL"
+	
+def reviewingOtp(name,mobile, AcceptingName):
+	message =     "प्रिय "+str(name)+", आपकी ACR रिपोर्ट आपके पुनरीक्षण कर्ता अधिकारी द्वारा पूरी कर ली गई है और आपके स्वीकृतकर्ता अधिकारी "+str(AcceptingName)+" को भेज दी गई है । धन्यवाद. -MPMKVVCL BHOPAL"
 	header = {"User-Agent": "Opera/9.80 (X11; Linux x86_64; U; de) Presto/2.2.15 Version/10.00"}
 	url = "https://sms.mpcz.in/api/v1/send-message?app_key=VgsdaQYXmsmVFsUi2Fe4tC7vn&app_secret=dwGINQswrHtyngc&dlt_template_id=1207160595139988353&message=" + str(message) + "&campaign=&mobile_numbers=" +str(mobile)+ "&message_type=1&route_type=0&schedule_date=&is_flash=0"
 	try:
@@ -71,8 +76,8 @@ def reviewingOtp(name,mobile,session, acceptingName):
 	except:
 		return {"status":True,"message":"Something Went Wrong"}
 
-def acceptingOtp(name,mobile,session, acceptingName):
-	message = "Dear "+str(name)+", the Appraisal Report "+str(session)+" has been successfully approved by Accepting Officer "+str(acceptingName)+" . Thank you. -MPMKVVCL BHOPAL"
+def acceptingOtp(name,mobile, AcceptingName):
+	message = "प्रिय "+str(name)+", आपकी ACR रिपोर्ट को स्वीकृतकर्ता अधिकारी "+str(AcceptingName)+" द्वारा सफलतापूर्वक अनुमोदित कर दिया गया है| धन्यवाद. -MPMKVVCL BHOPAL"
 	header = {"User-Agent": "Opera/9.80 (X11; Linux x86_64; U; de) Presto/2.2.15 Version/10.00"}
 	url = "https://sms.mpcz.in/api/v1/send-message?app_key=VgsdaQYXmsmVFsUi2Fe4tC7vn&app_secret=dwGINQswrHtyngc&dlt_template_id=1207160595117506210&message=" + str(message) + "&campaign=&mobile_numbers=" +str(mobile)+ "&message_type=1&route_type=0&schedule_date=&is_flash=0"
 	try:
@@ -96,3 +101,5 @@ def acceptingOtp(name,mobile,session, acceptingName):
 # 	print("false")
 
 # 	# return {"status":True,"message":"Something Went Wrong"}
+# name,mobile, reviewingName
+# reporting_sms()
