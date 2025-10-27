@@ -52,7 +52,7 @@ def appraiseeOtp(name,mobile,session):
 	except:
 		return {"status":True,"message":"Something Went Wrong"}
 
-def reporting_sms():
+def reporting_sms(name,mobile, reviewingName):
 	mobile = "8827053980"
 	name = "Pawan Singh"
 	reviewingName = "Sumit Parmar"
