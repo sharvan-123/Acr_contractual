@@ -785,7 +785,7 @@ def generate_pdf_reporting_officer(request):
                 mobile = tagging_data.empCode.mobileNo
                 reviewingName = re.sub(r'\s*-\s*\d+$', '', tagging_data.reviewingOfficer)
                 name = tagging_data.empCode.fullName
-                reporting_sms(name,mobile, reviewingName)
+                send_sms_reporting(name,mobile, reviewingName)
                 # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
                 return redirect(ReportingListView)
                 
@@ -993,6 +993,10 @@ def generate_pdf_reviewing_officer(request):
             reviewing_model.reviewing_officer_pdf.save(str(tagging_data.empCode)+'_ReviewingOfficerPdf.pdf', ContentFile(pdf_content))
             reviewing_model.is_Status = True
             reviewing_model.save()
+            mobile = tagging_data.empCode.mobileNo
+            AcceptingName = re.sub(r'\s*-\s*\d+$', '', tagging_data.acceptingOfficer)
+            name = tagging_data.empCode.fullName
+            send_sms_reviewing(name,mobile, AcceptingName)
             # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
             return redirect(ReviewingListView)
         else:
@@ -1199,6 +1203,10 @@ def generate_pdf_accepting_officer(request):
             accepting_model.accepting_officer_pdf.save(str(tagging_data.empCode)+'_AcceptingOfficerPdf.pdf', ContentFile(pdf_content))
             accepting_model.is_Status = True
             accepting_model.save()
+            mobile = tagging_data.empCode.mobileNo
+            AcceptingName = re.sub(r'\s*-\s*\d+$', '', tagging_data.acceptingOfficer)
+            name = tagging_data.empCode.fullName
+            send_sms_reviewing(name,mobile, AcceptingName)
             # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
             return redirect(AcceptingListView)
         else:
