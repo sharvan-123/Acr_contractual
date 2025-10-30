@@ -742,7 +742,7 @@ def generate_pdf_reporting_officer(request):
                 mobile = tagging_data.empCode.mobileNo
                 reviewingName = re.sub(r'\s*-\s*\d+$', '', tagging_data.reviewingOfficer)
                 name = tagging_data.empCode.fullName
-                reporting_sms(name,mobile, reviewingName)
+                send_sms_reporting(name,mobile, reviewingName)
                 # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
                 return redirect(ReportingListView)
             else:
