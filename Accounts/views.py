@@ -657,7 +657,7 @@ from django.template.loader import render_to_string
 from django.core.files.base import ContentFile
 import pdfkit
 from datetime import datetime
-from .smsapi import reporting_sms
+# from .smsapi import reporting_sms
 
 def generate_pdf_reporting_officer(request):
     print("its call a this function")
@@ -1206,7 +1206,7 @@ def generate_pdf_accepting_officer(request):
             mobile = tagging_data.empCode.mobileNo
             AcceptingName = re.sub(r'\s*-\s*\d+$', '', tagging_data.acceptingOfficer)
             name = tagging_data.empCode.fullName
-            send_sms_reviewing(name,mobile, AcceptingName)
+            send_sms_accepting(name,mobile, AcceptingName)
             # LoginOtp.objects.filter(emp_id=request.user.id,otp=request.POST.get('otp')).delete()
             return redirect(AcceptingListView)
         else:
