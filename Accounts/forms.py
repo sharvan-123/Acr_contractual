@@ -68,8 +68,8 @@ class EmployeeTaggingForm(forms.ModelForm):
 
 
 class EmployeeTaggingUpdateForm(forms.ModelForm):
-    fromDate = forms.DateField(label='From Date', widget=forms.TextInput(attrs={'class': 'form-control ', 'type': 'date', 'id': 'inputFromDate', 'placeholder': 'Select From-Date', 'autocomplete':'off',}), required=True)
-    toDate = forms.DateField(label='To Date', widget=forms.TextInput(attrs={'class': 'form-control ', 'type': 'date', 'id': 'inputToDate', 'placeholder': 'Select To-Date','autocomplete': 'off', 'disabled': True}), required=True)
+    fromDate = forms.DateField(label='From Date',input_formats=['%Y-%m-%d', '%d-%m-%Y'], widget=forms.TextInput(attrs={'class': 'form-control ', 'type': 'date', 'id': 'inputFromDate', 'placeholder': 'Select From-Date', 'autocomplete':'off',}), required=True)
+    toDate = forms.DateField(label='To Date',input_formats=['%Y-%m-%d', '%d-%m-%Y'], widget=forms.TextInput(attrs={'class': 'form-control ', 'type': 'date', 'id': 'inputToDate', 'placeholder': 'Select To-Date','autocomplete': 'off', 'disabled': True}), required=True)
 
     region = forms.CharField(label='Region Code', widget=forms.HiddenInput(attrs={'class': 'form-control', 'id': 'inputRegionVal'}))
     region_code = forms.CharField(label='Region', widget=forms.Select(choices=(('', 'Select Region...'),),attrs={'class': 'form-control','id': 'inputRegion', }), required=True)
