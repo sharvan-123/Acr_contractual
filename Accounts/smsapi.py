@@ -5,7 +5,7 @@ proxyDict = {"http": "proxy1.mpcz.in:8080", "https": "proxy1.mpcz.in:8080"}
 def loginOtp(mobile,otp):
 	# mobile = "8517007090"
 	url = "https://resourceutils.mpcz.in:8888/MPCZ_OTP/api/otp/getOtp"
-	payload = {"source": "Test App","mobileNo": str(mobile)}
+	payload = {"source": "Contractual ACR","mobileNo": str(mobile)}
 	headers = {
 		"Content-Type": "application/json",
 		"Accept": "/",
