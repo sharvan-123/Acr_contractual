@@ -22,6 +22,7 @@ def loginOtp(mobile,otp):
 	
 def verifyOtp(mobile,otp):
 	# mobile = "8517007090"
+	print(mobile,"mobile")
 	url = "https://resourceutils.mpcz.in:8888/MPCZ_OTP/api/otp/verifyOtpAll"
 	payload = {
 		"mobileNo": str(mobile),
@@ -37,7 +38,8 @@ def verifyOtp(mobile,otp):
 	}
 	try:
 		response = requests.request("POST", url, json=payload, headers=headers,verify=False)
-		print(response.text)
+		print(url,"===")
+		print(url,"++",response.text)
 		if response:return response.json()
 	except:
 		return {"status":True,"message":"Something Went Wrong "}
