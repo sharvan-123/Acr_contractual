@@ -30,7 +30,7 @@ apiUrl = settings.APIURL
 @login_required(login_url='/login/')
 def dashboard(request):
     print(request.user.employmentType['empTypeId'],request.user.designation['designationId'],"type id............")
-    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']==  98 or 99) :
+    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']==  98 or request.user.designation['designationId'] == 99) :
         is_tagging=True
     else:
         is_tagging=False
@@ -233,7 +233,7 @@ def generate_totp(request):
             if response.json()['code'] == '200' and response.json()['message'] == 'Success' and response2.json()['code'] == '200' and response2.json()['message'] == 'Success':
                 secrets = pyotp.random_base32()
                 data = response2.json()['list'][0]
-                if int(data['designation']['designationClass']) <= 3:
+                if int(data['designation']['designationClass']) <= 4:
                     if HrManagers.objects.filter(empCode=request.POST.get('empCode')).exists():group = Group.objects.get(name='Hr')
                     else:group = Group.objects.get(name='Employee')
                     if CustomUser.objects.filter(empCode=data['empCode']).exists():

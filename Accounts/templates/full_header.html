@@ -174,7 +174,11 @@
               <i class="icon-tag"></i> कर्मचारी टैगिंग </a>
               <ul class="dropdown-menu">
                 <li>
+                  {% if is_tagging == True %}
                   <a href="/emp_tagging_form_je">
+                    {% else %}
+                    <a href="#">
+                    {% endif %}
                     <i class="icon-tag"></i>कर्मचारी टैगिंग</a>
                 </li>
               {% for grp in user.groups.all %} {% if grp.name == "Hr" and user.isManagerHr %}
