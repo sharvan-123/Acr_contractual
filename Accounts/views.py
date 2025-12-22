@@ -30,7 +30,7 @@ apiUrl = settings.APIURL
 @login_required(login_url='/login/')
 def dashboard(request):
     print(request.user.employmentType['empTypeId'],request.user.designation['designationId'],"type id............")
-    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']==  98 or request.user.designation['designationId'] == 99) :
+    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']==  98 or request.user.designation['designationId'] == 99 or request.user.designation['designationId'] == 37) :
         is_tagging=True
     else:
         is_tagging=False
