@@ -31,7 +31,7 @@ apiUrl = settings.APIURL
 def dashboard(request):
     # 17 manegar AE,23 JE,37 LA
     print(request.user.employmentType['empTypeId'],request.user.designation['designationId'],"type id............")
-    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']==  98 or request.user.designation['designationId'] == 99 or request.user.designation['designationId'] == 37 or request.user.designation['designationId'] == 23) or request.user.designation['designationId'] == 17) :
+    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']==  98 or request.user.designation['designationId'] == 99 or request.user.designation['designationId'] == 37,request.user.designation['designationId'] == 17) :
         is_tagging=True
     else:
         is_tagging=False
