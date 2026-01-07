@@ -67,7 +67,17 @@ class TaggingCreateView(CreateView):
             return response
         employeeTagging = form.save(commit=False)
         employeeTagging.empCode = form.cleaned_data['empCode'] if form.cleaned_data['empCode'] else self.request.user
+        if form.cleaned_data['region_code'] in [1,'1']:
+                employeeTagging.hrManagerCode = '150033'
+                employeeTagging.hrManager = 'RAVI KUMAR SHARMA'
+                employeeTagging.save()
         if employeeTagging.isAnotherTagging:
+            if form.cleaned_data['region_code2'] in [1,'1']:
+                hr_code = employeeTagging.hrManagerCode = '150033'
+                hr_name = employeeTagging.hrManager = 'RAVI KUMAR SHARMA'
+            else :
+                hr_name = form.cleaned_data['hrManager2']
+                hr_code = form.cleaned_data['hrManagerCode2']
             isAnotherTagging = EmployeeTagging(
                 empCode=form.cleaned_data['empCode'] if form.cleaned_data['empCode'] else self.request.user,
                 fromDate=form.cleaned_data['fromDate2'],
@@ -91,8 +101,8 @@ class TaggingCreateView(CreateView):
                 acceptingDesignation=form.cleaned_data['acceptingDesignation2'],
                 acceptingOfficerCode=form.cleaned_data['acceptingOfficerCode2'],
                 acceptingOfficer=form.cleaned_data['acceptingOfficer2'],
-                hrManager=form.cleaned_data['hrManager2'],
-                hrManagerCode=form.cleaned_data['hrManagerCode2'],
+                hrManager=hr_name,
+                hrManagerCode=hr_code,
                 financialYear=form.cleaned_data['financialYear2'],
                 isAnotherTagging=form.cleaned_data['isAnotherTagging'],
                 isFinal=False
