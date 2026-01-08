@@ -71,7 +71,7 @@ span.select2.select2-container.select2-container--default.select2-container--bel
                               <div class="form-row">
                                  <div class="form-group col-md-6">
                                  <select class="form-control" name="empCode">
-                                 <option>--कर्मचारी नाम select kre --</option>
+                                 {% comment %} <option>--कर्मचारी नाम select kre --</option> {% endcomment %}
                                  {% for i in emp_detail %}
                                  <option value="{{i.empCode}}">
                                  {{i.fullName}}
@@ -760,10 +760,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         dropdown.appendChild(option);
                     });
-                    
+                     
                     if (data.list.length > 0) {
                         dropdown.disabled = false;
-                        dropdown.required = true;  // Make dropdown required if it has options
+                        //dropdown.required = true;  // Make dropdown required if it has options
                     } else {
                         dropdown.disabled = true;
                         dropdown.required = false;  // Remove required if no options
@@ -1008,6 +1008,15 @@ $(document).ready(function(){
     inputs.forEach(function(input) {
         $(input).removeAttr("required");
     }); 
+ });
+ 
+$(document).ready(function(){
+    const divDropdown1s = document.getElementById('divDropdown1');
+    //const inputs = container.querySelectorAll('input[type="text"], input[type="date"], select');
+    //inputs.forEach(function(input) {
+        $(divDropdown1s).removeAttr("required");
+        console.log("have you done");
+    //}); 
  });
 
 
