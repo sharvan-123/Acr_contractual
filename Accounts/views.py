@@ -1287,7 +1287,7 @@ def emp_tagging_form_ta(request):
         tagging.acceptingDesignation=request.POST.get("acceptingDesignation_one")
         tagging.acceptingOfficerCode=request.POST.get("acceptingOfficerCode")
         tagging.acceptingOfficer=request.POST.get("acceptingOfficer")
-        tagging.financialYear='2023-24'
+        tagging.financialYear='2025-26'
         if request.POST.get("region_code") is not None and request.POST.get("circle_code") is not None and request. POST.get("circle_code") != "" :
             hr_manager_data=HrManagers.objects.filter(circleCode=request.POST.get("circle_code")).first()
             tagging.hrManager=hr_manager_data.empName
@@ -1346,7 +1346,7 @@ def emp_tagging_form_ta(request):
             tagging2.hrManagerCode=hr_manager_data.empCode
             # taggi2ng.hrManager=request.POST.get("hrManager2")
             # taggi2ng.hrManagerCode=request.POST.get("hrManagerCode2")
-            tagging2.financialYear='2023-24'
+            tagging2.financialYear='2025-26'
             if request.POST.get('is_final') == 'True' :
                 tagging.isFinal=True
             else:
@@ -1400,7 +1400,7 @@ def emp_tagging_form_je(request):
             tagging.acceptingDesignation=request.POST.get("acceptingDesignation_one")
             tagging.acceptingOfficerCode=request.POST.get("acceptingOfficerCode")
             tagging.acceptingOfficer=request.POST.get("acceptingOfficer")
-            tagging.financialYear='2023-24'
+            tagging.financialYear='2025-26'
             if request.POST.get("region_code") is not None and request.POST.get("circle_code") is not None and request. POST.get("circle_code") != "" :
                 hr_manager_data=HrManagers.objects.filter(circleCode=request.POST.get("circle_code")).first()
                 tagging.hrManager=hr_manager_data.empName
@@ -1457,7 +1457,7 @@ def emp_tagging_form_je(request):
                 tagging2.hrManagerCode=hr_manager_data.empCode
                 # taggi2ng.hrManager=request.POST.get("hrManager2")
                 # taggi2ng.hrManagerCode=request.POST.get("hrManagerCode2")
-                tagging2.financialYear='2023-24'
+                tagging2.financialYear='2025-26'
                 if request.POST.get('is_final') == 'True' :
                     tagging.isFinal=True
                 else:
