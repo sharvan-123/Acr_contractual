@@ -1242,7 +1242,7 @@ def generate_pdf_accepting_officer(request):
 from django.db.models import Q
 def emp_tagging_form_ta(request):
     if request.method=="GET":
-        emp_detail=CustomUser.objects.filter(employmentType__empTypeId=6 ,designation__designationId__in=[37,84])
+        emp_detail=CustomUser.objects.filter(employmentType__empTypeId=6 ,designation__designationId__in=[37,84,23])
         # region_url = f"{apiUrl}/location/getAllRegions/"
         # import requests
         # response = requests.get(region_url)
