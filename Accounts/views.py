@@ -438,7 +438,7 @@ def ReportingListView(request):
     flag=[]
     JE_TA_data=[]
     for i in data:
-        if i.empCode.designation['designationId'] == 99 or i.empCode.designation['designationId']== 98:
+        if i.empCode.designation['designationId'] == 99 or i.empCode.designation['designationId']== 98 or i.empCode.designation['designationId']== 17 :
             JE_TA_data.append(0)
         elif i.empCode.designation['designationId'] == 84 or i.empCode.designation['designationId']== 37:
             JE_TA_data.append(1)
