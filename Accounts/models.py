@@ -218,7 +218,7 @@ class ACR_Dates(models.Model):
 
 class ReportingOfficer(models.Model):
     tagging=models.ForeignKey(EmployeeTagging,on_delete=models.CASCADE,null=True)
-    descriptions=models.CharField(max_length=100, null=True, blank=True)
+    descriptions=models.CharField(max_length=1000, null=True, blank=True)
     final_grade=models.CharField(max_length=100, null=True, blank=True)
     reportingofficer_name=models.CharField(max_length=100, null=True, blank=True)
     reportingofficer_code=models.CharField(max_length=100, null=True, blank=True)
@@ -252,7 +252,7 @@ class LoginOtp(models.Model):
 
 class ReviewingOfficer(models.Model):
     tagging=models.ForeignKey(EmployeeTagging,on_delete=models.CASCADE,null=True)
-    descriptions=models.CharField(max_length=100, null=True, blank=True)
+    descriptions=models.CharField(max_length=1000, null=True, blank=True)
     final_grade=models.CharField(max_length=100, null=True, blank=True)
     reviewing_officer_pdf=models.FileField(upload_to="reviewing_officer_pdf", null=True, blank=True)
     created_at= models.DateTimeField(null=True, blank=True,auto_now=True)
@@ -269,7 +269,7 @@ class ReviewingOfficer(models.Model):
 
 class AcceptingOfficer(models.Model):
     tagging=models.ForeignKey(EmployeeTagging,on_delete=models.CASCADE,null=True)
-    descriptions=models.CharField(max_length=100, null=True, blank=True)
+    descriptions=models.CharField(max_length=1000, null=True, blank=True)
     final_grade=models.CharField(max_length=100, null=True, blank=True)
     accepting_officer_pdf=models.FileField(upload_to="accepting_officer_pdf", null=True, blank=True)
     created_at= models.DateTimeField(null=True, blank=True,auto_now=True)
