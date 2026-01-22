@@ -287,7 +287,12 @@
                                                    </div>
                                                    
                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reporting_data.descriptions}}
-                                                        </div>                                      
+                                                        </div>      
+                                                        {% if g_eight == None %}
+                                                    {% include "Accounts/acr_hindi/grade_ta_la.html" %}
+                                                    {% else %}
+                                                    {% include "Accounts/acr_hindi/grade_je_ae.html" %}
+                                                    {% endif %}                                
                                         <br>
                                                     <div >
                                                         <h4 style="font-size: 16px; text-align:left; margin-bottom:15px;">

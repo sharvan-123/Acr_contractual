@@ -291,6 +291,11 @@
                                         <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reporting_model.descriptions}}</div>
                                     </td>
                                 </tr> 
+                                {% if g_eight == None %}
+                                                    {% include "Accounts/acr_hindi/grade_ta_la.html" %}
+                                                    {% else %}
+                                                    {% include "Accounts/acr_hindi/grade_je_ae.html" %}
+                                                    {% endif %}
                                 <tr>
                                     <td>
                                         <table style="width:100%; margin-bottom:10px;">

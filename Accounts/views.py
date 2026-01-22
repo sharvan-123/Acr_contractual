@@ -869,11 +869,32 @@ def reviewingOfficer_form(request,tagging_id):
     emptype= tagging_data.empCode.employmentType['name']
     emp_des=tagging_data.empCode.designation['name']
     reportingGrade=float(reporting_officer_data.final_grade)
+    i=ReportingOfficer.objects.get(tagging_id=tagging_id)
+    g_one=int(i.grade_one)
+    g_two=int(i.grade_two)
+    g_three=int(i.grade_three)
+    g_four=int(i.grade_four)
+    g_five=int(i.grade_five)
+    g_six=int(i.grade_six)
+    g_seven=int(i.grade_seven)
+    g_eight =int(i.grade_eight)
+    g_nine=int(i.grade_nine)
+    g_ten=int(i.grade_ten)
+    grade =  {'reported_data':i,'g_one':g_one,
+            'g_two':g_two,
+            'g_three':g_three,
+            'g_four':g_four,
+            'g_five':g_five,
+            'g_six':g_six,
+            'g_seven':g_seven,
+            'g_eight':g_eight,
+            'g_nine':g_nine,
+            'g_ten':g_ten,
+            }
+    
     if request.method == "POST":
         print(tagging_id)
         i=ReviewingOfficer()
-        # i.tagging__id=tagging_id
-        print(request.POST.get('tagging_id'),"++++++++++++++++++++++++++")
         i.final_grade=request.POST.get('final_grade')
         i.descriptions=request.POST.get('remark')
         i.tagging_id=request.POST.get('tagging_id')
@@ -882,7 +903,16 @@ def reviewingOfficer_form(request,tagging_id):
         from django.urls import reverse
         url = reverse('reviewing_preview',args=[tagging_id])
         return redirect(url)
-    return render(request,'Accounts/acr_hindi/reviewing_form.html',{'tagging_id':tagging_id,'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reportingGrade':reportingGrade,'reporting_officer_data':reporting_officer_data})
+    return render(request,'Accounts/acr_hindi/reviewing_form.html',{'tagging_id':tagging_id,'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reportingGrade':reportingGrade,'reporting_officer_data':reporting_officer_data,'g_one':g_one,
+            'g_two':g_two,
+            'g_three':g_three,
+            'g_four':g_four,
+            'g_five':g_five,
+            'g_six':g_six,
+            'g_seven':g_seven,
+            'g_eight':g_eight,
+            'g_nine':g_nine,
+            'g_ten':g_ten})
 
 
 
@@ -895,12 +925,33 @@ def reviewing_preview(request,tagging_id):
     emp_des=tagging_data.empCode.designation['name']
     reporting_grade=float(reporting_data.final_grade) 
     reviewing_grade=float(reviewing_data.final_grade)
+    i=ReportingOfficer.objects.get(tagging_id=tagging_id)
+    g_one=int(i.grade_one)
+    g_two=int(i.grade_two)
+    g_three=int(i.grade_three)
+    g_four=int(i.grade_four)
+    g_five=int(i.grade_five)
+    g_six=int(i.grade_six)
+    g_seven=int(i.grade_seven)
+    g_eight =int(i.grade_eight)
+    g_nine=int(i.grade_nine)
+    g_ten=int(i.grade_ten)
     return render(request,'Accounts/acr_hindi/preview_officers/preview_reviewing.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,
             'g_ten':reporting_grade,
             'reviewing_data':reviewing_data,
             'reviewing_grade':reviewing_grade,
             'reporting_data':reporting_data,
-            'reviewing_data':reviewing_data
+            'reviewing_data':reviewing_data,
+            'g_one':g_one,
+            'g_two':g_two,
+            'g_three':g_three,
+            'g_four':g_four,
+            'g_five':g_five,
+            'g_six':g_six,
+            'g_seven':g_seven,
+            'g_eight':g_eight,
+            'g_nine':g_nine,
+            'g_ten':g_ten
             })
 
 
@@ -916,13 +967,34 @@ def update_reviewing_form_hindi(request,tagging_id):
         emp_des=tagging_data.empCode.designation['name']
         reporting_grade=float(reporting_data.final_grade) 
         reviewing_grade=reviewing_data.final_grade
+        i=ReportingOfficer.objects.get(tagging_id=tagging_id)
+        g_one=int(i.grade_one)
+        g_two=int(i.grade_two)
+        g_three=int(i.grade_three)
+        g_four=int(i.grade_four)
+        g_five=int(i.grade_five)
+        g_six=int(i.grade_six)
+        g_seven=int(i.grade_seven)
+        g_eight =int(i.grade_eight)
+        g_nine=int(i.grade_nine)
+        g_ten=int(i.grade_ten)
         return render(request,'Accounts/acr_hindi/update_form/update_reviewing_form.html',{'emptype':emptype,
                                                                                'emp_des':emp_des,
                                                                                'tagging_data':tagging_data,
                                                                                'reporting_grade':reporting_grade,
                                                                                'reviewing_grade':reviewing_grade,
                                                                                'reporting_data':reporting_data,
-                                                                               'reviewing_data':reviewing_data
+                                                                               'reviewing_data':reviewing_data,
+                                                                               'g_one':g_one,
+                                                                                'g_two':g_two,
+                                                                                'g_three':g_three,
+                                                                                'g_four':g_four,
+                                                                                'g_five':g_five,
+                                                                                'g_six':g_six,
+                                                                                'g_seven':g_seven,
+                                                                                'g_eight':g_eight,
+                                                                                'g_nine':g_nine,
+                                                                                'g_ten':g_ten
                                                                               })
     else:
         print(tagging_id,"qwertyuiopoiuytrewertyuioiuytrewertyuiuytre")
@@ -983,6 +1055,17 @@ def generate_pdf_reviewing_officer(request):
             emp_des = tagging_data.empCode.designation['name']
             reviewing_grade=float(reviewing_model.final_grade)
             reporting_grade=float(reporting_model.final_grade)
+            i=ReportingOfficer.objects.get(tagging_id=tagging_id)
+            g_one=int(i.grade_one)
+            g_two=int(i.grade_two)
+            g_three=int(i.grade_three)
+            g_four=int(i.grade_four)
+            g_five=int(i.grade_five)
+            g_six=int(i.grade_six)
+            g_seven=int(i.grade_seven)
+            g_eight =int(i.grade_eight)
+            g_nine=int(i.grade_nine)
+            g_ten=int(i.grade_ten)
             current_time = datetime.now()
             html_file = render_to_string(
                 # 'Accounts/acr_hindi/test.html',
@@ -996,7 +1079,17 @@ def generate_pdf_reviewing_officer(request):
                     'tagging_data':tagging_data,
                     'reporting_model':reporting_model,
                     'reviewing_model':reviewing_model,
-                    'current_time':current_time
+                    'current_time':current_time,
+                    'g_one':g_one,
+                    'g_two':g_two,
+                    'g_three':g_three,
+                    'g_four':g_four,
+                    'g_five':g_five,
+                    'g_six':g_six,
+                    'g_seven':g_seven,
+                    'g_eight':g_eight,
+                    'g_nine':g_nine,
+                    'g_ten':g_ten
                 }
             )
             conf = pdfkit.configuration(wkhtmltopdf=config)
@@ -1062,6 +1155,17 @@ def acceptingOfficer_form(request,tagging_id):
     reviewing_officer_data=ReviewingOfficer.objects.get(tagging__id=tagging_id,is_Status=True)
     reportingGrade=float(reporting_officer_data.final_grade)
     reviewingGrade=float(reviewing_officer_data.final_grade)
+    i=ReportingOfficer.objects.get(tagging_id=tagging_id)
+    g_one=int(i.grade_one)
+    g_two=int(i.grade_two)
+    g_three=int(i.grade_three)
+    g_four=int(i.grade_four)
+    g_five=int(i.grade_five)
+    g_six=int(i.grade_six)
+    g_seven=int(i.grade_seven)
+    g_eight =int(i.grade_eight)
+    g_nine=int(i.grade_nine)
+    g_ten=int(i.grade_ten)
     if request.method == "POST":
         print(tagging_id)
         i=AcceptingOfficer()
@@ -1076,7 +1180,16 @@ def acceptingOfficer_form(request,tagging_id):
         url = reverse('accepting_preview',args=[tagging_id])
         return redirect(url)
         return HttpResponse("data saved")
-    return render(request,'Accounts/acr_hindi/accepting_form.html',{'tagging_id':tagging_id,'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reportingGrade':reportingGrade,'reviewingGrade':reviewingGrade,'reporting_officer_data':reporting_officer_data,'reviewing_officer_data':reviewing_officer_data})
+    return render(request,'Accounts/acr_hindi/accepting_form.html',{'tagging_id':tagging_id,'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,'reportingGrade':reportingGrade,'reviewingGrade':reviewingGrade,'reporting_officer_data':reporting_officer_data,'reviewing_officer_data':reviewing_officer_data,'g_one':g_one,
+            'g_two':g_two,
+            'g_three':g_three,
+            'g_four':g_four,
+            'g_five':g_five,
+            'g_six':g_six,
+            'g_seven':g_seven,
+            'g_eight':g_eight,
+            'g_nine':g_nine,
+            'g_ten':g_ten})
 
 @login_required(login_url='/login/')
 def accepting_preview(request,tagging_id):
@@ -1090,7 +1203,17 @@ def accepting_preview(request,tagging_id):
     reporting_grade=float(reporting_data.final_grade) 
     reviewing_grade=float(reviewing_data.final_grade)
     accepting_data=float(accepting_data1.final_grade)
-
+    i=ReportingOfficer.objects.get(tagging_id=tagging_id)
+    g_one=int(i.grade_one)
+    g_two=int(i.grade_two)
+    g_three=int(i.grade_three)
+    g_four=int(i.grade_four)
+    g_five=int(i.grade_five)
+    g_six=int(i.grade_six)
+    g_seven=int(i.grade_seven)
+    g_eight =int(i.grade_eight)
+    g_nine=int(i.grade_nine)
+    g_ten=int(i.grade_ten)
 
     return render(request,'Accounts/acr_hindi/preview_officers/preview_accepting.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,
             'g_ten':reporting_grade,
@@ -1098,7 +1221,17 @@ def accepting_preview(request,tagging_id):
             'reviewing_grade':reviewing_grade,
             'accepting_data1':accepting_data1,
             'reporting_data':reporting_data,
-            'reviewing_data':reviewing_data
+            'reviewing_data':reviewing_data,
+            'g_one':g_one,
+            'g_two':g_two,
+            'g_three':g_three,
+            'g_four':g_four,
+            'g_five':g_five,
+            'g_six':g_six,
+            'g_seven':g_seven,
+            'g_eight':g_eight,
+            'g_nine':g_nine,
+            'g_ten':g_ten
             })
 
 @login_required(login_url='/login/')
@@ -1118,6 +1251,17 @@ def update_accepting_form_hindi(request,tagging_id):
         reporting_grade=float(reporting_data.final_grade) 
         reviewing_grade=float(reviewing_data.final_grade)
         accepting_grade=accepting_data.final_grade
+        i=ReportingOfficer.objects.get(tagging_id=tagging_id)
+        g_one=int(i.grade_one)
+        g_two=int(i.grade_two)
+        g_three=int(i.grade_three)
+        g_four=int(i.grade_four)
+        g_five=int(i.grade_five)
+        g_six=int(i.grade_six)
+        g_seven=int(i.grade_seven)
+        g_eight =int(i.grade_eight)
+        g_nine=int(i.grade_nine)
+        g_ten=int(i.grade_ten)
         print('accepting_grade',accepting_grade)
 
 
@@ -1129,7 +1273,8 @@ def update_accepting_form_hindi(request,tagging_id):
                                                                                'accepting_grade':accepting_grade,
                                                                                'accepting_data':accepting_data,
                                                                                'reviewing_data':reviewing_data,
-                                                                               'reporting_data':reporting_data
+                                                                               'reporting_data':reporting_data,
+
                                                                               })
     else:
         # tagging_id=request.POST.get("tagging_id")
@@ -1190,6 +1335,17 @@ def generate_pdf_accepting_officer(request):
             reviewing_grade=float(reviewing_model.final_grade)
             reporting_grade=float(reporting_model.final_grade)
             accepting_grade=float(accepting_model.final_grade)
+            i=ReportingOfficer.objects.get(tagging_id=tagging_id)
+            g_one=int(i.grade_one)
+            g_two=int(i.grade_two)
+            g_three=int(i.grade_three)
+            g_four=int(i.grade_four)
+            g_five=int(i.grade_five)
+            g_six=int(i.grade_six)
+            g_seven=int(i.grade_seven)
+            g_eight =int(i.grade_eight)
+            g_nine=int(i.grade_nine)
+            g_ten=int(i.grade_ten)
             current_time = datetime.now()
             html_file = render_to_string(
                 # 'Accounts/acr_hindi/test.html',
@@ -1205,7 +1361,17 @@ def generate_pdf_accepting_officer(request):
                     'reporting_model':reporting_model,
                     'reviewing_model':reviewing_model,
                     'accepting_model':accepting_model,
-                    'current_time':current_time
+                    'current_time':current_time,
+                    'g_one':g_one,
+                    'g_two':g_two,
+                    'g_three':g_three,
+                    'g_four':g_four,
+                    'g_five':g_five,
+                    'g_six':g_six,
+                    'g_seven':g_seven,
+                    'g_eight':g_eight,
+                    'g_nine':g_nine,
+                    'g_ten':g_ten
                 }
             )
             # path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path

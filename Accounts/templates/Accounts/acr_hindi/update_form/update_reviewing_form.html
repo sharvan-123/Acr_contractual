@@ -291,6 +291,11 @@
 
 
                                                     <br>
+                                                    {% if g_eight == None %}
+                                                    {% include "Accounts/acr_hindi/grade_ta_la.html" %}
+                                                    {% else %}
+                                                    {% include "Accounts/acr_hindi/grade_je_ae.html" %}
+                                                    {% endif %}
                                                     <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
                                             <u>
                                                 पुनरीक्षण कर्ता अधिकारी द्वारा दी हुई ग्रेड

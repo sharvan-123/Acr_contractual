@@ -289,6 +289,11 @@
                                         <br>
 
                                         <br>
+                                        {% if g_eight == None %}
+                                                    {% include "Accounts/acr_hindi/grade_ta_la.html" %}
+                                                    {% else %}
+                                                    {% include "Accounts/acr_hindi/grade_je_ae.html" %}
+                                                    {% endif %}
 
                                         <table style="width:100%; margin-bottom:10px;">
 
