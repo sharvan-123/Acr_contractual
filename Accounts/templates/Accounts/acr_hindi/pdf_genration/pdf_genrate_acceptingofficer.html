@@ -261,12 +261,14 @@
                                         </table>
                                     </td>
                                 </tr>
-                                
+                                <tr>
+                                    <td>
+                                <table style="width:100%; margin-bottom:10px;"></table>
                                 <tr>
                                     <td>
                                         <br>
 
-                                        <h4 style="font-size: 16px; text-align:left; margin-bottom:15px;">
+                                        <h4 style="font-size: 16px; text-align:center; margin-bottom:15px;">
                                             <u>
                                                 रिपोर्टिंग अधिकारी  द्वारा दी हुई ग्रेड
                                             </u>
@@ -306,6 +308,41 @@
                                         <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reporting_model.descriptions}}</div>
                                     </td>
                                 </tr> 
+                                <tr>
+                                    <td>
+                                        <div class="col-md-12 col-12">
+                                            <table align="right" style=" margin:20px; background-image: url('data:image/png;base64,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'); background-repeat: no-repeat; opacity: 0.5;   background-size: 220px 150px;">
+                                                <tr><td colspan="3" style="text-align: center;"><b>Signature of Reporting Officer</b></td></tr>
+                                                <tr>
+                                                    <td>Signed By</td>
+                                                    <td style="width: 5%;">:</td>
+                                                    <td>{{tagging_data.reportingOfficer}}</td>
+                                                </tr>
+                                                
+                                                <tr>
+                                                    <td>Date and Time</td>
+                                                    <td>:</td>
+                                                    <td>{{reporting_model.updated_at|date:'d-m-Y:H-m-s'}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Location</td>
+                                                    <td>:</td>
+                                                    <td>MPMKVVCL Bhopal</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Verify Type</td>
+                                                    <td>:</td>
+                                                    <td>OTP</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </td> 
+                                </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <br>
+                        <br>
                                 <tr>
                                     <td>
                                         <table style="width:100%; margin-bottom:10px;">
@@ -348,6 +385,36 @@
 
                                                 </td>
                                             </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="col-md-12 col-12">
+                                                        <table align="right" style=" margin:20px; background-image: url('data:image/png;base64,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'); background-repeat: no-repeat; opacity: 0.5;   background-size: 220px 150px;">
+                                                            <tr><td colspan="3" style="text-align: center;"><b>Signature of Reviewing Officer</b></td></tr>
+                                                            <tr>
+                                                                <td>Signed By</td>
+                                                                <td style="width: 5%;">:</td>
+                                                                <td>{{tagging_data.reviewingOfficer}}</td>
+                                                            </tr>
+                                                            
+                                                            <tr>
+                                                                <td>Date and Time</td>
+                                                                <td>:</td>
+                                                                <td>{{reviewing_model.updated_at|date:'d-m-Y:H-m-s'}}</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Location</td>
+                                                                <td>:</td>
+                                                                <td>MPMKVVCL Bhopal</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Verify Type</td>
+                                                                <td>:</td>
+                                                                <td>OTP</td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </td> 
+                                            </tr>
                                         </table>
                                         <br>
                                     </td>
@@ -357,7 +424,7 @@
                                     <td> 
                                         <br>
                                         <br>
-                                        <h4 style="font-size: 20px; text-align:left; margin-bottom:15px;">
+                                        <h4 style="font-size: 20px; text-align:center; margin-bottom:15px;">
                                             <u>
                                                 स्वीकृतकर्ता अधिकारी  द्वारा दी हुई ग्रेड
                                             </u>
@@ -372,7 +439,6 @@
                                                 <td style="width: 10%;">
                                                     
                                                     <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
-                                                        {% comment %} {{reported_data.grade_one}} {% endcomment %}
                                                        
                                                         {% if accepting_grade >= 9.1 and accepting_grade <= 10 %}
                                                            उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
@@ -406,17 +472,17 @@
                                     <td>
                                         <div class="col-md-12 col-12">
                                             <table align="right" style=" margin:20px; background-image: url('data:image/png;base64,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'); background-repeat: no-repeat; opacity: 0.5;   background-size: 220px 150px;">
-                                                <tr><td colspan="3" style="text-align: center;"><b>Signature of Reviewing Officer</b></td></tr>
+                                                <tr><td colspan="3" style="text-align: center;"><b>Signature of Accepting Officer</b></td></tr>
                                                 <tr>
                                                     <td>Signed By</td>
                                                     <td style="width: 5%;">:</td>
-                                                    <td>{{tagging_data.acceptingofficer_name}}</td>
+                                                    <td>{{tagging_data.acceptingOfficer}}</td>
                                                 </tr>
                                                 
                                                 <tr>
                                                     <td>Date and Time</td>
                                                     <td>:</td>
-                                                    <td>{{tagging_data.updated_at|date:'d-m-Y:H-m-s'}}</td>
+                                                    <td>{{accepting_model.updated_at|date:'d-m-Y:H-m-s'}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>Location</td>
