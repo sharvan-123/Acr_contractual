@@ -42,8 +42,10 @@ urlpatterns = [
         path('update_accepting_form_hindi/<int:tagging_id>',views.update_accepting_form_hindi,name="update_accepting_form_hindi"),
         path('generate_pdf_accepting_officer',views.generate_pdf_accepting_officer,name="generate_pdf_accepting_officer"),
         path('emp_tagging_form_ta',views.emp_tagging_form_ta,name="emp_tagging_form_ta"),
-                #for complete acr.........
-        path('complete_acr_list',views.complete_acr_list,name="complete_acr_list")
+        #for complete acr.........
+        path('complete_acr_list',views.complete_acr_list,name="complete_acr_list"),
+        #extra 
+        path('add_update_emp_profile/', views.update_emp_detail_by_empCode, name='add_update_emp_profile')
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
