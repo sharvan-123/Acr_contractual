@@ -261,15 +261,15 @@
 
                                                     </div>
                                                     <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
-                                                    {% if g_ten >= 9.1 and g_ten <= 10 %}
+                                                    {% if reporting_grade >= 9.1 and reporting_grade <= 10 %}
                                                            उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
-                                                        {% elif g_ten >= 7.1 and g_ten <= 9.0 %}
+                                                        {% elif reporting_grade >= 7.1 and reporting_grade <= 9.0 %}
                                                        बहुत अच्छा (क)
-                                                        {% elif g_ten >= 6.1 and g_ten <= 7.0 %}
+                                                        {% elif reporting_grade >= 6.1 and reporting_grade <= 7.0 %}
                                                         अच्छा (ख)
-                                                        {% elif g_ten >= 3.1 and g_ten <= 6.0 %}
+                                                        {% elif reporting_grade >= 3.1 and reporting_grade <= 6.0 %}
                                                             औसत (ग)
-                                                        {% elif g_ten <= 3.0  %}
+                                                        {% elif reporting_grade <= 3.0  %}
                                                             सेवा में जारी रखने योग्य नहीं (घ)
                                                         {% endif %}
                                                       

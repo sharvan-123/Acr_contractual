@@ -3,7 +3,7 @@ proxyDict = {"http": "proxy1.mpcz.in:8080", "https": "proxy1.mpcz.in:8080"}
 
 #For Login
 def loginOtp(mobile,otp):
-	# mobile = "8517007090"
+	# mobile = "8827053980"
 	print(mobile,"mobile")
 	url = "https://resourceutils.mpcz.in:8888/MPCZ_OTP/api/otp/getOtp"
 	payload = {"source": "Contractual ACR","mobileNo": str(mobile)}
@@ -22,7 +22,7 @@ def loginOtp(mobile,otp):
 		return {"status":True,"message":"Something Went Wrong "}
 	
 def verifyOtp(mobile,otp):
-	# mobile = "8517007090"
+	# mobile = "8827053980"
 	print(mobile,"mobile")
 	url = "https://resourceutils.mpcz.in:8888/MPCZ_OTP/api/otp/verifyOtpAll"
 	payload = {
@@ -155,115 +155,54 @@ def send_sms_reporting(name,mobile, reviewingName):
     # reviewingName = "Sumit"
     # Compose Hindi message
     message = f"प्रिय {name}, आपकी ACR रिपोर्ट आपके रिपोर्टिंग अधिकारी द्वारा पूरी कर ली गई है और आपके समीक्षा अधिकारी {reviewingName} को भेज दी गई है| धन्यवाद. -MPMKVVCL BHOPAL |"
-
-    # URL encode the Hindi text
-    encoded_message = urllib.parse.quote(message)
-
-    # Construct SMS API URL
-    url = (
-        f"https://api.pinnacle.in/index.php/sms/urlsms?"
-        f"sender=CCMPCZ&numbers={mobile}&messagetype=UNI&message={encoded_message}"
-        f"&response=Y&dltentityid=1201158039515302745"
-        f"&apikey=210d59-4684c1-525x69-0e1352-5fde17"
-        f"&dlttempid=1007688303325051886"
-    )
-
-    # Define proxy settings (if your office network requires it)
-    proxyDict = {
-        "http": "http://proxy1.mpcz.in:8080",
-        "https": "http://proxy1.mpcz.in:8080"
-    }
-
-    # Send the SMS request
+    headers = {'Authorization': 'Bearer fJLnivwnxRXMrhck30MqtlKrw5IUhc15'}
+    url = "https://msg.cerfgs.com/pushapi/sendmsg?username=MPMKVVCL_ERP&dest=91"+str(mobile)+"&apikey=rw7g17n0HsI5To0xhfKd6wX8OKY8OqYS&signature=CCMPCZ&msgtype=UNI&msgtxt="+ str(message) +"&entityid=1201158039515302745&templateid=1007688303325051886"
+    print("url+++++++++++", url)
     try:
-        sms_response = requests.get(
-            url,
-            proxies=proxyDict,
-            headers={"User-Agent": "Mozilla/5.0"},
-            verify=False,
-            timeout=15
-        )
-        if sms_response:return sms_response.json()
-        else:
-            print("Response:", sms_response.text)
+        response = requests.request("GET", url, headers=headers)
+        print("response:", response.text)
+        if response:
+            return response.json()
     except Exception as e:
-        print("Unexpected error:", e)
+        print("error:", e)
+        return {"status": True, "message": "Something Went Wrong"}
 
 
 def send_sms_reviewing(name,mobile, AcceptingName):
     message = f"प्रिय {name}, आपकी ACR रिपोर्ट आपके पुनरीक्षण कर्ता अधिकारी द्वारा पूरी कर ली गई है और आपके स्वीकृतकर्ता अधिकारी {AcceptingName} को भेज दी गई है | धन्यवाद. -MPMKVVCL BHOPAL |"
-    # URL encode the Hindi text
-    encoded_message = urllib.parse.quote(message)
-    # Construct SMS API URL
-    url = (
-        f"https://api.pinnacle.in/index.php/sms/urlsms?"
-        f"sender=CCMPCZ&numbers={mobile}&messagetype=UNI&message={encoded_message}"
-        f"&response=Y&dltentityid=1201158039515302745"
-        f"&apikey=210d59-4684c1-525x69-0e1352-5fde17"
-        f"&dlttempid=1007600347917589168"
-    )
-    # Define proxy settings (if your office network requires it)
-    proxyDict = {
-        "http": "http://proxy1.mpcz.in:8080",
-        "https": "http://proxy1.mpcz.in:8080"
-    }
-
-    # Send the SMS request
+    headers = {'Authorization': 'Bearer fJLnivwnxRXMrhck30MqtlKrw5IUhc15'}
+    url = "https://msg.cerfgs.com/pushapi/sendmsg?username=MPMKVVCL_ERP&dest=91"+str(mobile)+"&apikey=rw7g17n0HsI5To0xhfKd6wX8OKY8OqYS&signature=CCMPCZ&msgtype=UNI&msgtxt="+ str(message) +"&entityid=1201158039515302745&templateid=1007600347917589168"
+    print("url+++++++++++", url)
     try:
-        sms_response = requests.get(
-            url,
-            proxies=proxyDict,
-            headers={"User-Agent": "Mozilla/5.0"},
-            verify=False,
-            timeout=15
-        )
-
-        if sms_response.status_code == 200:
-            print("Response:", sms_response.text)
-        else:
-            print("Response:", sms_response.text)
-
+        response = requests.request("GET", url, headers=headers)
+        print("response:", response.text)
+        if response:
+            return response.json()
     except Exception as e:
-        print(" Unexpected error:", e)
+        print("error:", e)
+        return {"status": True, "message": "Something Went Wrong"}
 
 # send_sms_reviewing()
 
 
-def send_sms_accepting(name,mobile, AcceptingName):
-    message = f"प्रिय {name}, आपकी ACR रिपोर्ट को स्वीकृतकर्ता अधिकारी {AcceptingName} द्वारा सफलतापूर्वक अनुमोदित कर दिया गया है| धन्यवाद. -MPMKVVCL BHOPAL"
-    encoded_message = urllib.parse.quote(message)
-    # Construct SMS API URL
-    url = (
-        f"https://api.pinnacle.in/index.php/sms/urlsms?"
-        f"sender=CCMPCZ&numbers={mobile}&messagetype=UNI&message={encoded_message}"
-        f"&response=Y&dltentityid=1201158039515302745"
-        f"&apikey=210d59-4684c1-525x69-0e1352-5fde17"
-        f"&dlttempid=1007435805364665975"
-    )
-
-    # Define proxy settings (if your office network requires it)
-    proxyDict = {
-        "http": "http://proxy1.mpcz.in:8080",
-        "https": "http://proxy1.mpcz.in:8080"
-    }
-	
-    # Send the SMS request
+def send_sms_accepting(name, mobile, AcceptingName):
+    message = f"प्रिय Deepak, आपकी ACR रिपोर्ट को स्वीकृतकर्ता अधिकारी Pawan द्वारा सफलतापूर्वक अनुमोदित कर दिया गया है| धन्यवाद. -MPMKVVCL BHOPAL"
+    headers = {'Authorization': 'Bearer fJLnivwnxRXMrhck30MqtlKrw5IUhc15'}
+    url = "https://msg.cerfgs.com/pushapi/sendmsg?username=MPMKVVCL_ERP&dest=91"+str(mobile)+"&apikey=rw7g17n0HsI5To0xhfKd6wX8OKY8OqYS&signature=CCMPCZ&msgtype=UNI&msgtxt="+ str(message) +"&entityid=1201158039515302745&templateid=1007435805364665975"
+    print("url+++++++++++", url)
     try:
-        print(url)
-        sms_response = requests.get(
-            url,
-            proxies=proxyDict,
-            headers={"User-Agent": "Mozilla/5.0"},
-            verify=False,
-            timeout=15
-        )
-
-        if sms_response.status_code == 200:
-            print("Response:", sms_response.text)
-        else:
-            print("Response:", sms_response.text)
-
+        response = requests.request("GET", url, headers=headers)
+        print("response:", response.text)
+        if response:
+            return response.json()
     except Exception as e:
-        print(" Unexpected error:", e)
+        print("error:", e)
+        return {"status": True, "message": "Something Went Wrong"}
         
-# send_sms_accepting()
+# mobile = "8827053980"
+# name = "Pawan Payasi"
+# reviewingName = "Tina Sharma"
+
+# send_sms_reporting(name,mobile,reviewingName)
+# send_sms_reviewing(name,mobile,reviewingName)
+# send_sms_accepting(name,mobile,reviewingName)

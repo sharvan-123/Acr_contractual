@@ -57,9 +57,6 @@ class CustomUserAdmin(UserAdmin):
     list_filter = (JSONFieldKeyListFilter,)
     ordering = ('empCode',)
 
-
-
-
 def export_to_csv_HrManagers(modeladmin, request, queryset):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="HrManger.csv"'
@@ -77,14 +74,6 @@ def export_to_csv_EmployeeTagging(modeladmin, request, queryset):
 
 export_to_csv_EmployeeTagging.short_description = 'Export All Data'
 
-def export_to_csv_EmployeeSelfAppraisal(modeladmin, request, queryset):
-    queryset = EmployeeSelfAppraisal.objects.values("taggingId__id","empCode__empCode", "fullName", "empCode__designation__name","fromDate", "toDate", "region", "region_code", "circle", "circle_code", "division", "division_code", "subdivision", "subdivision_code", "dc", "dc_code", "reportingDesignation", "reportingOfficerCode", "reportingOfficer", "isStatus").distinct()
-    response = ExcelResponse(queryset)
-    response['Content-Disposition'] = 'attachment; filename="EmployeeSelfAppraisal.xlsx"'
-    return response
-
-export_to_csv_EmployeeSelfAppraisal.short_description = 'Export All Data'
-
 class HrManagersAdmin(admin.ModelAdmin):
     list_display = ('empCode', 'empName', 'regionName', 'circleName')
     search_fields = ('empCode', 'empName', 'regionName', 'circleName')
@@ -95,94 +84,7 @@ class EmployeeTaggingAdmin(admin.ModelAdmin):
     list_display = ('id', 'empCode', 'fromDate', 'toDate', 'reportingOfficer', 'reviewingOfficer', 'acceptingOfficer', 'hrManager', 'isAnotherTagging', 'isFinal')
     search_fields = ('id', 'empCode__empCode', 'reportingOfficer', 'reviewingOfficer', 'acceptingOfficer', 'hrManager')
     actions = [export_to_csv_EmployeeTagging]
-class EmployeeSelfAppraisalAdmin(admin.ModelAdmin):
-    list_display = ('id', 'taggingId', 'empCode', 'fullName', 'region', 'circle', 'fromDate', 'toDate', 'reportingOfficer', 'isStatus',)
-    search_fields = ('taggingId__id', 'empCode__empCode', 'fullName', 'reportingOfficer', 'fullName')
-    list_filter = ("reportingOfficer",)
-    actions = [export_to_csv_EmployeeSelfAppraisal]
 
-class EmployeeReportingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'taggingId', 'taggingId_full_name', 'reportingOfficerCode', 'reporting_officer_code_full_name', 'updated_at', 'isStatus',)
-    search_fields = ('taggingId__id', 'taggingId__empCode__fullName', 'reportingOfficerCode__empCode', 'reportingOfficerCode__fullName',)
-
-    def reporting_officer_code_full_name(self, obj):
-        return obj.reportingOfficerCode.fullName if obj.reportingOfficerCode else None
-
-    reporting_officer_code_full_name.short_description = 'Reporting Officer Full Name'
-    def taggingId_full_name(self, obj):
-        return obj.taggingId.empCode.fullName if obj.taggingId else None
-
-    taggingId_full_name.short_description = 'Tagging User Full Name'
-
-
-class EmployeeReportingClass3Admin(admin.ModelAdmin):
-    list_display = ('id', 'taggingId', 'reportingOfficerCode', 'empNumber', 'fullName', 'dateOfBirth', 'designation', 'updated_at', 'isStatus',)
-    search_fields = ('taggingId__id', 'empNumber', 'fullName', 'reportingOfficerCode__empCode', 'reportingOfficerCode__fullName','fullName',)
-
-
-class EmployeeReviewingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'taggingId', 'taggingId_full_name', 'reviewingOfficerCode', 'reviewing_officer_code_full_name', 'updated_at', 'isStatus',)
-    search_fields = ('taggingId__id', 'reviewingOfficerCode__empCode', 'reviewingOfficerCode__fullName',)
-
-    def reviewing_officer_code_full_name(self, obj):
-        return obj.reviewingOfficerCode.fullName if obj.reviewingOfficerCode else None
-
-    reviewing_officer_code_full_name.short_description = 'Reviewing Officer Full Name'
-    def taggingId_full_name(self, obj):
-        return obj.taggingId.empCode.fullName if obj.taggingId else None
-
-    taggingId_full_name.short_description = 'Tagging User Full Name'
-
-class EmployeeReviewingClass3Admin(admin.ModelAdmin):
-    list_display = ('id', 'taggingId', 'taggingId_full_name', 'reviewingOfficerCode', 'reviewing_officer_code_full_name', 'updated_at', 'isStatus',)
-    search_fields = ('taggingId__id', 'reviewingOfficerCode__empCode', 'reviewingOfficerCode__fullName')
-
-    def reviewing_officer_code_full_name(self, obj):
-        return obj.reviewingOfficerCode.fullName if obj.reviewingOfficerCode else None
-
-    reviewing_officer_code_full_name.short_description = 'Reviewing Officer Full Name'
-    def taggingId_full_name(self, obj):
-        return obj.taggingId.empCode.fullName if obj.taggingId else None
-
-    taggingId_full_name.short_description = 'Tagging User Full Name'
-
-class EmployeeAcceptingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'taggingId', 'taggingId_full_name', 'acceptingOfficerCode', 'accepting_officer_code_full_name', 'updated_at', 'isStatus',)
-    search_fields = ('taggingId__id', 'acceptingOfficerCode__empCode', 'acceptingOfficerCode__fullName')
-
-    def accepting_officer_code_full_name(self, obj):
-        return obj.acceptingOfficerCode.fullName if obj.acceptingOfficerCode else None
-
-    accepting_officer_code_full_name.short_description = 'Accepting Officer Full Name'
-    def taggingId_full_name(self, obj):
-        return obj.taggingId.empCode.fullName if obj.taggingId else None
-
-    taggingId_full_name.short_description = 'Tagging User Full Name'
-
-
-class kpiMtrAdmin(admin.ModelAdmin):
-    list_display = ('kpiId', 'level', 'name', 'code', 'loc_code', 'bill_month', 'tot_defmtrs', 'per_assessment_billing', 'tot_mtr_cons', 'mtr_cons_per', 'unmtr_cons', 'unmtr_cons_per', 'billing_efficiency', 'collection_efficiency', 'atc', 'input', 'collection', 'crpu', 'fdr_count', 'avg_supply', 'kpi_agri_shms_avg', 'tot_dtr_mar21', 'failed_dtr', 'fail_per_mar21', 'tot_dtrs', 'total_fail_dtr', 'fail_per_dtr', 'tot_consumer', 'amr_consumer', 'per_amr', 'kpi_nonagr_fdr_count', 'kpi_nonagr_avg_supply', 'kpi_nonagr_avg', 'flat_rate_per_paid_cd', 'flat_rate_per_paid_bn', 'kpi_temp_cons_count_nsc',)
-    search_fields = ('name', 'code', 'level', 'loc_code',)
-    list_filter = ('level', 'bill_month', 'name',)
-
-class kpiAdmin(admin.ModelAdmin):
-    list_display = ("fun_name", "kpi_name")
-    search_fields = ("kpi_name",)
-    list_filter = ("fun_name",)
-class kpiFunctionAdmin(admin.ModelAdmin):
-    list_display = ("fun_name", "fun_code")
-    search_fields = ("fun_name",)
-    list_filter = ("fun_name",)
-
-admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(EmployeeTagging, EmployeeTaggingAdmin)
-admin.site.register(HrManagers, HrManagersAdmin)
-admin.site.register(ACR_Session)
-admin.site.register(ACR_Dates)
-admin.site.register(ReportingOfficer)
-admin.site.register(LoginOtp)
-admin.site.register(ReviewingOfficer)
-admin.site.register(AcceptingOfficer)
 def download_excel(request, type):
     try:
         Session = ACR_Session.objects.filter(isActive=True)[0]
@@ -194,3 +96,38 @@ def download_excel(request, type):
     except:
         response = 'Something went wrong'
     return response
+
+
+@admin.register(ReportingOfficer)
+class ReportingOfficerAdmin(admin.ModelAdmin):
+    list_display = ('id','tagging','reportingofficer_name','final_grade','is_Status','created_at')
+    search_fields = ('reportingofficer_name','final_grade')
+    list_filter = ('is_Status','created_at')
+    readonly_fields = ('created_at','updated_at')
+
+
+@admin.register(ReviewingOfficer)
+class ReviewingOfficerAdmin(admin.ModelAdmin):
+    list_display = ('id','tagging','final_grade','is_Status','created_at')
+    search_fields = ('final_grade',)
+    list_filter = ('is_Status','created_at')
+    readonly_fields = ('created_at','updated_at')
+
+
+@admin.register(AcceptingOfficer)
+class AcceptingOfficerAdmin(admin.ModelAdmin):
+    list_display = ('id','tagging','final_grade','is_Status','created_at')
+    search_fields = ('final_grade',)
+    list_filter = ('is_Status','created_at')
+    readonly_fields = ('created_at','updated_at')
+
+
+@admin.register(LoginOtp)
+class LoginOtpAdmin(admin.ModelAdmin):
+    list_display = ('id','emp','otp','created_at')
+    search_fields = ('emp__username','otp')
+    readonly_fields = ('created_at','updated_at')
+
+admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(EmployeeTagging, EmployeeTaggingAdmin)
+admin.site.register(HrManagers, HrManagersAdmin)

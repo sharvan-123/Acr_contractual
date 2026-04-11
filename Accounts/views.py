@@ -25,6 +25,9 @@ import pyotp
 import json
 import re
 
+# config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+
+
 apiUrl = settings.APIURL
 
 @login_required(login_url='/login/')
@@ -721,6 +724,7 @@ def generate_pdf_reporting_officer(request):
                 g_nine = int(model.grade_nine)
                 g_ten = int(model.grade_ten)
                 description = model.descriptions
+                reporting_grade=float(model.final_grade) 
                 html_file = render_to_string(
                     # 'Accounts/acr_hindi/test.html',
                     'Accounts/acr_hindi/pdf_genration/pdf_genrate_reportingofficer.html',
@@ -740,13 +744,14 @@ def generate_pdf_reporting_officer(request):
                         'g_nine': g_nine,
                         'g_ten': g_ten,
                         'description': description,
+                        'reporting_grade':reporting_grade,
                         'i': model,
                         'current_time':current_time,
                     }
                 )
                 conf = pdfkit.configuration(wkhtmltopdf=config)
                 pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
-
+                # pdf_content = pdfkit.from_string(html_file,False,configuration=config)
                 model.reporting_pdf.save(str(tagging_data.empCode)+'_ReportingPdf.pdf', ContentFile(pdf_content))
                 model.is_Status = True
                 model.save()
@@ -768,6 +773,8 @@ def generate_pdf_reporting_officer(request):
                 g_six = int(model.grade_six)
                 g_seven = int(model.grade_seven)
                 description = model.descriptions
+                reporting_grade=float(model.final_grade) 
+
                 html_file = render_to_string(
                     # 'Accounts/acr_hindi/test.html'
                     'Accounts/acr_hindi/pdf_genration/pdf_genrate_ta_reportingofficer.html',
@@ -784,12 +791,14 @@ def generate_pdf_reporting_officer(request):
                         'g_six': g_six,
                         'g_seven': g_seven,
                         'description': description,
+                        'reporting_grade':reporting_grade,
                         'i': model,
                         'current_time':current_time
                     }
                 )
                 conf = pdfkit.configuration(wkhtmltopdf=config)
                 pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
+                # pdf_content = pdfkit.from_string(html_file, False, configuration=config)
                 model.reporting_pdf.save(str(tagging_data.empCode)+'_ReportingPdf.pdf', ContentFile(pdf_content))
                 model.is_Status = True
                 model.save()
@@ -844,21 +853,22 @@ def reportingOtp(request):
 
 @login_required(login_url='/login/')
 def ReviewingListView(request):
-    data2=EmployeeTagging.objects.filter(reviewingOfficer__icontains=request.user.empCode).filter(isFinal=True)
+    data2=list(EmployeeTagging.objects.filter(reviewingOfficer__icontains=request.user.empCode).filter(isFinal=True).values_list(flat=True))
+    print("++++++++++++",data2)
     flag=[]
     data1=[]
-    for i in data2:
-        data = ReportingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
-        reviewing_officer=""
-        if data:
-            for j in data:
-                reviewing_officer=ReviewingOfficer.objects.filter(tagging__id=j.tagging.id,is_Status=True)
-                if reviewing_officer:
-                    flag.append(0)
-                else:
-                    flag.append(1)
-        print(flag)
-        data1=zip(data,flag)
+    data = ReportingOfficer.objects.filter(tagging__id__in=data2,is_Status=True)
+    print("++++++++++++",data)
+    reviewing_officer=""
+    if data:
+        for j in data:
+            reviewing_officer=ReviewingOfficer.objects.filter(tagging__id=j.tagging.id,is_Status=True)
+            if reviewing_officer:
+                flag.append(0)
+            else:
+                flag.append(1)
+    print(flag)
+    data1=zip(data,flag)
         
     return render(request, "Accounts/acr_hindi/tagging_list/reporting_complete_list.html",{'final_data':data1})
 
@@ -877,9 +887,14 @@ def reviewingOfficer_form(request,tagging_id):
     g_five=int(i.grade_five)
     g_six=int(i.grade_six)
     g_seven=int(i.grade_seven)
-    g_eight =int(i.grade_eight)
-    g_nine=int(i.grade_nine)
-    g_ten=int(i.grade_ten)
+    if i.grade_eight:
+        g_eight =int(i.grade_eight)
+        g_nine=int(i.grade_nine)
+        g_ten=int(i.grade_ten)
+    else:
+        g_eight =None
+        g_nine=None
+        g_ten=None
     grade =  {'reported_data':i,'g_one':g_one,
             'g_two':g_two,
             'g_three':g_three,
@@ -933,11 +948,16 @@ def reviewing_preview(request,tagging_id):
     g_five=int(i.grade_five)
     g_six=int(i.grade_six)
     g_seven=int(i.grade_seven)
-    g_eight =int(i.grade_eight)
-    g_nine=int(i.grade_nine)
-    g_ten=int(i.grade_ten)
+    if i.grade_eight:
+        g_eight =int(i.grade_eight)
+        g_nine=int(i.grade_nine)
+        g_ten=int(i.grade_ten)
+    else:
+        g_eight =None
+        g_nine=None
+        g_ten=None
     return render(request,'Accounts/acr_hindi/preview_officers/preview_reviewing.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,
-            'g_ten':reporting_grade,
+            'reporting_grade':reporting_grade,
             'reviewing_data':reviewing_data,
             'reviewing_grade':reviewing_grade,
             'reporting_data':reporting_data,
@@ -1063,9 +1083,14 @@ def generate_pdf_reviewing_officer(request):
             g_five=int(i.grade_five)
             g_six=int(i.grade_six)
             g_seven=int(i.grade_seven)
-            g_eight =int(i.grade_eight)
-            g_nine=int(i.grade_nine)
-            g_ten=int(i.grade_ten)
+            if i.grade_eight:
+                g_eight =int(i.grade_eight)
+                g_nine=int(i.grade_nine)
+                g_ten=int(i.grade_ten)
+            else:
+                g_eight =None
+                g_nine=None
+                g_ten=None
             current_time = datetime.now()
             html_file = render_to_string(
                 # 'Accounts/acr_hindi/test.html',
@@ -1074,8 +1099,8 @@ def generate_pdf_reviewing_officer(request):
                     'tagging_data': tagging_data,
                     'emptype': emptype,
                     'emp_des': emp_des,
-                    'reviewing_grade':reviewing_grade,
                     'reporting_grade':reporting_grade,
+                    'reviewing_grade':reviewing_grade,
                     'tagging_data':tagging_data,
                     'reporting_model':reporting_model,
                     'reviewing_model':reviewing_model,
@@ -1094,6 +1119,7 @@ def generate_pdf_reviewing_officer(request):
             )
             conf = pdfkit.configuration(wkhtmltopdf=config)
             pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
+            # pdf_content = pdfkit.from_string(html_file, False, configuration=config)
             reviewing_model.reviewing_officer_pdf.save(str(tagging_data.empCode)+'_ReviewingOfficerPdf.pdf', ContentFile(pdf_content))
             reviewing_model.is_Status = True
             reviewing_model.save()
@@ -1121,25 +1147,24 @@ def generate_pdf_reviewing_officer(request):
 
 @login_required(login_url='/login/')
 def AcceptingListView(request):
-    data=EmployeeTagging.objects.filter(acceptingOfficer__icontains=request.user.empCode).filter(isFinal=True)
-    print(request.user.mobileNo,"mobile no.....")
+    data=list(EmployeeTagging.objects.filter(acceptingOfficer__icontains=request.user.empCode).filter(isFinal=True).values_list(flat=True))
+    print(request.user.mobileNo,"mobile no.....",data)
     flag=[]
     data1=zip([0],[0])
-    for i in data:
-        print(i.id,"tagging id ..........")
-        reviewing_officer = ReviewingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
-        accepting_officer = AcceptingOfficer.objects.filter(tagging__id=i.id,is_Status=True)
+    # print(i.id,"tagging id ..........")
+    reviewing_officer = ReviewingOfficer.objects.filter(tagging__id__in=data,is_Status=True)
 
-        for j in reviewing_officer:
-            if accepting_officer:
-                flag.append(1)
-            else:
-                flag.append(0)
-        data1=zip(reviewing_officer,flag)
-    
-        print(reviewing_officer,accepting_officer,"+++++++++++++++++++++",flag)
-        # for j,k in data1:
-        #     print(j,k)
+    for j in reviewing_officer:
+        accepting_officer = AcceptingOfficer.objects.filter(tagging__id=j.tagging_id,is_Status=True)
+        if accepting_officer:
+            flag.append(1)
+        else:
+            flag.append(0)
+    data1=zip(reviewing_officer,flag)
+
+    print(reviewing_officer,accepting_officer,"+++++++++++++++++++++",flag)
+    # for j,k in data1:
+    #     print(j,k)
     return render(request, "Accounts/acr_hindi/reviewing_complete_list.html",{'final_data':data1})
 
 @login_required(login_url='/login/')
@@ -1163,9 +1188,14 @@ def acceptingOfficer_form(request,tagging_id):
     g_five=int(i.grade_five)
     g_six=int(i.grade_six)
     g_seven=int(i.grade_seven)
-    g_eight =int(i.grade_eight)
-    g_nine=int(i.grade_nine)
-    g_ten=int(i.grade_ten)
+    if i.grade_eight:
+        g_eight =int(i.grade_eight)
+        g_nine=int(i.grade_nine)
+        g_ten=int(i.grade_ten)
+    else:
+        g_eight =None
+        g_nine=None
+        g_ten=None
     if request.method == "POST":
         print(tagging_id)
         i=AcceptingOfficer()
@@ -1211,12 +1241,17 @@ def accepting_preview(request,tagging_id):
     g_five=int(i.grade_five)
     g_six=int(i.grade_six)
     g_seven=int(i.grade_seven)
-    g_eight =int(i.grade_eight)
-    g_nine=int(i.grade_nine)
-    g_ten=int(i.grade_ten)
+    if i.grade_eight:
+        g_eight =int(i.grade_eight)
+        g_nine=int(i.grade_nine)
+        g_ten=int(i.grade_ten)
+    else:
+        g_eight =None
+        g_nine=None
+        g_ten=None
 
     return render(request,'Accounts/acr_hindi/preview_officers/preview_accepting.html',{'tagging_data':tagging_data,'emptype':emptype,'emp_des':emp_des,
-            'g_ten':reporting_grade,
+            'reporting_grade':reporting_grade,
             'accepting_data':accepting_data,
             'reviewing_grade':reviewing_grade,
             'accepting_data1':accepting_data1,
@@ -1259,9 +1294,14 @@ def update_accepting_form_hindi(request,tagging_id):
         g_five=int(i.grade_five)
         g_six=int(i.grade_six)
         g_seven=int(i.grade_seven)
-        g_eight =int(i.grade_eight)
-        g_nine=int(i.grade_nine)
-        g_ten=int(i.grade_ten)
+        if i.grade_eight:
+            g_eight =int(i.grade_eight)
+            g_nine=int(i.grade_nine)
+            g_ten=int(i.grade_ten)
+        else:
+            g_eight =None
+            g_nine=None
+            g_ten=None
         print('accepting_grade',accepting_grade)
 
 
@@ -1343,9 +1383,14 @@ def generate_pdf_accepting_officer(request):
             g_five=int(i.grade_five)
             g_six=int(i.grade_six)
             g_seven=int(i.grade_seven)
-            g_eight =int(i.grade_eight)
-            g_nine=int(i.grade_nine)
-            g_ten=int(i.grade_ten)
+            if i.grade_eight:
+                g_eight =int(i.grade_eight)
+                g_nine=int(i.grade_nine)
+                g_ten=int(i.grade_ten)
+            else:
+                g_eight =None
+                g_nine=None
+                g_ten=None
             current_time = datetime.now()
             html_file = render_to_string(
                 # 'Accounts/acr_hindi/test.html',
@@ -1377,6 +1422,7 @@ def generate_pdf_accepting_officer(request):
             # path_to_wkhtmltopdf = r'usr/local/bin/wkhtmltopdf.exe' # Update this path
             conf = pdfkit.configuration(wkhtmltopdf=config)
             pdf_content = pdfkit.from_string(html_file,False,configuration=conf)
+            # pdf_content = pdfkit.from_string(html_file,False,configuration=config)
             accepting_model.accepting_officer_pdf.save(str(tagging_data.empCode)+'_AcceptingOfficerPdf.pdf', ContentFile(pdf_content))
             accepting_model.is_Status = True
             accepting_model.save()
