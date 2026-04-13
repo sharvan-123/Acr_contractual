@@ -159,7 +159,7 @@ def send_sms_reporting(name,mobile, reviewingName):
     url = "https://msg.cerfgs.com/pushapi/sendmsg?username=MPMKVVCL_ERP&dest=91"+str(mobile)+"&apikey=rw7g17n0HsI5To0xhfKd6wX8OKY8OqYS&signature=CCMPCZ&msgtype=UNI&msgtxt="+ str(message) +"&entityid=1201158039515302745&templateid=1007688303325051886"
     print("url+++++++++++", url)
     try:
-        response = requests.request("GET", url, headers=headers)
+        response = requests.request("GET", url,proxies=proxyDict, headers=headers,verify=False)
         print("response:", response.text)
         if response:
             return response.json()
@@ -191,7 +191,7 @@ def send_sms_accepting(name, mobile, AcceptingName):
     url = "https://msg.cerfgs.com/pushapi/sendmsg?username=MPMKVVCL_ERP&dest=91"+str(mobile)+"&apikey=rw7g17n0HsI5To0xhfKd6wX8OKY8OqYS&signature=CCMPCZ&msgtype=UNI&msgtxt="+ str(message) +"&entityid=1201158039515302745&templateid=1007435805364665975"
     print("url+++++++++++", url)
     try:
-        response = requests.request("GET", url, headers=headers)
+        response = requests.request("GET", url,proxies=proxyDict, headers=headers,verify=False)
         print("response:", response.text)
         if response:
             return response.json()
