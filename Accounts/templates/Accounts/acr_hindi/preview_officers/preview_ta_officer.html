@@ -263,6 +263,27 @@
                                             <tr>
                                                 <td style="width: 10%;">
                                                     <div style="text-align: left;">
+                                                         <u>रिपोर्टिंग अधिकारी  द्वारा दी हुई ग्रेड :-</u>
+                                                    </div>
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                    {% if f_grade >= 9.1 and f_grade <= 10 %}
+                                                           उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
+                                                        {% elif f_grade >= 7.1 and f_grade <= 9.0 %}
+                                                       बहुत अच्छा (क)
+                                                        {% elif f_grade >= 6.1 and f_grade <= 7.0 %}
+                                                        अच्छा (ख)
+                                                        {% elif f_grade >= 3.1 and f_grade <= 6.0 %}
+                                                            औसत (ग)
+                                                        {% elif f_grade <= 3.0  %}
+                                                            सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% endif %}
+                                                      
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="width: 10%;">
+                                                    <div style="text-align: left;">
                                                         1.  कार्य के प्रति दृष्टिकोण
 
                                                     </div>
@@ -440,7 +461,7 @@
                                         <table style="width:100%;" class="footeravtion">
                                             <tr>
                                                 <td style="vertical-align: middle;width:30%; text-align:center">
-                                                    <a href=" {% url 'update_reporting_ta_form_hindi' %}?id={{i.id}}"  style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;">
+                                                    <a href="{% url 'update_reporting_ta_form_hindi' tagging_id %}"  style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;">
                                                         Previous 
                                                     </a>
                                                 </td>
@@ -514,7 +535,7 @@
                 {% comment %} <button type="button" class="btn btn-default" data-dismiss="modal">
                     Submit
                 </button> {% endcomment %}
-                <a  href=" {% url 'generate_pdf_reporting_officer' %}?id={{i.id}}&tagging_id={{tagging_data.id}}" style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;">
+                <a  href=" {% url 'generate_pdf_reporting_officer' %}?repoting_officer_id={{i.id}}&tagging_id={{tagging_id}}" style="font-size: 14px;background: #127bcf;border: 1px solid #127bcf;color: #fff;padding: 5px 20px;text-transform: capitalize;font-weight: 500;letter-spacing: 0.5px;border-radius: 50px;">
                                                         Sign & Submit 
                                                     </a>
 
