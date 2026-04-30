@@ -2,13 +2,13 @@
 
 <!-- START: Pre Loader-->
 <div class="se-pre-con">
-    <div class="loader">
-    </div>
+    <div class="loader"></div>
 </div>
 <!-- END: Pre Loader-->
 
 <main>
     <div class="container-fluid site-width">
+        
         <div class="row">
             <div class="col-12 align-self-center">
                 <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
@@ -29,48 +29,77 @@
         <div class="col-12 col-sm-12 p-0 m-0">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-center">
-                    <h4 class="card-title m-auto text-primary"> OTP Verification</h4>
+                    <h4 class="card-title m-auto text-primary">OTP Verification</h4>
                 </div>
+
                 <div class="card-body">
+
+                    <!-- ✅ Django Messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert 
+                                {% if message.tags == 'error' %}alert-danger
+                                {% elif message.tags == 'success' %}alert-success
+                                {% elif message.tags == 'warning' %}alert-warning
+                                {% else %}alert-info
+                                {% endif %}
+                                alert-dismissible fade show text-center" role="alert">
+                                
+                                {{ message }}
+
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
                     <div class="row">
                         <div class="col-sm-4"></div>
+
                         <div class="col-sm-5">
-                        <form  method="post" action="{% url 'generate_pdf_accepting_officer' %}"  enctype="multipart/form-data" id="otp-form">
-                            {% csrf_token %}
-                            <div class="form-group"> 
-                                <label>OTP Code : </label>
-                                {% comment %} <input name="repoting_officer_id" value="{{repoting_officer_id}}" hidden> {% endcomment %}
+                            <form method="post" action="{% url 'generate_pdf_accepting_officer' %}" enctype="multipart/form-data" id="otp-form">
+                                {% csrf_token %}
+
                                 <input name="tagging_id" value="{{tagging_id}}" hidden>
                                 <input name="flag" value="1" hidden>
-                                <input class="form-control" name ="otp" placeholder="******"> 
-                            </div>
-                            <div class="form-group text-center"> 
-                                <button type="submit" class="btn btn-info">
-                                    Submit
-                                </button>
-                            </div>
+
+                                <div class="form-group"> 
+                                    <label>OTP Code :</label>
+                                    <input class="form-control" name="otp" placeholder="Enter OTP">
+                                </div>
+
+                                <div class="form-group text-center"> 
+                                    <button type="submit" class="btn btn-info">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                        </form>
 
                         <div class="col-sm-4"></div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </main>
-                
-
-
 
 {% include 'full_footer.html' %}
 
 <script>
-  document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('otp-form');
     const loader = document.querySelector('.se-pre-con');
-    form.addEventListener('submit', function(event) {
-      loader.style.display = 'block'; // Show the loader
+
+    form.addEventListener('submit', function () {
+        loader.style.display = 'block';
     });
-  });
+});
+
+// ✅ Auto hide messages after 3 sec
+setTimeout(function () {
+    document.querySelectorAll('.alert').forEach(function(alert) {
+        alert.style.display = 'none';
+    });
+}, 3000);
 </script>

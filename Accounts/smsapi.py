@@ -8,11 +8,7 @@ def loginOtp(mobile,otp):
 	url = "https://resourceutils.mpcz.in:8888/MPCZ_OTP/api/otp/getOtp"
 	payload = {"source": "Contractual ACR","mobileNo": str(mobile)}
 	headers = {
-		"Content-Type": "application/json",
-		"Accept": "/",
-		"Accept-Encoding": "gzip, deflate, br",
-		"User-Agent": "EchoapiRuntime/1.1.0",
-		"Connection": "keep-alive"
+	'Content-Type': 'application/json'
 	}
 	try:
 		response = requests.request("POST", url, json=payload, headers=headers,verify=False)
@@ -21,31 +17,25 @@ def loginOtp(mobile,otp):
 	except:
 		return {"status":True,"message":"Something Went Wrong "}
 	
-def verifyOtp(mobile,otp):
-	# mobile = "8827053980"
-	print(mobile,"mobile")
-	url = "https://resourceutils.mpcz.in:8888/MPCZ_OTP/api/otp/verifyOtpAll"
-	payload = {
-		"mobileNo": str(mobile),
-		"source": "Contractual ACR",
-		"otp": str(otp)
-	}
-	headers = {
-		"Accept": "/",
-		"Accept-Encoding": "gzip, deflate, br",
-		"User-Agent": "EchoapiRuntime/1.1.0",
-		"Connection": "keep-alive",
-		"Content-Type": "application/json"
-	}
-	try:
-		print(payload,"payload")
-		response = requests.request("POST", url, json=payload, headers=headers,verify=False)
-		print(url,"===")
-		print(url,"++",response.text)
-		if response:return response.json()
-	except:
-		return {"status":True,"message":"Something Went Wrong "}
-
+def verifyOtp(mobile, otp):
+    # mobile = "8827053980"
+    url = "https://resourceutils.mpcz.in:8888/MPCZ_OTP/api/otp/verifyOtpAll"
+    payload = {
+        "mobileNo": str(mobile),
+        "source": "Contractual ACR",
+        "otp": str(otp)
+    }
+    headers = {
+        "Content-Type": "application/json"
+    }
+    try:
+        response = requests.post(url, json=payload, headers=headers, verify=False)
+        data = response.json()
+        print("Response Code:", data.get("code"))
+        return data
+    except Exception as e:
+        print("Error:", str(e))
+        return None
 
 def send_sms_reporting(name,mobile, reviewingName):
     message = f"प्रिय {name}, आपकी ACR रिपोर्ट आपके रिपोर्टिंग अधिकारी द्वारा पूरी कर ली गई है और आपके समीक्षा अधिकारी {reviewingName} को भेज दी गई है| धन्यवाद. -MPMKVVCL BHOPAL |"

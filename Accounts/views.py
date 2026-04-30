@@ -635,9 +635,13 @@ def generate_pdf_reporting_officer(request):
         hotp = pyotp.HOTP(secrets)
         code = hotp.at(1)
         flag=request.POST.get("flag")
-        if flag is None:
-            response = loginOtp(request.user.mobileNo, code)
-            user = request.user
+        referer = request.META.get('HTTP_REFERER', '')
+        from_preview_page = 'reporting_preview' in referer or 'reporting_ta_preview' in referer
+        if request.method == "GET" and (
+            not request.session.get('otp_sent') or from_preview_page
+        ):
+            loginOtp(request.user.mobileNo, code)
+            request.session['otp_sent'] = True
         repoting_officer_id = request.GET.get("officer_id")
         tagging_id = request.GET.get('tagging_id')
         return render(request,"Accounts/acr_hindi/genrate_otp/otp_reportingofficer.html",{'repoting_officer_id':repoting_officer_id,'tagging_id':tagging_id})
@@ -648,10 +652,12 @@ def generate_pdf_reporting_officer(request):
         repoting_officer_id = request.POST.get("repoting_officer_id")
         tagging_id = request.POST.get('tagging_id')
         print(request.POST.get('otp'),repoting_officer_id,tagging_id,"post wali method", user.otpCounter,request.user.otpSecretKey)
-        response = verifyOtp(request.user.mobileNo,request.POST.get('otp'))
-        if response['code']=="200":
+        response = verifyOtp(request.user.mobileNo, request.POST.get('otp'))
+        print("==================", response.get("code") if response else "No response")
+        if response and response.get("code") == "200":
             request.session['totp_verified'] = True
             request.session['totp_attempts'] = 0
+            request.session.pop('otp_sent', None)
             repoting_officer_id = request.POST.get("repoting_officer_id")
             tagging_id = request.POST.get('tagging_id')
             model = ReportingOfficer.objects.get(tagging_id=tagging_id)
@@ -752,42 +758,11 @@ def generate_pdf_reporting_officer(request):
                 return redirect(ReportingListView)
                 
         else:
-            attempts = request.session.get('totp_attempts', 0)
-            attempts += 1
-            request.session['totp_attempts'] = attempts
-            if attempts >= 5:
-                request.session.flush()
-                return redirect('/')
-            else:
-                messages.error(request, ('Invalid OTP code, please try again'))
-                officer_id=repoting_officer_id
-                url = reverse('reporting_preview',args=[officer_id,tagging_id])
-                return redirect(url)
-        
-
-
-@login_required(login_url='/login/')
-def reportingOtp(request):
-    secrets = pyotp.random_base32()
-    hotp = pyotp.HOTP(secrets)
-    code = hotp.at(1)
-    response = loginOtp(request.user.mobileNo, code)
-    response['code'] = code
-    user = CustomUser.objects.get(empCode=request.POST.get('empCode'))
-    hotp = pyotp.HOTP(user.otpSecretKey)
-    if hotp.verify(request.POST.get('otp'), user.otpCounter):
-        request.session['totp_attempts'] = 0
-    else:
-        attempts = request.session.get('totp_attempts', 0)
-        attempts += 1
-        request.session['totp_attempts'] = attempts
-        if attempts >= 5:
-            request.session.flush()
-            return redirect('/')
-        else:
-            messages.error(request, ('Invalid OTP code, please try again'))
-            return HttpResponseRedirect('/forget/password/')
-    return redirect(generate_pdf_reporting_officer)
+            messages.error(request, "Invalid OTP ❌")
+            return render(
+                request,
+                "Accounts/acr_hindi/genrate_otp/otp_reportingofficer.html",
+                {'tagging_id': tagging_id})
 
 
 @login_required(login_url='/login/')
@@ -975,18 +950,24 @@ def generate_pdf_reviewing_officer(request):
     hotp = pyotp.HOTP(secrets)
     code = hotp.at(1)
     flag=request.POST.get("flag")
-    if flag is None:
-        response = loginOtp(request.user.mobileNo, code)
-        user = request.user
+    referer = request.META.get('HTTP_REFERER', '')
+    from_preview_page = 'reviewing_preview' in referer
+    if request.method == "GET" and (
+        not request.session.get('otp_sent') or from_preview_page
+    ):
+        loginOtp(request.user.mobileNo, code)
+        request.session['otp_sent'] = True
     tagging_id = request.GET.get('tagging_id')
     if request.method == "POST":
         user = CustomUser.objects.get(empCode=request.user.empCode)
         hotp = pyotp.HOTP(user.otpSecretKey)
         tagging_id = request.POST.get('tagging_id')
-        response = verifyOtp(request.user.mobileNo,request.POST.get('otp'))
-        if response['code']=="200":
+        response = verifyOtp(request.user.mobileNo, request.POST.get('otp'))
+        print("==================", response.get("code") if response else "No response")
+        if response and response.get("code") == "200":
             request.session['totp_verified'] = True
             request.session['totp_attempts'] = 0
+            request.session.pop('otp_sent', None)
             tagging_id = request.POST.get('tagging_id')
             reporting_model = ReportingOfficer.objects.get(tagging__id=tagging_id)
             reviewing_model=ReviewingOfficer.objects.get(tagging__id=tagging_id)
@@ -1049,16 +1030,12 @@ def generate_pdf_reviewing_officer(request):
             send_sms_reviewing(name,mobile, AcceptingName)
             return redirect(ReviewingListView)
         else:
-            attempts = request.session.get('totp_attempts', 0)
-            attempts += 1
-            request.session['totp_attempts'] = attempts
-            if attempts >= 5:
-                request.session.flush()
-                return redirect('/')
-            else:
-                messages.error(request, ('Invalid OTP code, please try again'))
-                url = reverse('reviewing_preview',args=[tagging_id])
-                return redirect(url)
+            messages.error(request, "Invalid OTP ❌")
+            return render(
+                request,
+                "Accounts/acr_hindi/genrate_otp/otp_reviewingofficer.html",
+                {'tagging_id': tagging_id}
+            )
     return render(request,"Accounts/acr_hindi/genrate_otp/otp_reviewingofficer.html",{'tagging_id':tagging_id})
 
 
@@ -1248,18 +1225,24 @@ def generate_pdf_accepting_officer(request):
     code = hotp.at(1)
     flag=request.POST.get("flag")
     print(code,flag,"bheja hua flag")
-    if flag is None:
-        response = loginOtp(request.user.mobileNo, code)
-        user = request.user
+    referer = request.META.get('HTTP_REFERER', '')
+    from_preview_page = 'accepting_preview' in referer
+    if request.method == "GET" and (
+        not request.session.get('otp_sent') or from_preview_page
+    ):
+        loginOtp(request.user.mobileNo, code)
+        request.session['otp_sent'] = True
     tagging_id = request.GET.get('tagging_id')
     if request.method == "POST":
         user = CustomUser.objects.get(empCode=request.user.empCode)
         hotp = pyotp.HOTP(user.otpSecretKey)
         tagging_id = request.POST.get('tagging_id')
-        response = verifyOtp(request.user.mobileNo,request.POST.get('otp'))
-        if response['code']=="200":
+        response = verifyOtp(request.user.mobileNo, request.POST.get('otp'))
+        print("==================", response.get("code") if response else "No response")
+        if response and response.get("code") == "200":
             request.session['totp_verified'] = True
             request.session['totp_attempts'] = 0
+            request.session.pop('otp_sent', None)
             tagging_id = request.POST.get('tagging_id')
             reporting_model = ReportingOfficer.objects.get(tagging__id=tagging_id)
             reviewing_model=ReviewingOfficer.objects.get(tagging__id=tagging_id)
@@ -1327,17 +1310,11 @@ def generate_pdf_accepting_officer(request):
             send_sms_accepting(name,mobile, AcceptingName)
             return redirect(AcceptingListView)
         else:
-            attempts = request.session.get('totp_attempts', 0)
-            attempts += 1
-            request.session['totp_attempts'] = attempts
-            if attempts >= 5:
-                request.session.flush()
-                return redirect('/')
-            else:
-                messages.error(request, ('Invalid OTP code, please try again'))
-                
-                url = reverse('accepting_preview',args=[tagging_id])
-                return redirect(url)
+            messages.error(request, "Invalid OTP ❌")
+            return render(
+                request,
+                "Accounts/acr_hindi/genrate_otp/otp_accepting_officer.html",
+                {'tagging_id': tagging_id})
     return render(request,"Accounts/acr_hindi/genrate_otp/otp_accepting_officer.html",{'tagging_id':tagging_id})
 
 
