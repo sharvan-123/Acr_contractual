@@ -1494,7 +1494,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Fetch and populate officers based on selected designation
             if (selectedDesignationId) {
-                fetch(`https://attendance.mpcz.in:8888/E-Attendance/api/employee/getRoByDesignationId/${selectedDesignationId}`)
+                fetch(`https://attendance.mpcz.in:8888/E-Attendance/api/employee/getRoByDesignationIdAll/${selectedDesignationId}`)
                     .then(response => response.json())
                     .then(data => {
                         console.log('Fetched Officers Data:', data);
