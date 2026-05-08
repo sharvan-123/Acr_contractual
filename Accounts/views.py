@@ -35,7 +35,7 @@ apiUrl = settings.APIURL
 def dashboard(request):
     # 17 manegar AE,23 JE,37 LA
     print(request.user.employmentType['empTypeId'],request.user.designation['designationId'],"type id............")
-    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']==  98 or request.user.designation['designationId'] == 99 or request.user.designation['designationId'] == 37,request.user.designation['designationId'] == 17) :
+    if request.user.employmentType['empTypeId']== 6 and (request.user.designation['designationId']==  98 or request.user.designation['designationId'] == 99 or request.user.designation['designationId'] == 37,request.user.designation['designationId'] == 17,request.user.designation['designationId'] == 68) :
         is_tagging=True
     else:
         is_tagging=False
@@ -1321,7 +1321,7 @@ def generate_pdf_accepting_officer(request):
 from django.db.models import Q
 def emp_tagging_form_ta(request):
     if request.method=="GET":
-        emp_detail=CustomUser.objects.filter(employmentType__empTypeId=6 ,designation__designationId__in=[37,84,23])
+        emp_detail=CustomUser.objects.filter(employmentType__empTypeId=6 ,designation__designationId__in=[37,84,23,68])
         # region_url = f"{apiUrl}/location/getAllRegions/"
         # import requests
         # response = requests.get(region_url)
@@ -1594,7 +1594,7 @@ def complete_acr_list(request):
     # tagging_data1=EmployeeTagging.objects.filter(empCode__designation['designationId']==99)
     if request.user.empCode == '150033' or '12345678':
         tagging_data1 = list(EmployeeTagging.objects.filter(
-        empCode__designation__designationId__in=[98,37,99,17],
+        empCode__designation__designationId__in=[98,37,99,17,68],
         isFinal=True
         ).values_list('id',flat=True))
     elif request.user.region is not None and request.user.circle is None and request.user.groups.filter(name='Hr').exists():
