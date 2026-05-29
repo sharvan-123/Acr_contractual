@@ -93,6 +93,11 @@ def process_flow_status(request):
     return render(request, "Accounts/process_flow_status.html", {"status_data": tagging_status_list}) 
 
 
+@login_required(login_url='/login/')
+def TaggingList(request):
+    empCode = request.GET.get("empCode")
+    data=EmployeeTagging.objects.filter(empCode__empCode=request.user.empCode).order_by('-id')
+    return render(request, "Accounts/tagging_list.html",{'final_data':data})
 
 @method_decorator(check_valid_referer, name='dispatch')
 @method_decorator(login_required(login_url='/login/'), name='dispatch')

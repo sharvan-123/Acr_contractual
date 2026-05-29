@@ -14,6 +14,7 @@ urlpatterns = [
 
         # For Taginng
         path('tagging/', views.TaggingCreateView.as_view(), name='tagging_add'),
+        path('taggingList',views.TaggingList,name="taggingList"),
         path('mis/', views.TaggingListView.as_view(), name='tagging_view'),
         path('mis/<int:pk>/<str:type>/', views.TaggingUpdateView.as_view()),
         path('ajax/load-posting-data/', views.load_posting_data, name='ajax_load_posting_data'),

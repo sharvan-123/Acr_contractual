@@ -241,6 +241,10 @@
           </li> {% endcomment %}
           
           {% endif %} {% endfor %}
+          <li class="{% if 'taggingList' in request.path %} active {% endif %}">
+            <a href="{% url 'taggingList' %}">
+              <i class="icon-badge"></i> टैगिंग लिस्ट </a>
+          </li>
           <li class="{% if 'reporting' in request.path %} active {% endif %}">
             <a href="/reporting/">
               <i class="icon-badge"></i> रिपोर्टिंग अधिकारी </a>
