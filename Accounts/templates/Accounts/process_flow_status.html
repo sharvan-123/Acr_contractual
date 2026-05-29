@@ -1,0 +1,116 @@
+{% include 'full_header.html' %}
+
+<style>
+    .status-done {
+        color: green;
+        font-weight: bold;
+    }
+    .status-pending {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+
+<main>
+    <div class="container-fluid site-width">
+        <div class="row">
+            <div class="col-12 align-self-center">
+                <div class="sub-header mt-3 py-3 align-self-center d-sm-flex w-100 rounded">
+                    <div class="w-sm-100 mr-auto"><h4 class="mb-0">एसीआर प्रोसेस फ्लो का स्टेटस</h4></div>
+                    <ol class="breadcrumb bg-transparent align-self-center m-0 p-0">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item">एसीआर प्रोसेस</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <!-- ACR Process Flow Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card border h-100 contact-list-section">
+                    <div class="card-body">
+                        <h5 class="mb-3">कर्मचारियों के लिए चरण</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                {% for tagging in status_data %}
+                                <thead>
+                                    <tr>
+                                        <th colspan="2" style="text-align: center; font-weight: bold; background-color: #1e3d73; color: white;">
+                                            टैगिंग अवधि :- {{ tagging.tagging.period }}
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th style="background-color: #f2f2f2;">चरण</th>
+                                        <th style="background-color: #f2f2f2;">स्टेटस</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>कर्मचारी द्वारा टैगिंग पूर्ण</td>
+                                        <td class="{% if tagging.tagging.taggingId == 'not_submitted' %}status-not-submitted{% elif tagging.tagging.taggingId %}status-done{% else %}status-pending{% endif %}">
+                                            {% if tagging.tagging.taggingId == 'not_submitted' %} 🚫 जमा नहीं किया गया
+                                            {% elif tagging.tagging.taggingId %} ✅ पूर्ण
+                                            {% else %} ⏳ लंबित {% endif %}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>एचआर सत्यापन</td>
+                                        <td class="{% if tagging.tagging.isFinal == 'not_submitted' %}status-not-submitted{% elif tagging.tagging.isFinal %}status-done{% else %}status-pending{% endif %}">
+                                            {% if tagging.tagging.isFinal == 'not_submitted' %} 🚫 जमा नहीं किया गया
+                                            {% elif tagging.tagging.isFinal %} ✅ पूर्ण
+                                            {% else %} ⏳ लंबित {% endif %}
+                                        </td>
+                                    </tr>
+
+                                    {% if tagging.self_appraisal_show_status %}
+                                    <tr>
+                                        <td>स्व-मूल्यांकन जमा</td>
+                                        <td class="{% if tagging.self_appraisal_status == 'not_submitted' %}status-not-submitted{% elif tagging.self_appraisal_status == 'Approved' %}status-done{% else %}status-pending{% endif %}">
+                                            {% if tagging.self_appraisal_status == 'not_submitted' %} 🚫 जमा नहीं किया गया
+                                            {% elif tagging.self_appraisal_status == 'Approved' %} ✅ पूर्ण
+                                            {% else %} ⏳ लंबित {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+
+                                    <tr>
+                                        <td>रिपोर्टिंग अधिकारी ग्रेड/टिप्पणियाँ</td>
+                                        <td class="{% if tagging.reporting_status == 'not_submitted' %}status-not-submitted{% elif tagging.reporting_status == 'Approved' %}status-done{% else %}status-pending{% endif %}">
+                                            {% if tagging.reporting_status == 'not_submitted' %} 🚫 जमा नहीं किया गया
+                                            {% elif tagging.reporting_status == 'Approved' %} ✅ पूर्ण
+                                            {% else %} ⏳ लंबित {% endif %}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>पुनरीक्षण कर्ता अधिकारी ग्रेड/टिप्पणियाँ</td>
+                                        <td class="{% if tagging.reviewing_status == 'not_submitted' %}status-not-submitted{% elif tagging.reviewing_status == 'Approved' %}status-done{% else %}status-pending{% endif %}">
+                                            {% if tagging.reviewing_status == 'not_submitted' %} 🚫 जमा नहीं किया गया
+                                            {% elif tagging.reviewing_status == 'Approved' %} ✅ पूर्ण
+                                            {% else %} ⏳ लंबित {% endif %}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>स्वीकृतकर्ता अधिकारी ग्रेड/टिप्पणियाँ</td>
+                                        <td class="{% if tagging.accepting_status == 'not_submitted' %}status-not-submitted{% elif tagging.accepting_status == 'Approved' %}status-done{% else %}status-pending{% endif %}">
+                                            {% if tagging.accepting_status == 'not_submitted' %} 🚫 जमा नहीं किया गया
+                                            {% elif tagging.accepting_status == 'Approved' %} ✅ पूर्ण
+                                            {% else %} ⏳ लंबित {% endif %}
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% include 'full_footer.html' %}

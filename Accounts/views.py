@@ -50,6 +50,49 @@ def dashboard(request):
     }
     return render(request, 'index.html',context)
 
+@login_required(login_url='/login/')
+def process_flow_status(request):
+    tagging_id = request.GET.get("tagging_id")
+    if tagging_id:
+        taggings = EmployeeTagging.objects.filter(id=tagging_id)
+    else:
+        taggings = EmployeeTagging.objects.filter(empCode=request.user)
+    tagging_status_list = []
+    if not taggings.exists():
+        default_status = {
+            "tagging": {
+                "taggingId": 'not_submitted',
+                "isFinal": 'not_submitted',
+                "period": "--/--/----",
+            },
+            "reporting_status": "not_submitted",
+            "reviewing_status": "not_submitted",
+            "accepting_status": "not_submitted",
+        }
+        return render(request, "Accounts/process_flow_status.html", {"status_data": [default_status]})
+
+    for tagging in taggings:
+        tagging_status = {
+            "taggingId": tagging.id,
+            "isFinal": tagging.isFinal,
+            "period": f"{tagging.fromDate} to {tagging.toDate}" if hasattr(tagging, "fromDate") and hasattr(tagging, "toDate") else "--/--/----",
+        }
+        reporting = ReportingOfficer.objects.filter(tagging_id=tagging,is_Status=True).first()
+        reviewing = ReviewingOfficer.objects.filter(tagging_id=tagging,is_Status=True).first()
+        accepting = AcceptingOfficer.objects.filter(tagging_id=tagging,is_Status=True).first()
+        reporting_status = "Approved" if any([reporting]) else "Pending"
+        reviewing_status = "Approved" if any([reviewing]) else "Pending"
+        accepting_status = "Approved" if any([accepting]) else "Pending"
+        status_data = {
+            "tagging": tagging_status,
+            "reporting_status": reporting_status,
+            "reviewing_status": reviewing_status,
+            "accepting_status": accepting_status
+        }
+        tagging_status_list.append(status_data)
+    return render(request, "Accounts/process_flow_status.html", {"status_data": tagging_status_list}) 
+
+
 
 @method_decorator(check_valid_referer, name='dispatch')
 @method_decorator(login_required(login_url='/login/'), name='dispatch')
