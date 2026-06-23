@@ -1642,7 +1642,7 @@ def complete_acr_list(request):
     # tagging_data1=EmployeeTagging.objects.filter(empCode__designation['designationId']==99)
     if request.user.empCode == '150033' or '12345678':
         tagging_data1 = list(EmployeeTagging.objects.filter(
-        empCode__designation__designationId__in=[98,37,99,17,68],
+        empCode__designation__designationId__in=[98,37,99,17,68,23],
         isFinal=True
         ).values_list('id',flat=True))
     elif request.user.region is not None and request.user.circle is None and request.user.groups.filter(name='Hr').exists():
