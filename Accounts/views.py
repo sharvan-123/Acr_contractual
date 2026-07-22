@@ -1638,8 +1638,61 @@ def emp_tagging_form_je(request):
 #         print(accepting_data,reviewing_data,tagging_data)        
 #     return render(request,'Accounts/acr_hindi/complete_acr_list.html',{'data':data})
 
+# def complete_acr_list(request):
+#     # tagging_data1=EmployeeTagging.objects.filter(empCode__designation['designationId']==99)
+#     if request.user.empCode == '150033' or '12345678':
+#         tagging_data1 = list(EmployeeTagging.objects.filter(
+#         empCode__designation__designationId__in=[98,37,99,17,68,23],
+#         isFinal=True
+#         ).values_list('id',flat=True))
+#     elif request.user.region is not None and request.user.circle is None and request.user.groups.filter(name='Hr').exists():
+#         tagging_data1 = list(EmployeeTagging.objects.filter(
+#         empCode__designation__designationId__in=[37,99],region_code=request.user.region['regionId'],       
+#         isFinal=True
+#         ).values_list('id',flat=True))
+#     elif request.user.region is not None and request.user.circle is not None and request.user.groups.filter(name='Hr').exists():
+#         tagging_data1 = list(EmployeeTagging.objects.filter(
+#         empCode__designation__designationId=84,region_code=request.user.region['regionId'],circle_code=request.user.circle['circleId'],     
+#         isFinal=True
+#         ).values_list('id',flat=True))
+
+#     accepting_data1=AcceptingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
+#     reviewing_data1=ReviewingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
+#     reporting_data1=ReportingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
+#     off_list=[]
+#     data=[]
+#     for i in reporting_data1:
+#         off_list.append(i)
+
+#     for j in off_list:
+#         data2=[]
+#         data2.append(j.tagging.empCode.fullName)
+#         if j.reporting_pdf:
+#             data2.append(j)
+#         else:
+#             data2.append(0)
+#         reviewing_data2=ReviewingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True).first()
+#         if reviewing_data2:
+#             data2.append(reviewing_data2)
+#         else:
+#             data2.append(0)
+#         accepting_data2=AcceptingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True).first()
+#         if accepting_data2:
+#             data2.append(accepting_data2)
+#         else:
+#             data2.append(0)
+#         data.append(data2)
+#     # print(data,"fianl data")
+        
+#     c=0
+#     for i in accepting_data1:
+#         c+=1
+#     # print(c,"QQQQQQQQQQQQQQQQQQQ")
+#     # print(accepting_data,reviewing_data1,tagging_data1,"+++++++++++++++")        
+#     return render(request,'Accounts/acr_hindi/tagging_list/complete_acr_list.html',{'final_data':data
+#     })
+
 def complete_acr_list(request):
-    # tagging_data1=EmployeeTagging.objects.filter(empCode__designation['designationId']==99)
     if request.user.empCode == '150033' or '12345678':
         tagging_data1 = list(EmployeeTagging.objects.filter(
         empCode__designation__designationId__in=[98,37,99,17,68,23],
@@ -1656,8 +1709,6 @@ def complete_acr_list(request):
         isFinal=True
         ).values_list('id',flat=True))
 
-    accepting_data1=AcceptingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
-    reviewing_data1=ReviewingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
     reporting_data1=ReportingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
     off_list=[]
     data=[]
@@ -1671,24 +1722,17 @@ def complete_acr_list(request):
             data2.append(j)
         else:
             data2.append(0)
-        reviewing_data2=ReviewingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True).first()
+        reviewing_data2=ReviewingOfficer.objects.filter(tagging__id=j.tagging_id,is_Status=True).first()
         if reviewing_data2:
             data2.append(reviewing_data2)
         else:
             data2.append(0)
-        accepting_data2=AcceptingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True).first()
+        accepting_data2=AcceptingOfficer.objects.filter(tagging__id=j.tagging_id,is_Status=True).first()
         if accepting_data2:
             data2.append(accepting_data2)
         else:
             data2.append(0)
-        data.append(data2)
-    # print(data,"fianl data")
-        
-    c=0
-    for i in accepting_data1:
-        c+=1
-    # print(c,"QQQQQQQQQQQQQQQQQQQ")
-    # print(accepting_data,reviewing_data1,tagging_data1,"+++++++++++++++")        
+        data.append(data2)   
     return render(request,'Accounts/acr_hindi/tagging_list/complete_acr_list.html',{'final_data':data
     })
 
