@@ -10,6 +10,7 @@ urlpatterns = [
         path('sendotp/', views.generate_totp, name='sendotp'),
         # path('send-otp/<int:id>/', views.OTPView.as_view(), name='send_otp'),
         path('login/', views.Login, name='login'),
+        path('sso-login/', views.sso_login, name='sso_login'),
         path('logout/', views.logout_view, name='logout'),
 
         # For Taginng

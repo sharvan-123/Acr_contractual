@@ -196,6 +196,64 @@ class TaggingUpdateView(UpdateView):
     template_name = 'Accounts/employeetagging_form_update.html'
     success_url = "/mis/"
 
+# -----sso new wala ----- 
+
+def sso_login(request):
+    token = request.GET.get("token")
+    if not token:
+        messages.error(request, "SSO token is missing.")
+        return redirect("login")
+    try:
+        headers = {
+        'Authorization': f'Bearer {token}',
+        "Accept": "*/*"
+        }
+        validate_url = "https://attendance.mpcz.in:8888/E-Attendance/api/user-login/validateToken"
+        payload = {}
+        response = requests.request("GET", validate_url, headers=headers, verify=False, data=payload)
+        if response.status_code != 200:
+            messages.error(request, "Invalid SSO token.")
+            return redirect("login")
+
+        data = response.json()
+        if data.get("valid") is True:
+            empCode = data.get("username")
+        # ---------- details api call
+        urlDetail = f"https://resources.mpcz.in:8888/E-Attendance/api/employee/getEmployeeByEmpCode/{empCode}"
+        headers = {'Content-Type': 'application/json'}
+        response2 = requests.request("Get", urlDetail, headers=headers, verify=False)
+        # try:
+        if response2.json()['code'] == '200' and response2.json()['message'] == 'Success':
+            secrets = pyotp.random_base32()
+            data = response2.json()['list'][0]
+            if int(data['designation']['designationClass']) <= 4:
+                if HrManagers.objects.filter(empCode=request.POST.get('empCode')).exists():group = Group.objects.get(name='Hr')
+                else:group = Group.objects.get(name='Employee')
+                if CustomUser.objects.filter(empCode=data['empCode']).exists():
+                    user = CustomUser.objects.filter(empCode=data['empCode'])
+                    user.update(firstName=data['firstName'], middleName=data['middleName'], lastName=data['lastName'], fullName=data['fullName'], mobileNo=data['mobileNo'], aadhaarNumber=data['adhaarNumber'], dateOfBirth=data['dateOfBirth'], dateOfJoining=data['dateOfJoining'], dateOfTraining=data['dateOfTraining'], gender=data['gender'], fatherName=data['fatherName'], motherName=data['motherName'], maritalStatus=data['maritalStatus'], heightOfEmployee=data['heightOfEmployee'], personalIdentificationMark=data['personalIdentificationMark'], physicallyHandicaped=data['physicallyHandicaped'], percentageOfDisablement=data['percentageOfDisablement'], employmentType=data['employementType'], category=data['category'], email=data['email'], address=data['address'], city=data['city'], region=data['region'], circle=data['circle'], division=data['division'], subDivision=data['subDivision'], dc=data['dc'], substation=data['substation'], defaultShift=data['defaultShift'], designation=data['designation'], reportingOfficer=data['reportingOfficer'], reportingOfficerDesignation=data['reportingOfficerDesignation'], bankName=data['bankName'], bankAccount=data['bankAccount'], bankIfsc=data['bankIfsc'], isReportingOfficer=data['isReportingOfficer'], isManagerHr=data['isManagerHr'], isAeIt=data['isAeIt'], isTransferOrderApprover=data['isTransferOrderApprover'], isCurrentCharge=data['isCurrentCharge'], currentChargeDesignation=data['currentChargeDesignation'], dateOfCurrentCharge=data['dateOfCurrentCharge'], dateOfRegularisation=data['dateOfRegularisation'], managerHr=data['managerHr'], panNo=data['panNo'], managerHrName=data['managerHrName'], attendanceLocationId=data['attendanceLocationId'], departmentId=data['departmentId'], stateOfBirth=data['stateOfBirth'], townOrCityOfBirth=data['townOrCityOfBirth'], isRegisteredHandicapped=data['isRegisteredHandicapped'], discriptionOfHandicapped=data['discriptionOfHandicapped'], officialEmail=data['officialEmail'], gsliNumber=data['gsliNumber'], bloodGroup=data['bloodGroup'], correspondenceAddress=data['correspondenceAddress'], basicPay=data['basicPay'], providentFundType=data['providentFundType'], pranNumber=data['pranNumber'], pfNumber=data['pfNumber'], holidayList=data['holidayList'], deviceId=data['deviceId'], otpSecretKey=secrets, otpCounter=1, status=data['status'])
+                    user = CustomUser.objects.get(empCode=data['empCode'])
+                    user.set_password(request.POST.get('password'))
+                    user.save()
+                else:
+                    user = CustomUser(empId=data['id'], empCode=data['empCode'], firstName=data['firstName'], middleName=data['middleName'], lastName=data['lastName'], fullName=data['fullName'], mobileNo=data['mobileNo'], aadhaarNumber=data['adhaarNumber'], dateOfBirth=data['dateOfBirth'], dateOfJoining=data['dateOfJoining'], dateOfTraining=data['dateOfTraining'], gender=data['gender'], fatherName=data['fatherName'], motherName=data['motherName'], maritalStatus=data['maritalStatus'], heightOfEmployee=data['heightOfEmployee'], personalIdentificationMark=data['personalIdentificationMark'], physicallyHandicaped=data['physicallyHandicaped'], percentageOfDisablement=data['percentageOfDisablement'], employmentType=data['employementType'], category=data['category'], email=data['email'], address=data['address'], city=data['city'], region=data['region'], circle=data['circle'], division=data['division'], subDivision=data['subDivision'], dc=data['dc'], substation=data['substation'], defaultShift=data['defaultShift'], designation=data['designation'], reportingOfficer=data['reportingOfficer'], reportingOfficerDesignation=data['reportingOfficerDesignation'], bankName=data['bankName'], bankAccount=data['bankAccount'], bankIfsc=data['bankIfsc'], isReportingOfficer=data['isReportingOfficer'], isManagerHr=data['isManagerHr'], isAeIt=data['isAeIt'], isTransferOrderApprover=data['isTransferOrderApprover'], isCurrentCharge=data['isCurrentCharge'], currentChargeDesignation=data['currentChargeDesignation'], dateOfCurrentCharge=data['dateOfCurrentCharge'], dateOfRegularisation=data['dateOfRegularisation'], managerHr=data['managerHr'], panNo=data['panNo'], managerHrName=data['managerHrName'], attendanceLocationId=data['attendanceLocationId'], departmentId=data['departmentId'], stateOfBirth=data['stateOfBirth'], townOrCityOfBirth=data['townOrCityOfBirth'], isRegisteredHandicapped=data['isRegisteredHandicapped'], discriptionOfHandicapped=data['discriptionOfHandicapped'], officialEmail=data['officialEmail'], gsliNumber=data['gsliNumber'], bloodGroup=data['bloodGroup'], correspondenceAddress=data['correspondenceAddress'], basicPay=data['basicPay'], providentFundType=data['providentFundType'], pranNumber=data['pranNumber'], pfNumber=data['pfNumber'], holidayList=data['holidayList'], deviceId=data['deviceId'], otpSecretKey=secrets, otpCounter=1, status=data['status'],)
+                    user.save()
+                    group.user_set.add(str(user.pk))
+                    user.set_password(request.POST.get('password'))
+                    user.save()
+                group.user_set.add(user)
+                login(request, user)
+                if user is not None:
+                    login(request, user)
+                    return redirect('/')
+    except requests.RequestException as e:
+        messages.error(request,"Unable to connect with Attendance Portal.")
+        return redirect("login")
+    except Exception as e:
+        messages.error( request,"SSO Login Failed.")
+        return redirect("login")
+#----------------------------------end new sso login----------------
+
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 #@ratelimit(key='post:empCode',rate='10/m',block=True)
 def Login(request):
@@ -276,7 +334,7 @@ def load_posting_data(request):
 def generate_totp(request):
     if request.method == 'POST' and request.POST['type'] == 'login':
         url = f"{apiUrl}/user-login/authenticate"
-        urlDetail = f"{apiUrl}/employee/getEmployeeByEmpCode/{request.POST.get('empCode')}"
+        urlDetail = f"https://resources.mpcz.in:8888/E-Attendance/api/employee/getEmployeeByEmpCode/{request.POST.get('empCode')}"
         payload = json.dumps({
             "username": request.POST.get('empCode'),
             "password": request.POST.get('password'),
@@ -315,7 +373,7 @@ def generate_totp(request):
             else:return JsonResponse({'status': False, 'message': "Invalid Login Credentials"}, safe=False)
         except Exception as e:return JsonResponse({'status': False, 'message': "Invalid Login Credentials"}, safe=False)
     elif request.method == 'POST' and request.POST['type'] == 'forgetPassword':
-        url = f"{apiUrl}/employee/getEmployeeByEmpCode/{request.POST.get('empCode')}"
+        url = f"https://resources.mpcz.in:8888/E-Attendance/api/employee/getEmployeeByEmpCode/{request.POST.get('empCode')}"
         headers = {'Content-Type': 'application/json'}
         response = requests.request("Get", url, headers=headers, verify=False)
         try:
@@ -1743,7 +1801,7 @@ def update_emp_detail_by_empCode(request):
         ids = json.loads(ids_str)
         for empCode in ids:
             print("++++",id)
-            urlDetail = f"{apiUrl}/employee/getEmployeeByEmpCode/{empCode}"
+            urlDetail = f"https://resources.mpcz.in:8888/E-Attendance/api/employee/getEmployeeByEmpCode/{empCode}"
             headers = {'Content-Type': 'application/json'}
             response2 = requests.request("Get", urlDetail, headers=headers, verify=False)
             if response2.json()['code'] == '200' and response2.json()['message'] == 'Success':
