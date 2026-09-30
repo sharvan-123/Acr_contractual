@@ -120,13 +120,13 @@ class TaggingCreateView(CreateView):
         employeeTagging = form.save(commit=False)
         employeeTagging.empCode = form.cleaned_data['empCode'] if form.cleaned_data['empCode'] else self.request.user
         if form.cleaned_data['region_code'] in [1,'1']:
-                employeeTagging.hrManagerCode = '150033'
-                employeeTagging.hrManager = 'RAVI KUMAR SHARMA'
+                employeeTagging.hrManagerCode = '89427825'
+                employeeTagging.hrManager = 'Priya Patel'
                 employeeTagging.save()
         if employeeTagging.isAnotherTagging:
             if form.cleaned_data['region_code2'] in [1,'1']:
-                hr_code = employeeTagging.hrManagerCode = '150033'
-                hr_name = employeeTagging.hrManager = 'RAVI KUMAR SHARMA'
+                hr_code = employeeTagging.hrManagerCode = '	89427825'
+                hr_name = employeeTagging.hrManager = 'Priya Patel'
             else :
                 hr_name = form.cleaned_data['hrManager2']
                 hr_code = form.cleaned_data['hrManagerCode2']
@@ -478,7 +478,7 @@ def ReportingListView(request):
     for i in data:
         if i.empCode.designation['designationId'] == 99 or i.empCode.designation['designationId']== 98 or i.empCode.designation['designationId'] in [23,17] :
             JE_TA_data.append(0)
-        elif i.empCode.designation['designationId'] == 84 or i.empCode.designation['designationId']== 37:
+        elif i.empCode.designation['designationId'] == 84 or i.empCode.designation['designationId']== 37 or i.empCode.designation['designationId']== 68:
             JE_TA_data.append(1)
         reporting_officer = ReportingOfficer.objects.filter(tagging__id=i.id).filter(is_Status=True)
 
@@ -1751,7 +1751,7 @@ def emp_tagging_form_je(request):
 #     })
 
 def complete_acr_list(request):
-    if request.user.empCode == '150033' or '12345678':
+    if request.user.empCode == '89427825' or '12345678':
         tagging_data1 = list(EmployeeTagging.objects.filter(
         empCode__designation__designationId__in=[98,37,99,17,68,23],
         isFinal=True
