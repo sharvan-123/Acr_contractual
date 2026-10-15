@@ -258,17 +258,25 @@
               <i class="icon-badge"></i> स्वीकृतकर्ता अधिकारी</a>
           </li>
           
-          {% for grp in user.groups.all %} {% if grp.name == "Hr" and user.isManagerHr %}
-          <li class="{% if 'complete_acr_list' in request.path %} active {% endif %}">
-            <a href="/complete_acr_list">
-              <i class="icon-list"></i>ACR की पूर्ण सूची </a>
-          </li>
-          {% comment %} <li>
-            <a href="#">
-              <i class="icon-book-open"></i> Old ACR Pdf </a>
-          </li> {% endcomment %}
           
-          {% endif %} {% endfor %}
+              {% if user.isManagerHr %}
+                  {% for grp in user.groups.all %}
+                      {% if grp.name == "Hr" %}
+                          <li class="{% if 'complete_acr_list' in request.path %}active{% endif %}">
+                              <a href="/complete_acr_list">
+                                  <i class="icon-list"></i> ACR की पूर्ण सूची
+                              </a>
+                          </li>
+                      {% endif %}
+                  {% endfor %}
+              {% else %}
+                  <li class="{% if 'my-acr' in request.path %}active{% endif %}">
+                      <a href="/my-acr/">
+                          <i class="icon-list"></i> मेरी ACR
+                      </a>
+                  </li>
+              {% endif %}
+
         </ul>
       </li>
     </ul>

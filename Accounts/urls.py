@@ -48,6 +48,7 @@ urlpatterns = [
         path('process_flow_status/', views.process_flow_status, name='process_flow_status'),
         #for complete acr.........
         path('complete_acr_list',views.complete_acr_list,name="complete_acr_list"),
+        path('my-acr/', views.my_acr_list, name='my_acr_list'),
         #extra 
         path('add_update_emp_profile/', views.update_emp_detail_by_empCode, name='add_update_emp_profile')
 

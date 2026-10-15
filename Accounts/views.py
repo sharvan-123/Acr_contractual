@@ -1811,49 +1811,85 @@ def emp_tagging_form_je(request):
 #     return render(request,'Accounts/acr_hindi/tagging_list/complete_acr_list.html',{'final_data':data
 #     })
 
+# def complete_acr_list(request):
+#     if request.user.empCode == '89427825' or '12345678':
+#         tagging_data1 = list(EmployeeTagging.objects.filter(
+#         empCode__designation__designationId__in=[98,37,99,17,84,68,23],
+#         isFinal=True
+#         ).values_list('id',flat=True))
+#     elif request.user.region is not None and request.user.circle is None and request.user.groups.filter(name='Hr').exists():
+#         tagging_data1 = list(EmployeeTagging.objects.filter(
+#         empCode__designation__designationId__in=[37,99],region_code=request.user.region['regionId'],       
+#         isFinal=True
+#         ).values_list('id',flat=True))
+#     elif request.user.region is not None and request.user.circle is not None and request.user.groups.filter(name='Hr').exists():
+#         tagging_data1 = list(EmployeeTagging.objects.filter(
+#         empCode__designation__designationId=84,region_code=request.user.region['regionId'],circle_code=request.user.circle['circleId'],     
+#         isFinal=True
+#         ).values_list('id',flat=True))
+
+#     reporting_data1=ReportingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
+#     off_list=[]
+#     data=[]
+#     for i in reporting_data1:
+#         off_list.append(i)
+
+#     for j in off_list:
+#         data2=[]
+#         data2.append(j.tagging.empCode.fullName)
+#         if j.reporting_pdf:
+#             data2.append(j)
+#         else:
+#             data2.append(0)
+#         reviewing_data2=ReviewingOfficer.objects.filter(tagging__id=j.tagging_id,is_Status=True).first()
+#         if reviewing_data2:
+#             data2.append(reviewing_data2)
+#         else:
+#             data2.append(0)
+#         accepting_data2=AcceptingOfficer.objects.filter(tagging__id=j.tagging_id,is_Status=True).first()
+#         if accepting_data2:
+#             data2.append(accepting_data2)
+#         else:
+#             data2.append(0)
+#         data.append(data2)   
+#     return render(request,'Accounts/acr_hindi/tagging_list/complete_acr_list.html',{'final_data':data
+#     })
+
+
+
+
+@login_required
 def complete_acr_list(request):
-    if request.user.empCode == '89427825' or '12345678':
-        tagging_data1 = list(EmployeeTagging.objects.filter(
-        empCode__designation__designationId__in=[98,37,99,17,68,23],
-        isFinal=True
-        ).values_list('id',flat=True))
-    elif request.user.region is not None and request.user.circle is None and request.user.groups.filter(name='Hr').exists():
-        tagging_data1 = list(EmployeeTagging.objects.filter(
-        empCode__designation__designationId__in=[37,99],region_code=request.user.region['regionId'],       
-        isFinal=True
-        ).values_list('id',flat=True))
-    elif request.user.region is not None and request.user.circle is not None and request.user.groups.filter(name='Hr').exists():
-        tagging_data1 = list(EmployeeTagging.objects.filter(
-        empCode__designation__designationId=84,region_code=request.user.region['regionId'],circle_code=request.user.circle['circleId'],     
-        isFinal=True
-        ).values_list('id',flat=True))
+    if str(request.user.empCode) in ['89427825', '12345678']:
+        tagging_data = EmployeeTagging.objects.filter(empCode__designation__designationId__in=[98, 37, 99, 17, 84, 68, 23], isFinal=True)
+    elif request.user.groups.filter(name='Hr').exists() and request.user.region is not None and request.user.circle is not None:
+        tagging_data = EmployeeTagging.objects.filter(empCode__designation__designationId__in=[98, 37, 99, 17, 84, 68, 23], empCode__region__regionId=request.user.region['regionId'], empCode__region__circleId=request.user.circle['circleId'], isFinal=True)
+    elif request.user.groups.filter(name='Hr').exists() and request.user.region is not None and request.user.circle is None:
+        tagging_data = EmployeeTagging.objects.filter(empCode__designation__designationId__in=[98, 37, 99, 17, 84, 68, 23], empCode__region__regionId=request.user.region['regionId'], isFinal=True)
+    else:
+        tagging_data = EmployeeTagging.objects.filter(empCode=request.user.empCode, isFinal=True)
 
-    reporting_data1=ReportingOfficer.objects.filter(tagging__id__in=tagging_data1,is_Status=True)
-    off_list=[]
-    data=[]
-    for i in reporting_data1:
-        off_list.append(i)
+    final_data = []
+    for tagging in tagging_data:
+        accepting_data = AcceptingOfficer.objects.filter(tagging=tagging, is_Status=True).exclude(final_grade__isnull=True).exclude(final_grade='').exclude(accepting_officer_pdf='').first()
+        if accepting_data and accepting_data.accepting_officer_pdf:
+            final_data.append([tagging.empCode.fullName, accepting_data,tagging.empCode.empCode])
 
-    for j in off_list:
-        data2=[]
-        data2.append(j.tagging.empCode.fullName)
-        if j.reporting_pdf:
-            data2.append(j)
-        else:
-            data2.append(0)
-        reviewing_data2=ReviewingOfficer.objects.filter(tagging__id=j.tagging_id,is_Status=True).first()
-        if reviewing_data2:
-            data2.append(reviewing_data2)
-        else:
-            data2.append(0)
-        accepting_data2=AcceptingOfficer.objects.filter(tagging__id=j.tagging_id,is_Status=True).first()
-        if accepting_data2:
-            data2.append(accepting_data2)
-        else:
-            data2.append(0)
-        data.append(data2)   
-    return render(request,'Accounts/acr_hindi/tagging_list/complete_acr_list.html',{'final_data':data
-    })
+    return render(request, 'Accounts/acr_hindi/tagging_list/complete_acr_list.html', {'final_data': final_data})
+
+
+@login_required
+def my_acr_list(request):
+    tagging_data = EmployeeTagging.objects.filter(empCode__empCode=request.user.empCode, isFinal=True)
+    final_data = []
+    for tagging in tagging_data:
+        accepting_data = AcceptingOfficer.objects.filter(tagging=tagging, is_Status=True).first()
+        print("+++++++++++++++++++++",accepting_data)
+        if accepting_data and accepting_data.accepting_officer_pdf:
+            final_data.append([tagging.empCode.fullName, accepting_data,tagging.empCode.empCode])
+    return render(request, 'Accounts/acr_hindi/tagging_list/complete_acr_list.html', {'final_data': final_data})
+
+
 
 
 def update_emp_detail_by_empCode(request):
