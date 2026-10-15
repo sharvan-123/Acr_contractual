@@ -89,12 +89,7 @@
                                             <td>
                                                 {% if i.1 != 0 and i.1.accepting_officer_pdf %}
 
-                                                    <a href="{{ i.1.accepting_officer_pdf }}"
-                                                       target="_blank"
-                                                       rel="noopener noreferrer"
-                                                       class="btn btn-primary">
-                                                        View ACR
-                                                    </a>
+                                                    <a href="{{ i.1.accepting_officer_pdf.url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">View ACR</a>
 
                                                 {% else %}
 
