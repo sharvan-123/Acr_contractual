@@ -50,7 +50,9 @@ urlpatterns = [
         path('complete_acr_list',views.complete_acr_list,name="complete_acr_list"),
         path('my-acr/', views.my_acr_list, name='my_acr_list'),
         #extra 
-        path('add_update_emp_profile/', views.update_emp_detail_by_empCode, name='add_update_emp_profile')
+        path('add_update_emp_profile/', views.update_emp_detail_by_empCode, name='add_update_emp_profile'),
+        path('tagging_pendency_report/', views.tagging_pendency_report, name='tagging_pendency_report'),
+        
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

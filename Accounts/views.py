@@ -15,6 +15,7 @@ from ACRPortal.settings import config
 from django.urls import reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.db import connection
 from django.urls import reverse
 from django.views import View
 from datetime import datetime
@@ -28,6 +29,15 @@ import pyotp
 import json
 import hmac
 import re
+
+
+from openpyxl import Workbook
+from openpyxl.styles import Font, PatternFill, Alignment
+from openpyxl.utils import get_column_letter
+from datetime import date, datetime
+import json
+import openpyxl
+from openpyxl.utils import get_column_letter
 
 # config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
 apiUrl = settings.APIURL
@@ -1924,3 +1934,264 @@ def update_emp_detail_by_empCode(request):
             'status': 'success',
         }
         return JsonResponse(data)
+
+@login_required(login_url='/login/')
+def tagging_pendency_report(request):
+
+    selected_value = request.GET.get("value")
+    params = ()
+
+    query = """
+        SELECT
+            cu.id,
+            ae.id AS "taggingId",
+            cu."empCode",
+            cu."fullName",
+            cu."designation"->>'name' AS designation,
+            cu."designation"->>'designationClass' AS "designationClass",
+            cu."mobileNo",
+            cu."employmentType"->>'name' AS employmentType,
+            ae."fromDate",
+            ae."toDate",
+            ae."region",
+            ae."circle",
+            ae."hrManager",
+            ae."hrManagerCode",
+
+            CASE
+                WHEN cu.id IS NOT NULL
+                     AND ae."empCode_id" IS NOT NULL
+                THEN 'Yes'
+                ELSE 'No'
+            END AS "Whether_Tagging_Done_or_Not",
+
+            CASE
+                WHEN ae."isFinal" = 'true' THEN 'Yes'
+                ELSE 'No'
+            END AS "HR Approved Status",
+
+            REGEXP_REPLACE(
+                ae."reportingOfficer", '[^0-9]', '', 'g'
+            ) AS "Reporting Officers Emp. No.",
+
+            ae."reportingOfficer" AS "Reporting Officers Name",
+
+            (
+                SELECT c."designation"->>'name'
+                FROM public."Accounts_customuser" c
+                WHERE c."empCode" = REGEXP_REPLACE(
+                    ae."reportingOfficer", '[^0-9]', '', 'g'
+                )
+            ) AS reporting_Officers_designation,
+
+            (
+                SELECT c."mobileNo"
+                FROM public."Accounts_customuser" c
+                WHERE c."empCode" = REGEXP_REPLACE(
+                    ae."reportingOfficer", '[^0-9]', '', 'g'
+                )
+            ) AS reporting_mobile_no,
+
+            CASE
+                WHEN rec4."tagging_id" IS NOT NULL
+                     AND rec4."is_Status" = 'true'
+                THEN 'Yes'
+                ELSE 'No'
+            END AS "Reporting_Officer_Submitted_Status",
+
+            REGEXP_REPLACE(
+                ae."reviewingOfficer", '[^0-9]', '', 'g'
+            ) AS "Reviewing Officers Emp. No.",
+
+            ae."reviewingOfficer" AS "Reviewing Officers Name",
+
+            (
+                SELECT c."designation"->>'name'
+                FROM public."Accounts_customuser" c
+                WHERE c."empCode" = REGEXP_REPLACE(
+                    ae."reviewingOfficer", '[^0-9]', '', 'g'
+                )
+            ) AS Reviewing_Officers_designation,
+
+            (
+                SELECT c."mobileNo"
+                FROM public."Accounts_customuser" c
+                WHERE c."empCode" = REGEXP_REPLACE(
+                    ae."reviewingOfficer", '[^0-9]', '', 'g'
+                )
+            ) AS reviewing_mobile_no,
+
+            CASE
+                WHEN rv4."tagging_id" IS NOT NULL
+                     AND rv4."is_Status" = 'true'
+                THEN 'Yes'
+
+                WHEN rec4."tagging_id" IS NULL
+                     OR rec4."is_Status" = 'false'
+                THEN 'Reporting Not Submitted'
+
+                ELSE 'No'
+            END AS "Reviewing_Officer_Submitted_Status",
+
+            REGEXP_REPLACE(
+                ae."acceptingOfficer", '[^0-9]', '', 'g'
+            ) AS "Accepting Officers Emp. No.",
+
+            ae."acceptingOfficer" AS "Accepting Officers Name",
+
+            (
+                SELECT c."designation"->>'name'
+                FROM public."Accounts_customuser" c
+                WHERE c."empCode" = REGEXP_REPLACE(
+                    ae."acceptingOfficer", '[^0-9]', '', 'g'
+                )
+            ) AS Accepting_Officers_designation,
+
+            (
+                SELECT c."mobileNo"
+                FROM public."Accounts_customuser" c
+                WHERE c."empCode" = REGEXP_REPLACE(
+                    ae."acceptingOfficer", '[^0-9]', '', 'g'
+                )
+            ) AS accepting_mobile_no,
+
+            CASE
+                WHEN acp4."tagging_id" IS NOT NULL
+                     AND acp4."is_Status" = 'true'
+                THEN 'Yes'
+
+                WHEN rv4."tagging_id" IS NULL
+                     OR rv4."is_Status" = 'false'
+                THEN 'Reviewing Not Submitted'
+
+                ELSE 'No'
+            END AS "Accepting_Officer_Submitted_Status"
+
+        FROM public."Accounts_customuser" cu
+
+        LEFT JOIN public."Accounts_employeetagging" ae
+            ON cu.id = ae."empCode_id"
+
+        LEFT JOIN public."Accounts_reportingofficer" rec4
+            ON ae.id = rec4."tagging_id"
+
+        LEFT JOIN public."Accounts_reviewingofficer" rv4
+            ON ae.id = rv4."tagging_id"
+
+        LEFT JOIN public."Accounts_acceptingofficer" acp4
+            ON ae.id = acp4."tagging_id"
+
+        WHERE
+            cu."designation"->>'designationId'
+                IN ('17', '23', '37', '68', '84',
+                    '98', '99', '109', '110')
+
+            AND cu."employmentType"->>'empTypeId' IN ('6')
+    """
+
+    # HR filtering
+    # HR ID 89427825 ko sabhi matching records milenge
+    if (
+        request.user.groups.filter(name='Hr').exists()
+        and selected_value != "all"
+        and str(request.user.empCode) != "89427825"
+    ):
+        query += """
+            AND (
+                ae."hrManagerCode" = %s
+                OR ae."hrManagerCode" LIKE %s
+                OR ae."hrManagerCode" LIKE %s
+                OR ae."hrManagerCode" LIKE %s
+            )
+        """
+
+        emp_code = str(request.user.empCode)
+
+        params = (
+            emp_code,
+            emp_code + ',%',
+            '%,' + emp_code,
+            '%,' + emp_code + ',%'
+        )
+
+    query += ' ORDER BY cu."fullName" ASC'
+
+    # Execute SQL query
+    with connection.cursor() as cursor:
+        cursor.execute(query, params)
+        columns = [col[0] for col in cursor.description]
+        rows = cursor.fetchall()
+
+    # Create Excel workbook
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "Accepting Status Report"
+
+    # Add column headers
+    ws.append(columns)
+
+    # Add data rows
+    for row in rows:
+        ws.append([
+            value.isoformat()
+            if hasattr(value, "isoformat")
+            else value
+            for value in row
+        ])
+
+    # Header styling
+    for cell in ws[1]:
+        cell.font = openpyxl.styles.Font(
+            bold=True,
+            color="FFFFFF"
+        )
+        cell.fill = openpyxl.styles.PatternFill(
+            fill_type="solid",
+            fgColor="1F4E78"
+        )
+        cell.alignment = openpyxl.styles.Alignment(
+            horizontal="center",
+            vertical="center",
+            wrap_text=True
+        )
+
+    # Auto column width
+    for col_num, column_title in enumerate(columns, 1):
+        max_length = len(str(column_title))
+
+        for row_num in range(2, ws.max_row + 1):
+            value = ws.cell(
+                row=row_num,
+                column=col_num
+            ).value
+
+            if value is not None:
+                max_length = max(
+                    max_length,
+                    len(str(value))
+                )
+
+        ws.column_dimensions[
+            get_column_letter(col_num)
+        ].width = min(max(max_length + 2, 15), 35)
+
+    # Freeze header and enable filters
+    ws.freeze_panes = "A2"
+    ws.auto_filter.ref = ws.dimensions
+    ws.row_dimensions[1].height = 35
+
+    # Return Excel as download
+    response = HttpResponse(
+        content_type=(
+            "application/vnd.openxmlformats-officedocument."
+            "spreadsheetml.sheet"
+        )
+    )
+
+    response["Content-Disposition"] = (
+        'attachment; filename="Tagging_Status_Report.xlsx"'
+    )
+
+    wb.save(response)
+
+    return response

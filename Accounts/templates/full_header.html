@@ -267,6 +267,11 @@
                                   <i class="icon-list"></i> ACR की पूर्ण सूची
                               </a>
                           </li>
+                          <li class="{% if 'complete_acr_list' in request.path %}active{% endif %}">
+                              <a href="/tagging_pendency_report/">
+                                  <i class="icon-list"></i> Tagging Report
+                              </a>
+                          </li>
                       {% endif %}
                   {% endfor %}
               {% else %}
