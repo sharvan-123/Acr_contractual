@@ -273,8 +273,10 @@
                                              अच्छा (ख)
                                             {% elif reporting_grade >= 3.1 and reporting_grade <= 6.0 %}
                                                 औसत (ग)
-                                            {% elif reporting_grade <= 3.0  %}
+                                            {% elif reporting_grade > 0 and reporting_grade <= 3.0  %}
                                                 सेवा में जारी रखने योग्य नहीं (घ)
+                                            {% elif reporting_grade == 0  %}
+                                                कोई ग्रेड नहीं
                                             {% endif %}
 
                                         </div>
@@ -288,7 +290,7 @@
                                         </h4>
                                         <br>
                                         
-                                        <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reporting_model.descriptions}}</div>
+                                        <div style="border: 1px solid #000; font-size:14px; text-align:left; height:auto;padding:4px;">{{reporting_model.descriptions}}</div>
                                     </td>
                                 </tr> 
                                 {% if g_eight == None %}
@@ -319,8 +321,10 @@
                                                          अच्छा (ख)
                                                         {% elif reviewing_grade >= 3.1 and reviewing_grade <= 6.0 %}
                                                             औसत (ग)
-                                                        {% elif reviewing_grade <= 3.0  %}
+                                                        {% elif reviewing_grade > 0 and reviewing_grade <= 3.0  %}
                                                             सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% elif reviewing_grade == 0  %}
+                                                            कोई ग्रेड नहीं
                                                         {% endif %}
 
                                                     </div>

@@ -269,8 +269,10 @@
                                                         अच्छा (ख)
                                                         {% elif reporting_grade >= 3.1 and reporting_grade <= 6.0 %}
                                                             औसत (ग)
-                                                        {% elif reporting_grade <= 3.0  %}
+                                                        {% elif reporting_grade > 0 and reporting_grade <= 3.0  %}
                                                             सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% elif reporting_grade == 0  %}
+                                                            कोई ग्रेड नहीं
                                                         {% endif %}
                                                       
                                                     </div> 
@@ -282,7 +284,7 @@
                                                            
                                                         </u>
                                                     </h4>
-                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reporting_data.descriptions}}
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:auto;padding:4px;">{{reporting_data.descriptions}}
                                                     </div>
                                                           
                                 
@@ -313,8 +315,10 @@
                                                             अच्छा (ख)
                                                             {% elif reviewing_grade >= 3.1 and reviewing_grade <= 6.0 %}
                                                                 औसत (ग)
-                                                            {% elif reviewing_grade <= 3.0  %}
+                                                            {% elif reviewing_grade > 0 and reviewing_grade <= 3.0  %}
                                                                 सेवा में जारी रखने योग्य नहीं (घ)
+                                                            {% elif reviewing_grade == 0  %}
+                                                                कोई ग्रेड नहीं
                                                             {% endif %}
                                                           
                                                         </div>
@@ -332,7 +336,7 @@
                                                         </u>
                                                     </h4>
                                                     
-                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reviewing_data.descriptions}}
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:auto;padding:4px;">{{reviewing_data.descriptions}}
                                                     </div>
                                                 </td>
                                                 <br>
@@ -364,8 +368,10 @@
                                                         अच्छा (ख)
                                                         {% elif accepting_data >= 3.1 and accepting_data <= 6.0 %}
                                                             औसत (ग)
-                                                        {% elif accepting_data <= 3.0  %}
+                                                        {% elif accepting_data > 0 and accepting_data <= 3.0  %}
                                                             सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% elif accepting_data == 0  %}
+                                                            कोई ग्रेड नहीं
                                                         {% endif %}
                                                       
                                                     </div>
@@ -383,7 +389,7 @@
                                                         </u>
                                                     </h4>
                                                     
-                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{accepting_data1.descriptions}}
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:auto;padding:4px;">{{accepting_data1.descriptions}}
                                                     </div>
                                                 </td>
                                             </tr>

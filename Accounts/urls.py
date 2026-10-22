@@ -52,6 +52,9 @@ urlpatterns = [
         #extra 
         path('add_update_emp_profile/', views.update_emp_detail_by_empCode, name='add_update_emp_profile'),
         path('tagging_pendency_report/', views.tagging_pendency_report, name='tagging_pendency_report'),
+        path('auto-forward-reporting/<int:emp_type>/<int:tagging_id>/', views.auto_forward_reporting, name='auto_forward_reporting'),
+        path('auto-forward-reviewing/<int:emp_type>/<int:tagging_id>/', views.auto_forward_reviewing, name='auto_forward_reviewing'),
+        path('auto-forward-accepting/<int:emp_type>/<int:tagging_id>/', views.auto_forward_accepting, name='auto_forward_accepting'),
         
 
 

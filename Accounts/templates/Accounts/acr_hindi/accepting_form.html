@@ -272,8 +272,10 @@
                                                          अच्छा (ख)
                                                         {% elif reportingGrade >= 3.1 and reportingGrade <= 6.0 %}
                                                             औसत (ग)
-                                                        {% elif reportingGrade <= 3.0  %}
+                                                        {% elif reportingGrade > 0 and reportingGrade <= 3.0  %}
                                                             सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% elif reportingGrade == 0  %}
+                                                            कोई ग्रेड नहीं
                                                         {% endif %} 
                                                         
                                                     </div>
@@ -284,7 +286,7 @@
                                                        </h6>
                                                    </div>
                                                    
-                                                   <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reporting_officer_data.descriptions}}
+                                                   <div style="border: 1px solid #000; font-size:14px; text-align:left; height:auto;padding:4px;">{{reporting_officer_data.descriptions}}
                                                     </div>
                                                     
 {% if g_eight == None %}
@@ -319,9 +321,11 @@
                                                          अच्छा (ख)
                                                         {% elif reviewingGrade >= 3.1 and reviewingGrade <= 6.0 %}
                                                             औसत (ग)
-                                                        {% elif reviewingGrade <= 3.0  %}
+                                                        {% elif reviewingGrade > 0 and reviewingGrade <= 3.0  %}
                                                             सेवा में जारी रखने योग्य नहीं (घ)
-                                                        {% endif %} 
+                                                        {% elif reviewingGrade == 0  %}
+                                                            कोई ग्रेड नहीं
+                                                        {% endif %}
                                                          
                                                     </div>
                                                         <br>
@@ -331,7 +335,7 @@
                                                        </h6>
                                                    </div>
                                                    
-                                                   <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">{{reviewing_officer_data.descriptions}}
+                                                   <div style="border: 1px solid #000; font-size:14px; text-align:left; height:auto;padding:4px;">{{reviewing_officer_data.descriptions}}
                                                     </div>
 
 

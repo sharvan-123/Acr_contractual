@@ -30,10 +30,9 @@
         
           <div class="card-body">
            
-              <div class="form-group"> 
-                <label>विवरण : </label>
-                <input class="form-control h-auto" value='{{data.descriptions}}' name="remark">
-                </textarea>
+              <div class="form-group">
+                  <label>विवरण:</label>
+                  <textarea class="form-control" name="remark" >{{ data.descriptions }}</textarea>
               </div>
            
             <input name="reporting_id" value='{{data.id}}'hidden/>

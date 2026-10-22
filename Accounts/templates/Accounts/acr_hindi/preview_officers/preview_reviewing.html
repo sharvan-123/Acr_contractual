@@ -264,13 +264,15 @@
                                                     {% if reporting_grade >= 9.1 and reporting_grade <= 10 %}
                                                            उत्कृष्ट/असाधारण प्रतिभाशाली  (क+)
                                                         {% elif reporting_grade >= 7.1 and reporting_grade <= 9.0 %}
-                                                       बहुत अच्छा (क)
+                                                            बहुत अच्छा (क)
                                                         {% elif reporting_grade >= 6.1 and reporting_grade <= 7.0 %}
-                                                        अच्छा (ख)
+                                                            अच्छा (ख)
                                                         {% elif reporting_grade >= 3.1 and reporting_grade <= 6.0 %}
                                                             औसत (ग)
-                                                        {% elif reporting_grade <= 3.0  %}
+                                                        {% elif reporting_grade > 0 and reporting_grade <= 3.0  %}
                                                             सेवा में जारी रखने योग्य नहीं (घ)
+                                                        {% elif reporting_grade == 0  %}
+                                                            कोई ग्रेड नहीं
                                                         {% endif %}
                                                       
                                                     </div> 
@@ -282,7 +284,7 @@
                                                            
                                                         </u>
                                                     </h4>
-                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:auto;padding:4px;">
                                                     {{reporting_data.descriptions}}</div>
                                                           
                                 
@@ -331,7 +333,7 @@
                                                         </u>
                                                     </h4>
                                                     
-                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:60px;padding:4px;">
+                                                    <div style="border: 1px solid #000; font-size:14px; text-align:left; height:auto;padding:4px;">
                                                     {{reviewing_data.descriptions}}</div>
                                                     
                                                     

@@ -219,7 +219,6 @@ class ACR_Dates(models.Model):
 class ReportingOfficer(models.Model):
     tagging=models.ForeignKey(EmployeeTagging,on_delete=models.CASCADE,null=True)
     descriptions=models.TextField(null=True, blank=True,default="")
-    # descriptions1=models.CharField(max_length=5000, null=True, blank=True)
     final_grade=models.CharField(max_length=100, null=True, blank=True)
     reportingofficer_name=models.CharField(max_length=100, null=True, blank=True)
     reportingofficer_code=models.CharField(max_length=100, null=True, blank=True)
@@ -236,6 +235,8 @@ class ReportingOfficer(models.Model):
     grade_ten=models.CharField(max_length=100, null=True, blank=True)
     created_at= models.DateTimeField(null=True, blank=True,auto_now=True)
     updated_at= models.DateTimeField(null=True, blank=True,auto_now=True)
+    empType = models.IntegerField(default=0)  # for 1 for ta la steno and 2 for ae je
+    isAutoForward = models.BooleanField(default=False)
     is_Status=models.BooleanField()
 
     def save(self,*args,**kwargs):
@@ -258,6 +259,8 @@ class ReviewingOfficer(models.Model):
     reviewing_officer_pdf=models.FileField(upload_to="reviewing_officer_pdf", null=True, blank=True)
     created_at= models.DateTimeField(null=True, blank=True,auto_now=True)
     updated_at= models.DateTimeField(null=True, blank=True,auto_now=True)
+    empType = models.IntegerField(default=0)  # for 1 for ta la steno and 2 for ae je
+    isAutoForward = models.BooleanField(default=False)
     is_Status=models.BooleanField()
         
     def save(self,*args,**kwargs):
@@ -275,6 +278,8 @@ class AcceptingOfficer(models.Model):
     accepting_officer_pdf=models.FileField(upload_to="accepting_officer_pdf", null=True, blank=True)
     created_at= models.DateTimeField(null=True, blank=True,auto_now=True)
     updated_at= models.DateTimeField(null=True, blank=True,auto_now=True)
+    empType = models.IntegerField(default=0)  # for 1 for ta la steno and 2 for ae je
+    isAutoForward = models.BooleanField(default=False)
     is_Status=models.BooleanField()
 
     def save(self,*args,**kwargs):

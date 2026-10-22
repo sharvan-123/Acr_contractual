@@ -1868,9 +1868,12 @@ def emp_tagging_form_je(request):
 
 
 
+
 @login_required
 def complete_acr_list(request):
-    if str(request.user.empCode) in ['89427825', '12345678']:
+    if HrManagers.objects.filter(empCode=str(request.user.empCode)).exists():
+        tagging_data = EmployeeTagging.objects.filter(empCode__designation__designationId__in=[98, 37, 99, 17, 84, 68, 23], isFinal=True)
+    elif str(request.user.empCode) in ['89427825', '12345678']:
         tagging_data = EmployeeTagging.objects.filter(empCode__designation__designationId__in=[98, 37, 99, 17, 84, 68, 23], isFinal=True)
     elif request.user.groups.filter(name='Hr').exists() and request.user.region is not None and request.user.circle is not None:
         tagging_data = EmployeeTagging.objects.filter(empCode__designation__designationId__in=[98, 37, 99, 17, 84, 68, 23], empCode__region__regionId=request.user.region['regionId'], empCode__region__circleId=request.user.circle['circleId'], isFinal=True)
@@ -1883,7 +1886,7 @@ def complete_acr_list(request):
     for tagging in tagging_data:
         accepting_data = AcceptingOfficer.objects.filter(tagging=tagging, is_Status=True).exclude(final_grade__isnull=True).exclude(final_grade='').exclude(accepting_officer_pdf='').first()
         if accepting_data and accepting_data.accepting_officer_pdf:
-            final_data.append([tagging.empCode.fullName, accepting_data,tagging.empCode.empCode])
+            final_data.append([tagging.empCode.fullName, accepting_data, tagging.empCode.empCode])
 
     return render(request, 'Accounts/acr_hindi/tagging_list/complete_acr_list.html', {'final_data': final_data})
 
@@ -2195,3 +2198,116 @@ def tagging_pendency_report(request):
     wb.save(response)
 
     return response
+
+
+def auto_forward_reporting(request, emp_type, tagging_id):
+    if ReportingOfficer.objects.filter(tagging_id=tagging_id, is_Status=True).exists():
+        return JsonResponse({"msg": "already exist"})
+
+    if emp_type not in [1, 2]: return JsonResponse({"msg": "invalid emp_type"}, status=400)
+
+    fields = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
+    data = {"descriptions": "स्वचालित अग्रेषण", "final_grade": "0", "is_Status": False, "isAutoForward": True,
+            **{f"grade_{fields[i]}": "0" for i in range(7 if emp_type == 1 else 10)}}
+
+    model, _ = ReportingOfficer.objects.update_or_create(tagging_id=tagging_id, empType=emp_type, defaults=data)
+    tagging_data = EmployeeTagging.objects.get(id=tagging_id)
+    model.reportingofficer_name = "Vijay Ahuja - 92489010"
+    model.reportingofficer_code = tagging_data.reportingOfficerCode
+    model.empType = emp_type
+    model.save()
+
+    emptype, emp_des = tagging_data.empCode.employmentType['name'], tagging_data.empCode.designation['name']
+    current_time = datetime.now()
+    grades = [int(getattr(model, f"grade_{fields[i]}") or 0) for i in range(10)]
+    reporting_grade = float(model.final_grade or 0)
+    if emp_type == 2:
+        html_file = render_to_string('Accounts/acr_hindi/pdf_genration/pdf_genrate_reportingofficer.html', {
+            'tagging_data': tagging_data, 'emptype': emptype, 'emp_des': emp_des, 'reported_data': model,
+            **{f"g_{fields[i]}": grades[i] for i in range(10)},
+            'description': model.descriptions, 'reporting_grade': reporting_grade, 'i': model, 'current_time': current_time,
+        })
+    if emp_type == 1:
+        html_file = render_to_string('Accounts/acr_hindi/pdf_genration/pdf_genrate_ta_reportingofficer.html', {
+                'tagging_data': tagging_data, 'emptype': emptype, 'emp_des': emp_des, 'reported_data': model,
+                **{f"g_{fields[i]}": grades[i] for i in range(10)},
+                'description': model.descriptions, 'reporting_grade': reporting_grade, 'i': model, 'current_time': current_time,
+            })
+
+    conf = pdfkit.configuration(wkhtmltopdf=config)
+    pdf_content = pdfkit.from_string(html_file, False, configuration=conf)
+    model.reporting_pdf.save(f'{tagging_data.empCode}_ReportingPdf.pdf', ContentFile(pdf_content))
+    model.is_Status = True
+    model.save()
+
+    return JsonResponse({"msg": "success"})
+
+
+def auto_forward_reviewing(request, emp_type, tagging_id):
+    if emp_type not in [1, 2]: return JsonResponse({"msg": "invalid emp_type"}, status=400)
+    if ReviewingOfficer.objects.filter(tagging_id=tagging_id, is_Status=True).exists(): return JsonResponse({"msg": "already exist"})
+
+    fields = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
+    data = {"descriptions": "स्वचालित अग्रेषण", "final_grade": "0", "is_Status": False, "isAutoForward": True, "empType": emp_type}
+    reviewing_model, _ = ReviewingOfficer.objects.update_or_create(tagging_id=tagging_id, empType=emp_type, defaults=data)
+
+    reporting_model = ReportingOfficer.objects.get(tagging_id=tagging_id, empType=emp_type)
+    tagging_data = EmployeeTagging.objects.get(id=tagging_id)
+    emptype, emp_des = tagging_data.empCode.employmentType['name'], tagging_data.empCode.designation['name']
+    reporting_grade, reviewing_grade = float(reporting_model.final_grade or 0), float(reviewing_model.final_grade or 0)
+    grades = [int(getattr(reporting_model, f"grade_{fields[i]}") or 0) for i in range(10)]
+    current_time = datetime.now()
+
+    html_file = render_to_string('Accounts/acr_hindi/pdf_genration/pdf_genrate_reviewingofficer.html', {
+        'tagging_data': tagging_data, 'emptype': emptype, 'emp_des': emp_des,
+        'reporting_grade': reporting_grade, 'reviewing_grade': reviewing_grade,
+        'reporting_model': reporting_model, 'reviewing_model': reviewing_model,
+        'current_time': current_time, **{f"g_{fields[i]}": grades[i] if i < (7 if emp_type == 1 else 10) else None for i in range(10)}
+    })
+
+    conf = pdfkit.configuration(wkhtmltopdf=config)
+    pdf_content = pdfkit.from_string(html_file, False, configuration=conf)
+    reviewing_model.reviewing_officer_pdf.save(f'{tagging_data.empCode}_ReviewingOfficerPdf.pdf', ContentFile(pdf_content))
+    reviewing_model.is_Status = True
+    reviewing_model.isAutoForward = True
+    reviewing_model.empType = emp_type
+    reviewing_model.save()
+    return JsonResponse({"msg": "success"})
+
+
+def auto_forward_accepting(request, emp_type, tagging_id):
+    if emp_type not in [1, 2]: return JsonResponse({"msg": "invalid emp_type"}, status=400)
+    if AcceptingOfficer.objects.filter(tagging_id=tagging_id, is_Status=True).exists(): return JsonResponse({"msg": "already exist"})
+
+    fields = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
+    reviewing_model = ReviewingOfficer.objects.get(tagging_id=tagging_id, empType=emp_type)
+    data = {"descriptions": "स्वचालित अग्रेषण", "final_grade": reviewing_model.final_grade or "0", "is_Status": False, "isAutoForward": True, "empType": emp_type}
+    accepting_model, _ = AcceptingOfficer.objects.update_or_create(tagging_id=tagging_id, empType=emp_type, defaults=data)
+
+    reporting_model = ReportingOfficer.objects.get(tagging_id=tagging_id, empType=emp_type)
+    tagging_data = EmployeeTagging.objects.get(id=tagging_id)
+    emptype, emp_des = tagging_data.empCode.employmentType['name'], tagging_data.empCode.designation['name']
+    reporting_grade, reviewing_grade, accepting_grade = float(reporting_model.final_grade or 0), float(reviewing_model.final_grade or 0), float(accepting_model.final_grade or 0)
+    grades = [int(getattr(reporting_model, f"grade_{fields[i]}") or 0) for i in range(10)]
+    current_time = datetime.now()
+
+    html_file = render_to_string('Accounts/acr_hindi/pdf_genration/pdf_genrate_acceptingofficer.html', {
+        'tagging_data': tagging_data, 'emptype': emptype, 'emp_des': emp_des,
+        'reporting_grade': reporting_grade, 'reviewing_grade': reviewing_grade, 'accepting_grade': accepting_grade,
+        'reporting_model': reporting_model, 'reviewing_model': reviewing_model, 'accepting_model': accepting_model,
+        'current_time': current_time, **{f"g_{fields[i]}": grades[i] if i < (7 if emp_type == 1 else 10) else None for i in range(10)}
+    })
+
+    conf = pdfkit.configuration(wkhtmltopdf=config)
+    pdf_content = pdfkit.from_string(html_file, False, configuration=conf)
+    accepting_model.accepting_officer_pdf.save(f'{tagging_data.empCode}_AcceptingOfficerPdf.pdf', ContentFile(pdf_content))
+    accepting_model.is_Status = True
+    accepting_model.isAutoForward = True
+    accepting_model.empType = emp_type
+    accepting_model.save()
+
+    return JsonResponse({"msg": "success"})
+
+
+
+
